@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using SikonUWP.View;
 
 namespace SikonUWP
 {
@@ -52,7 +53,7 @@ namespace SikonUWP
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
-                    //TODO: Load state from previously suspended application
+                    //TODO: Load state from previously suspended application (Check if we should load from here)
                 }
 
                 // Place the frame in the current Window

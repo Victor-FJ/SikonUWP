@@ -119,7 +119,13 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainPage.xaml.cs">
+    <Compile Include="Common\RelayCommand.cs" />
+    <Compile Include="Converters\CountListConverter.cs" />
+    <Compile Include="Handlers\UserHandler.cs" />
+    <Compile Include="Model\UserCatalogSingleton.cs" />
+    <Compile Include="Persistency\ImagePersistence.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="View\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -143,7 +149,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainPage.xaml">
+    <Page Include="View\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -154,11 +160,12 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SikonUnitTest\SikonUnitTest.csproj">
-      <Project>{af3c1670-b6bb-4c77-8c09-0df7796ff195}</Project>
-      <Name>SikonUnitTest</Name>
+    <ProjectReference Include="..\ModelLibrary\ModelLibrary.csproj">
+      <Project>{0f0e8b0b-5bba-48ef-868c-d4f1cc6f18ec}</Project>
+      <Name>ModelLibrary</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

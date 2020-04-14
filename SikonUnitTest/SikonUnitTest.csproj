@@ -157,6 +157,16 @@
       <Version>2.0.0</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ModelLibrary\ModelLibrary.csproj">
+      <Project>{0f0e8b0b-5bba-48ef-868c-d4f1cc6f18ec}</Project>
+      <Name>ModelLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SikonUWP\SikonUWP.csproj">
+      <Project>{99133521-04c3-4e8b-9b31-1df14c3f7b10}</Project>
+      <Name>SikonUWP</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
