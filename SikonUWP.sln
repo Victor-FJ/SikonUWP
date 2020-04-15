@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SikonUWP", "SikonUWP\SikonU
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SikonUnitTest", "SikonUnitTest\SikonUnitTest.csproj", "{AF3C1670-B6BB-4C77-8C09-0DF7796FF195}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelLibrary", "ModelLibrary\ModelLibrary.csproj", "{0F0E8B0B-5BBA-48EF-868C-D4F1CC6F18EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelLibrary", "ModelLibrary\ModelLibrary.csproj", "{0F0E8B0B-5BBA-48EF-868C-D4F1CC6F18EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +24,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{99133521-04C3-4E8B-9B31-1DF14C3F7B10}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{99133521-04C3-4E8B-9B31-1DF14C3F7B10}.Debug|Any CPU.Build.0 = Debug|x86
+		{99133521-04C3-4E8B-9B31-1DF14C3F7B10}.Debug|Any CPU.Deploy.0 = Debug|x86
 		{99133521-04C3-4E8B-9B31-1DF14C3F7B10}.Debug|ARM.ActiveCfg = Debug|ARM
 		{99133521-04C3-4E8B-9B31-1DF14C3F7B10}.Debug|ARM.Build.0 = Debug|ARM
 		{99133521-04C3-4E8B-9B31-1DF14C3F7B10}.Debug|ARM.Deploy.0 = Debug|ARM
@@ -50,6 +52,8 @@ Global
 		{99133521-04C3-4E8B-9B31-1DF14C3F7B10}.Release|x86.Build.0 = Release|x86
 		{99133521-04C3-4E8B-9B31-1DF14C3F7B10}.Release|x86.Deploy.0 = Release|x86
 		{AF3C1670-B6BB-4C77-8C09-0DF7796FF195}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{AF3C1670-B6BB-4C77-8C09-0DF7796FF195}.Debug|Any CPU.Build.0 = Debug|x86
+		{AF3C1670-B6BB-4C77-8C09-0DF7796FF195}.Debug|Any CPU.Deploy.0 = Debug|x86
 		{AF3C1670-B6BB-4C77-8C09-0DF7796FF195}.Debug|ARM.ActiveCfg = Debug|ARM
 		{AF3C1670-B6BB-4C77-8C09-0DF7796FF195}.Debug|ARM.Build.0 = Debug|ARM
 		{AF3C1670-B6BB-4C77-8C09-0DF7796FF195}.Debug|ARM.Deploy.0 = Debug|ARM
