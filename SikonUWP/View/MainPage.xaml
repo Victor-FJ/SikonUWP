@@ -5,51 +5,20 @@
     xmlns:local="using:SikonUWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <RelativePanel>
-            <Image Source="/Assets/sikonBillede.png" Width="180" Margin="580,0,0,0"/>
-            <Button Name="Menu" FontFamily="Segoe MDL2 Asset" Content="&#xE700;" FontSize="50" Click="Menu_OnClick"/>
-        </RelativePanel>
-        <SplitView Name="MySplitView" Grid.Row="1" 
-                   DisplayMode="CompactOverlay" OpenPaneLength="200" 
-                   CompactPaneLength="56" 
-                   HorizontalAlignment="Left">
-            <SplitView.Pane>
-                <ListBox SelectionMode="Single" Name="IconListBox" SelectionChanged="IconListBox_OnSelectionChanged">
-                    <ListBoxItem Name="ListBoxItemShare">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock FontFamily="Segoe MDL2 Asset" FontSize="36"  Text="&#xE72D;"/>
-                            <TextBlock FontSize="26" Margin="20,0,0,0" Text="Share"></TextBlock>
-
-                        </StackPanel>
-
-
-                    </ListBoxItem>
-
-                    <ListBoxItem Name="ListBoxItemFavorits">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock FontFamily="Segoe MDL2 Asset" FontSize="36" Text="&#xE72D;"/>
-                            <TextBlock FontSize="26" Margin="20,0,0,0" Text="Hej"></TextBlock>
-                        </StackPanel>
-                    </ListBoxItem>
-
-                </ListBox>
-            </SplitView.Pane>
-            <SplitView.Content>
-                <TextBlock Name="ResultTextBlock"/>
-            </SplitView.Content>
-           
-        </SplitView>
-
-
-
-
-    </Grid>
+    <NavigationView x:Name="NavigationView" ItemInvoked="NavigationView_OnItemInvoked">
+        <NavigationView.MenuItems>
+            <NavigationViewItem Content="Menu Item1" Tag="RoomPage" >
+                <NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xE72D;"/></NavigationViewItem.Icon>
+            </NavigationViewItem>
+            <NavigationViewItemHeader Content="Hej"/>
+            <NavigationViewItem Icon="Save" Content="Menu Item2" Tag="EventHomePage" />
+            <NavigationViewItem Icon="Refresh" Content="Menu Item3" Tag="EventEditorPage" />
+            <NavigationViewItem Icon="Download" Content="Menu Item4" Tag="SamplePage4" />
+        </NavigationView.MenuItems>
+        <Frame x:Name="ContentFrame"/>
+    </NavigationView>
 </Page>
