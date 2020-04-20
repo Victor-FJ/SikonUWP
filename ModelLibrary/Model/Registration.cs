@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ModelLibrary.Model
 {
-    class Registration
+    public class Registration
     {
 		private int _id;
 

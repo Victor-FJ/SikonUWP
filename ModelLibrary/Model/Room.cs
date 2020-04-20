@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ModelLibrary.Model
 {
-    class Room
+    public class Room
     {
 		private string _roomNo;
 

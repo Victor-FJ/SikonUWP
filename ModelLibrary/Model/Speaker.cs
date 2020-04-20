@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ModelLibrary.Model
 {
-    class Speaker
+    public class Speaker
     {
 		private string _fullName;
 

@@ -124,10 +124,16 @@
     <Compile Include="Converters\CountListConverter.cs" />
     <Compile Include="Handlers\UserHandler.cs" />
     <Compile Include="Model\UserCatalogSingleton.cs" />
+    <Compile Include="Persistency\GenericPersistence.cs" />
     <Compile Include="Persistency\PersistencyManager.cs" />
     <Compile Include="Persistency\ImagePersistence.cs" />
+    <Compile Include="ViewModel\EventEditorViewModel.cs" />
+    <Compile Include="ViewModel\EventHomeViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\RoomViewModel.cs" />
+    <Compile Include="View\EventEditorPage.xaml.cs">
+      <DependentUpon>EventEditorPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\EventHomePage.xaml.cs">
       <DependentUpon>EventHomePage.xaml</DependentUpon>
     </Compile>
@@ -159,6 +165,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="View\EventEditorPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\EventHomePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

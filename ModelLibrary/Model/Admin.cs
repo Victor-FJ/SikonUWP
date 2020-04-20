@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ModelLibrary.Model
 {
-    class Admin
+    public class Admin
     {
 		private string _phoneNumber;
 
