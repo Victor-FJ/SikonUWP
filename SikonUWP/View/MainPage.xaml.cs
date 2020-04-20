@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using SikonUWP.Persistency;
@@ -23,21 +24,14 @@ namespace SikonUWP.View
             bool ok = await PersistencyManager.Tester();
         }
 
-        private void Menu_OnClick(object sender, RoutedEventArgs e)
+       
+        
+        // Denne del af koden navigere til en side i Viewet 
+        private void NavigationView_OnItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
-            MySplitView.IsPaneOpen = !MySplitView.IsPaneOpen;
-        }
-
-        private void IconListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (ListBoxItemShare.IsSelected)
-            {
-                ResultTextBlock.Text = "Share";
-            }
-            else if (ListBoxItemFavorits.IsSelected)
-            {
-                ResultTextBlock.Text = "Favorits";
-            }
+            string tag = (string) args.InvokedItemContainer.Tag;
+            var view = Assembly.GetExecutingAssembly().GetType($"SikonUWP.View.{tag}");
+            ContentFrame.Navigate(view);
         }
     }
 }
