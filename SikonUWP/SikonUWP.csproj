@@ -119,10 +119,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\MessageDialogUtil.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Converters\CountListConverter.cs" />
     <Compile Include="Handlers\UserHandler.cs" />
     <Compile Include="Model\UserCatalogSingleton.cs" />
+    <Compile Include="Persistency\PersistencyManager.cs" />
     <Compile Include="Persistency\ImagePersistence.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="View\EventHomePage.xaml.cs">
@@ -165,6 +167,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.9</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.3</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
