@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ModelLibrary.Model
 {
-    class Participant
+    public class Participant
     {
         public enum PersonType
         {
