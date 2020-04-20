@@ -30,8 +30,17 @@ namespace SikonUWP.View
         private void NavigationView_OnItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
             string tag = (string) args.InvokedItemContainer.Tag;
-            var view = Assembly.GetExecutingAssembly().GetType($"SikonUWP.View.{tag}");
-            ContentFrame.Navigate(view);
+            Navigate(tag);
+        }
+
+        private void Navigate(string pageName)
+        {
+            Type pageType = Assembly.GetExecutingAssembly().GetType($"SikonUWP.View.{pageName}");
+
+            if (pageType == null)
+                return;
+
+            ContentFrame.Navigate(pageType);
         }
     }
 }
