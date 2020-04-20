@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ModelLibrary.Model
 {
-    class User
+    public class User
     {
 		private string _userName;
 
