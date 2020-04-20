@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ModelLibrary.Model
 {
-    class Event
+    public class Event
     {
 		private int _id;
 
