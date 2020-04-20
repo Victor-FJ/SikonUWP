@@ -8,5 +8,6 @@ namespace SikonUWP.Model
 {
     class UserCatalogSingleton
     {
+
     }
 }
