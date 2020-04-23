@@ -121,7 +121,7 @@
     </Compile>
     <Compile Include="Common\MessageDialogUtil.cs" />
     <Compile Include="Common\RelayCommand.cs" />
-    <Compile Include="Converters\CountListConverter.cs" />
+    <Compile Include="Resources\CountListConverter.cs" />
     <Compile Include="Handlers\UserHandler.cs" />
     <Compile Include="Model\UserCatalogSingleton.cs" />
     <Compile Include="Persistency\GenericPersistence.cs" />
@@ -165,6 +165,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Resources\CommonStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\EventEditorPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
