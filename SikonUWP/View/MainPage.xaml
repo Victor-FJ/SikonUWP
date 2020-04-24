@@ -10,14 +10,14 @@
 
     <NavigationView x:Name="NavigationView" ItemInvoked="NavigationView_OnItemInvoked">
         <NavigationView.MenuItems>
-            <NavigationViewItem Content="Menu Item1" Tag="RoomPage" >
+            <NavigationViewItem Content="Lokaler" Tag="RoomPage" >
                 <NavigationViewItem.Icon>
                     <FontIcon Glyph="&#xE72D;"/></NavigationViewItem.Icon>
             </NavigationViewItem>
             <NavigationViewItemHeader Content="Hej"/>
-            <NavigationViewItem Icon="Save" Content="Menu Item2" Tag="EventHomePage" />
-            <NavigationViewItem Icon="Refresh" Content="Menu Item3" Tag="EventEditorPage" />
-            <NavigationViewItem Icon="Download" Content="Menu Item4" Tag="SamplePage4" />
+            <NavigationViewItem Icon="Save" Content="EventHome" Tag="EventHomePage" />
+            <NavigationViewItem Icon="Refresh" Content="EventEditor" Tag="EventEditorPage" />
+            <NavigationViewItem Icon="Download" Content="" Tag="SamplePage4" />
         </NavigationView.MenuItems>
         <Frame x:Name="ContentFrame"/>
     </NavigationView>

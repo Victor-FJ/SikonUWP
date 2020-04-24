@@ -122,11 +122,14 @@
     <Compile Include="Common\MessageDialogUtil.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Converters\CountListConverter.cs" />
+    <Compile Include="Handlers\RoomHandler.cs" />
     <Compile Include="Handlers\UserHandler.cs" />
+    <Compile Include="Model\RoomCatalogSingleton.cs" />
     <Compile Include="Model\UserCatalogSingleton.cs" />
     <Compile Include="Persistency\GenericPersistence.cs" />
     <Compile Include="Persistency\PersistencyManager.cs" />
     <Compile Include="Persistency\ImagePersistence.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModel\EventEditorViewModel.cs" />
     <Compile Include="ViewModel\EventHomeViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
