@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SikonUWP.Persistency;
-using ModelLibrary.Model;
 
-namespace SikonUWP.ViewModel
+namespace SikonUWP.Model
 {
-    public class EventEditorViewModel
+    class RoomCatalogSingleton
     {
-        
     }
 }

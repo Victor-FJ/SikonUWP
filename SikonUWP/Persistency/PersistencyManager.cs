@@ -13,7 +13,7 @@ namespace SikonUWP.Persistency
 {
     public class PersistencyManager
     {
-        public const string Uri = "http://localhost:52415/api/";
+        public const string Uri = "http://localhost:52415/api/Manage/";
 
         private const string FileName = "DatabaseConnection";
 
@@ -63,7 +63,7 @@ namespace SikonUWP.Persistency
             using (HttpClient client = new HttpClient())
             {
                 string jsonStringIn = JsonConvert.SerializeObject(connectionString);
-                HttpResponseMessage response = await client.PostAsync(Uri + "Manage/", new StringContent(jsonStringIn, Encoding.UTF8, "application/json"));
+                HttpResponseMessage response = await client.PostAsync(Uri, new StringContent(jsonStringIn, Encoding.UTF8, "application/json"));
                 if (response.IsSuccessStatusCode)
                 {
                     string jsonStringOut = await response.Content.ReadAsStringAsync();
