@@ -31,7 +31,6 @@ namespace SikonUWP.View
             SetNavigationViewTags();
         }
 
-
         //Navigere til en side i viewet når brugeren vælger et item i navigationviewet
         private void NavigationView_OnItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
@@ -39,6 +38,7 @@ namespace SikonUWP.View
                 ContentFrame.Navigate(pageType);
         }
 
+        //Justere farven på title baren
         private void AdjustTitlebarColor()
         {
             ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
@@ -47,6 +47,7 @@ namespace SikonUWP.View
             titleBar.ButtonBackgroundColor = backGroundColor;
         }
 
+        //Omdanner teksten i navViewItem.Tag til en Type af den side som teksten beskrev
         private void SetNavigationViewTags()
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
