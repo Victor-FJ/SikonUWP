@@ -6,19 +6,29 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" d:DesignWidth="1430" d:DesignHeight="730">
 
     <NavigationView x:Name="NavigationView" ItemInvoked="NavigationView_OnItemInvoked">
         <NavigationView.MenuItems>
             <NavigationViewItem Content="Lokaler" Tag="RoomPage" >
+            <NavigationViewItemHeader Content="Events"/>
+            <NavigationViewItem Icon="Home" Content="Event Home Page" Tag="EventHomePage"/>
+            <NavigationViewItem Icon="Edit" Content="Event Editor Page" Tag="EventEditorPage"/>
+            <NavigationViewItemHeader Content="Brugere"/>
+            <NavigationViewItem Icon="Contact" Content="User Page ??"/>
+            <NavigationViewItemHeader Content="Rum"/>
+            <NavigationViewItem Content="Room Page" Tag="RoomPage">
                 <NavigationViewItem.Icon>
-                    <FontIcon Glyph="&#xE72D;"/></NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xE707;"/>
+                </NavigationViewItem.Icon>
             </NavigationViewItem>
             <NavigationViewItemHeader Content="Hej"/>
-            <NavigationViewItem Icon="Save" Content="EventHome" Tag="EventHomePage" />
-            <NavigationViewItem Icon="Refresh" Content="EventEditor" Tag="EventEditorPage" />
-            <NavigationViewItem Icon="Download" Content="" Tag="SamplePage4" />
+            <NavigationViewItem Icon="Save" Content="Menu Item2" Tag="EventHomePage" />
+            <NavigationViewItem Icon="Refresh" Content="Menu Item3" Tag="EventEditorPage" />
+            <NavigationViewItem Icon="Download" Content="Menu Item4" Tag="SamplePage4" />
         </NavigationView.MenuItems>
-        <Frame x:Name="ContentFrame"/>
+        <Grid>
+            <Frame x:Name="ContentFrame"/>
+        </Grid>
     </NavigationView>
 </Page>
