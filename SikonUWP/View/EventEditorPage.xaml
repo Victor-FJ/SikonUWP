@@ -22,32 +22,32 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Grid Margin="50">
+        <Grid Margin="50" Background="WhiteSmoke">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <TextBlock Text="Title" Style="{StaticResource TxtBlkStyle}"/>
             <TextBox Grid.Column="1" Grid.Row="0" Style="{StaticResource SingleLineTxtBoxStyle}"/>
-            <TextBlock Grid.Column="0" Grid.Row="1" Text="Beskrivelse" Style="{StaticResource TxtBlkStyle}"/>
-            <TextBox Grid.Column="1" Grid.Row="1" Style="{StaticResource MultiLineTxtBoxStyle}"/>
-            <TextBlock Text="Vært" Grid.Column="0" Grid.Row="3" Style="{StaticResource TxtBlkStyle}"/>
-            <ComboBox Grid.Column="1" Grid.Row="3" Margin="8" HorizontalAlignment="Stretch"/>
-            <TextBlock Grid.Column="0" Grid.Row="4" Text="Dato" Style="{StaticResource TxtBlkStyle}"/>
-            <CalendarDatePicker Grid.Column="1" Grid.Row="4" Margin="8" HorizontalAlignment="Stretch"/>
-            <TextBlock Grid.Column="0" Grid.Row="5" Text="Start Tidspunkt" Style="{StaticResource TxtBlkStyle}"/>
+            <TextBlock Text="Vært" Grid.Column="0" Grid.Row="2" Style="{StaticResource TxtBlkStyle}"/>
+            <ComboBox Grid.Column="1" Grid.Row="2" Margin="8" HorizontalAlignment="Stretch"/>
+            <TextBlock Grid.Column="0" Grid.Row="3" Text="Dato" Style="{StaticResource TxtBlkStyle}"/>
+            <CalendarDatePicker Grid.Column="1" Grid.Row="3" Margin="8" HorizontalAlignment="Stretch"/>
+            <TextBlock Grid.Column="0" Grid.Row="4" Text="Start Tidspunkt" Style="{StaticResource TxtBlkStyle}"/>
+            <TimePicker Grid.Column="1" Grid.Row="4" Margin="8" HorizontalAlignment="Stretch"/>
+            <TextBlock Grid.Column="0" Grid.Row="5" Text="Slut Tidspunkt" Style="{StaticResource TxtBlkStyle}"/>
             <TimePicker Grid.Column="1" Grid.Row="5" Margin="8" HorizontalAlignment="Stretch"/>
-            <TextBlock Grid.Column="0" Grid.Row="6" Text="Slut Tidspunkt" Style="{StaticResource TxtBlkStyle}"/>
-            <TimePicker Grid.Column="1" Grid.Row="6" Margin="8" HorizontalAlignment="Stretch"/>
+            <TextBlock Grid.Column="0" Grid.Row="6" Text="Beskrivelse" Style="{StaticResource TxtBlkStyle}"/>
+            <TextBox Grid.Column="1" Grid.Row="6" Style="{StaticResource MultiLineTxtBoxStyle}"/>
         </Grid>
         <Grid Grid.Column="1" Margin="50">
             <Grid.ColumnDefinitions>
@@ -55,27 +55,24 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
-            <TextBlock Text="Rum" Style="{StaticResource TxtBlkStyle}"/>
-            <ComboBox Grid.Column="1" Grid.Row="0" Margin="8" HorizontalAlignment="Stretch"/>
-            <TextBlock Grid.Column="0" Grid.Row="1" Text="Antal Deltagere" Style="{StaticResource TxtBlkStyle}"/>
-            <TextBox Grid.Column="1" Grid.Row="1" Style="{StaticResource SingleLineTxtBoxStyle}"/>
-        </Grid>
-        <Grid Grid.Column="1" Margin="50" VerticalAlignment="Bottom">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="2*"/>
-            </Grid.RowDefinitions>
-            <TextBlock Text="Billed" Grid.ColumnSpan="2" HorizontalAlignment="Center" Style="{StaticResource TxtBlkStyle}"/>
-            <Button Grid.Column="0" Grid.Row="1" Content="Vælg Billed" Margin="8"/>
-            <Image Grid.Column="1" Grid.Row="1" Source="/Assets/SplashScreen.png" Margin="8"/>
-        </Grid>
+            <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" Fill="#FFE4B579"/>
+            <TextBlock Text="Rum" Grid.Column="0" Grid.Row="1" Style="{StaticResource TxtBlkStyle}"/>
+            <ComboBox Grid.Column="1" Grid.Row="1" Margin="8" HorizontalAlignment="Stretch"/>
+            <TextBlock Grid.Column="0" Grid.Row="2" Text="Antal Deltagere" Style="{StaticResource TxtBlkStyle}"/>
+            <TextBox Grid.Column="1" Grid.Row="2" Style="{StaticResource SingleLineTxtBoxStyle}"/>
 
+            <Rectangle Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Grid.RowSpan="2" Fill="#FFE4B579"/>
+            <TextBlock Text="Billed" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Center" Style="{StaticResource TxtBlkStyle}"/>
+            <Button Grid.Column="0" Grid.Row="5" Content="Vælg Billed" Margin="8"/>
+            <Image Grid.Column="1" Grid.Row="5" Source="/Assets/SplashScreen.png" Margin="8"/>
+        </Grid>
     </Grid>
 </Page>

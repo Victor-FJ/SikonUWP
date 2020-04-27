@@ -10,9 +10,6 @@ namespace SikonUWP.ViewModel
 {
     public class EventEditorViewModel
     {
-        public void Hej()
-        {
-            GenericPersistence<Event, int> hej = new GenericPersistence<Event, int>("");
-        }
+        
     }
 }

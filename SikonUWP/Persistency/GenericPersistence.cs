@@ -12,6 +12,10 @@ namespace SikonUWP.Persistency
     {
         private readonly string _uri;
 
+        /// <summary>
+        /// Creates a Instance of the GenericPersistence (TItem is the item passed to the database and the TKey is the primary key of the item)
+        /// </summary>
+        /// <param name="uri">The address to the rest api</param>
         public GenericPersistence(string uri)
         {
             _uri = uri;

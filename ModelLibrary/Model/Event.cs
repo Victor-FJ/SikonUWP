@@ -1,78 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
-
 
 namespace ModelLibrary.Model
 {
     public class Event
     {
-		private int _id;
+        #region Enums
 
-		public int Id
-		{
-			get { return _id; }
-			set { _id = value; }
-		}
-
-		private string _title;
-
-		public string Title
-		{
-			get { return _title; }
-			set { _title = value; }
-		}
-
-		private string _description;
-
-		public string Description
-		{
-			get { return _description; }
-			set { _description = value; }
-		}
-
-		private DateTime _date;
-
-		public DateTime Date
-		{
-			get { return _date; }
-            set { _date = value; }
-        }
-
-		private TimeSpan _time;
-
-		public TimeSpan Time
-		{
-			get { return _time; }
-			set { _time = value; }
-		}
-
-
-
-		//image mangler at blive implementeret ordenligt
-        //public BitmapImage image;
-
-		public Room Room = new Room();
-
-
-
-
-
-        public Event()
+        public enum EventType
         {
-            
+            Plenum,
+            Tema,
+            Workshop,
+            Marked,
+            Konkurrence,
+            Forplejning
         }
 
-
-        //image parameter mangler at blive implementeret ordenligt
-		public Event(int id, string title, string description, DateTime date, TimeSpan time, Room room)
+        public enum EventSubject
         {
-            _id = id;
-            _title = title;
-            _description = description;
-            _date = date;
-            _time = time;
-            Room = room;
+            Autisme,
+            PædagogiskUdvikling,
+            WakeUp
         }
-	}
+
+        #endregion
+
+        public int Id { get; set; }
+
+        public string Title { get; set; }
+
+        public string Description { get; set; }
+
+        public EventType Type { get; set; }
+
+        public EventSubject Subject { get; set; }
+
+        public int MaxNoParticipant { get; set; }
+
+        public DateTimeOffset Date { get; set; }
+
+        public TimeSpan Time { get; set; }
+
+        public User Speaker { get; set; }
+
+        public Room Room { get; set; }
+
+        public string ImageName { get; set; }
+    }
 }

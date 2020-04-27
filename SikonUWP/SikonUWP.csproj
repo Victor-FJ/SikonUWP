@@ -121,6 +121,7 @@
     </Compile>
     <Compile Include="Common\MessageDialogUtil.cs" />
     <Compile Include="Common\RelayCommand.cs" />
+    <Compile Include="Handlers\ImageHandler.cs" />
     <Compile Include="Resources\CountListConverter.cs" />
     <Compile Include="Handlers\UserHandler.cs" />
     <Compile Include="Model\UserCatalogSingleton.cs" />
