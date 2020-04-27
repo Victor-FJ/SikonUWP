@@ -122,7 +122,6 @@
     <Compile Include="Common\MessageDialogUtil.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Resources\CountListConverter.cs" />
-    <Compile Include="Converters\CountListConverter.cs" />
     <Compile Include="Handlers\RoomHandler.cs" />
     <Compile Include="Handlers\UserHandler.cs" />
     <Compile Include="Model\RoomCatalogSingleton.cs" />
