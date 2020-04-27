@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ModelLibrary.Model
 {
-    public class Participant
+    public class Participant : User
     {
         public enum PersonType
         {
@@ -20,7 +20,7 @@ namespace ModelLibrary.Model
             
         }
 
-        public Participant(PersonType personType)
+        public Participant(string userName, string password, PersonType personType) : base(userName, password)
         {
             Type = personType;
         }

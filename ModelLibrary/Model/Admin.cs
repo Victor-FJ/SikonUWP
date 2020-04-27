@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ModelLibrary.Model
 {
-    public class Admin
+    public class Admin : User
     {
 		private string _phoneNumber;
 
@@ -14,13 +14,15 @@ namespace ModelLibrary.Model
 			set { _phoneNumber = value; }
 		}
 
+        public User user { get; set; }
 
 
         public Admin()
         {
             
         }
-        public Admin(string phoneNumber)
+
+        public Admin(string userName, string password, string phoneNumber) : base(userName, password)
         {
             _phoneNumber = phoneNumber;
         }

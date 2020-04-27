@@ -22,14 +22,6 @@ namespace ModelLibrary.Model
 			set { _password = value; }
 		}
 
-        public object _usertype;
-
-        public object Usertype
-        {
-            get { return _usertype;}
-            set { _usertype = value; }
-        }
-
 
 
         public User()
@@ -38,11 +30,10 @@ namespace ModelLibrary.Model
         }
 
 
-        public User(string userName, string password, object usertype)
+        public User(string userName, string password)
         {
             _userName = userName;
             _password = password;
-            Usertype = usertype;
         }
 
     }

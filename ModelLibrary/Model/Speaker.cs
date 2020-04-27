@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ModelLibrary.Model
 {
-    public class Speaker
+    public class Speaker : User
     {
 		private string _fullName;
 
@@ -23,19 +23,27 @@ namespace ModelLibrary.Model
 			set { _description = value; }
 		}
 
-        //public Image image;
+		//gemt som string skal implementeres som image
+		private string _image;
+
+		public string Image
+		{
+			get { return _image; }
+			set { _image = value; }
+		}
 
 
 
 
 
-        public Speaker()
+
+		public Speaker()
         {
             
         }
 		//constructor mangler image parameter implementeret
-        public Speaker(string fullName, string description)
-        {
+        public Speaker(string userName, string password, string fullName, string description) : base(userName, password)
+		{
             _fullName = fullName;
             _description = description;
         }
