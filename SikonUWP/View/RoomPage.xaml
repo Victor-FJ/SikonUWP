@@ -8,8 +8,69 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        
+    <Page.DataContext>
+        viewModel:RoomViewModel
+    </Page.DataContext>
 
-    </Grid>
+    <StackPanel Orientation="Horizontal" Spacing="20" Name="StackPanelOrigin">
+        
+        <StackPanel Orientation="Vertical">
+            <TextBlock Text="Rooms"></TextBlock>
+
+            <ListView ItemsSource="{}"></ListView>
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical">
+            
+            <StackPanel>
+                <TextBlock Text="Room No"></TextBlock>
+                <TextBox></TextBox>
+            </StackPanel>
+
+            <StackPanel>
+                <TextBlock Text="Local Description"></TextBlock>
+                <TextBox></TextBox>
+            </StackPanel>
+
+            <StackPanel>
+                <TextBlock Text="Max no of people"></TextBlock>
+                <TextBox></TextBox>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Spacing="20">
+                <StackPanel>
+                    <Button></Button>
+
+                </StackPanel>
+
+                <StackPanel>
+                    <Button></Button>
+
+                </StackPanel>
+
+                <StackPanel>
+                    <Button></Button>
+
+                </StackPanel>
+
+                <StackPanel>
+                    <Button></Button>
+
+                </StackPanel>
+
+                <StackPanel>
+                    <Button></Button>
+
+                </StackPanel>
+            </StackPanel>
+
+
+
+
+
+
+        </StackPanel>
+
+    </StackPanel>
+
 </Page>

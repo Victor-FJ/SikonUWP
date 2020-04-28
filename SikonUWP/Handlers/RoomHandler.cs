@@ -16,6 +16,19 @@ namespace SikonUWP.Handlers
             RoomViewModel = roomViewModel;
         }
 
+        public void CreateRoom()
+        {
 
+        }
+
+        public void DeleteRoom()
+        {
+
+        }
+
+        public void UpdateRoom()
+        {
+
+        }
     }
 }
