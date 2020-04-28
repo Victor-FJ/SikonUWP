@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace SikonUWP.Persistency
 {
-    public class GenericPersistence<TItem, TKey> where TKey : struct
+    public class GenericPersistence<TKey, TItem> where TKey : struct where TItem : class
     {
         private readonly string _uri;
 
@@ -34,7 +34,7 @@ namespace SikonUWP.Persistency
         {
             using (HttpClient client = new HttpClient())
             {
-                string jsonString = await client.GetStringAsync(_uri + "/" + key);
+                string jsonString = await client.GetStringAsync(_uri + key + "/");
                 return JsonConvert.DeserializeObject<TItem>(jsonString);
             }
         }
@@ -61,7 +61,7 @@ namespace SikonUWP.Persistency
             using (HttpClient client = new HttpClient())
             {
                 string jsonStringIn = JsonConvert.SerializeObject(item);
-                HttpResponseMessage response = await client.PutAsync(_uri + "/" + key,
+                HttpResponseMessage response = await client.PutAsync(_uri + key + "/",
                     new StringContent(jsonStringIn, Encoding.UTF8, "application/json"));
                 if (response.IsSuccessStatusCode)
                 {
@@ -77,7 +77,7 @@ namespace SikonUWP.Persistency
         {
             using (HttpClient client = new HttpClient())
             {
-                HttpResponseMessage response = await client.DeleteAsync(_uri + "/" + key);
+                HttpResponseMessage response = await client.DeleteAsync(_uri + key + "/");
                 if (response.IsSuccessStatusCode)
                 {
                     string jsonString = await response.Content.ReadAsStringAsync();

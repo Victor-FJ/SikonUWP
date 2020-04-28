@@ -10,6 +10,11 @@ namespace SikonUWP.ViewModel
 {
     public class EventEditorViewModel
     {
-        
+
+
+        public EventEditorViewModel()
+        {
+            
+        }
     }
 }
