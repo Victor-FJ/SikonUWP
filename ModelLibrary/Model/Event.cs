@@ -49,5 +49,15 @@ namespace ModelLibrary.Model
         public Room Room { get; set; }
 
         public string ImageName { get; set; }
+
+        public Event()
+        {
+
+        }
+
+        public override string ToString()
+        {
+            return $"No. {Id} - {Title}";
+        }
     }
 }

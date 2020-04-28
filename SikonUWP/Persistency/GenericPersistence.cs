@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace SikonUWP.Persistency
 {
-    public class GenericPersistence<TKey, TItem> where TKey : struct where TItem : class
+    public class GenericPersistence<TKey, TItem>
     {
         private readonly string _uri;
 
