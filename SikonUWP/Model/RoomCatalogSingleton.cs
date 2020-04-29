@@ -13,8 +13,8 @@ namespace SikonUWP.Model
     {
         private static RoomCatalogSingleton _instance = new RoomCatalogSingleton();
 
-        //Constructor
-        public RoomCatalogSingleton Instance
+        
+        public static RoomCatalogSingleton Instance
         {
             get 
             { 
@@ -46,9 +46,14 @@ namespace SikonUWP.Model
 
         }
 
-        public void LoadRooms()
+        public async void LoadRooms()
         {
-            
+            GenericPersistence<string, Room> roomPersistence = 
+                new GenericPersistence<string, Room>("http://localhost:52415/api/Room/");
+            List<Room> rooms = await roomPersistence.Get();
+            foreach (Room room in rooms)
+                Rooms.Add(room);
+
         }
     }
 }
