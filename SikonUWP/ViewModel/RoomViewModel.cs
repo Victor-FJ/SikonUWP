@@ -27,7 +27,7 @@ namespace SikonUWP.ViewModel
         {
             try
             {
-                RoomHandler.CreateRoom();
+                await RoomHandler.CreateRoom();
             }
             catch (ItIsNotUniqueException inue)
             {

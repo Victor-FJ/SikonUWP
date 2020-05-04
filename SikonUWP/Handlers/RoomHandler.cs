@@ -25,7 +25,7 @@ namespace SikonUWP.Handlers
 
         private GenericPersistence<string, Room> _genericPersistence = new GenericPersistence<string, Room>("http://localhost:52415/api/Room/");
 
-        public async void CreateRoom()
+        public async Task CreateRoom()
         {
             Validate();
             bool ok = await _genericPersistence.Post(RoomViewModel.NewRoom);
