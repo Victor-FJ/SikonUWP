@@ -11,7 +11,7 @@ namespace ModelLibrary.Model
             Autist, ForældreAfAutist, Psykolog, Fagperson, Studerende
         }
 
-        public PersonType Type;
+        public PersonType Type { get; set; }
 
 
 
