@@ -25,6 +25,10 @@ namespace SikonUWP.Handlers
 
         private GenericPersistence<string, Room> _genericPersistence = new GenericPersistence<string, Room>("http://localhost:52415/api/Room/");
 
+        /// <summary>
+        /// Denne metode bliver brugt til at oprette et lokale
+        /// </summary>
+        /// <returns>et nyt lokale</returns>
         public async Task CreateRoom()
         {
             Validate();
@@ -44,6 +48,9 @@ namespace SikonUWP.Handlers
             }
         }
 
+        /// <summary>
+        /// Denne metode bliver brugt til at slette et lokale
+        /// </summary>
         public async void DeleteRoom()
         {
             string roomNo = RoomViewModel.SelectedRoom.RoomNo;
@@ -63,6 +70,9 @@ namespace SikonUWP.Handlers
             }
         }
 
+        /// <summary>
+        /// Denne medtode bliver bruger man til at opdaterer et lokale
+        /// </summary>
         public async void UpdateRoom()
         {
             string roomNo = RoomViewModel.SelectedRoom.RoomNo;
@@ -82,21 +92,26 @@ namespace SikonUWP.Handlers
             }
         }
 
+        /// <summary>
+        /// Denne metode bliver brugt til at rydde felterne i skriveboksne.
+        /// </summary>
         public void ClearRoom()
         {
             RoomViewModel.NewRoom = new Room();
         }
 
-
-            private void Validate()
-            {
+        /// <summary>
+        /// Denne metode bliver kaldt, hvis man prøver at oprette et lokale med samme dørnummer
+        /// </summary>
+        private void Validate()
+        {
                 List<Room> collection = RoomCatalogSingleton.Instance.Rooms.ToList();
                 if (collection.Find((x) => x.RoomNo == RoomViewModel.NewRoom.RoomNo) != null)
                 {
-                    throw new ItIsNotUniqueException("Dette dørnummer er allerede i Listen");
+                    throw new ItIsNotUniqueException("Dørnummeret bliver brugt");
                 }
 
-            }
+        }
         
 
 
