@@ -30,6 +30,7 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+
         <Grid Margin="50" Background="WhiteSmoke">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -102,6 +103,7 @@
             <ProgressBar Grid.Column="1" Grid.Row="6" Margin="8,0,8,2" Maximum="3000" VerticalAlignment="Bottom" 
                          Value="{Binding ElementName=DesBox, Path=Text.Length}"/>
         </Grid>
+
         <Grid Grid.Column="1" Margin="50">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>

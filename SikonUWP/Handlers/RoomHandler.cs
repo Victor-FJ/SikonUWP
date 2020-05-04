@@ -24,19 +24,15 @@ namespace SikonUWP.Handlers
 
         public async void CreateRoom()
         {
-            string roomNo = RoomViewModel.NewRoom.RoomNo;
-            string loacalDes = RoomViewModel.NewRoom.LocationDescription;
-            int maxNoPeople = RoomViewModel.NewRoom.MaxNoPeople;
-            Room aRoom = new Room(roomNo, loacalDes, maxNoPeople);
-            bool ok = await _genericPersistence.Post(aRoom);
+            bool ok = await _genericPersistence.Post(RoomViewModel.NewRoom);
 
             if (!ok)
             {
-                await MessageDialogUtil.MessageDialogAsync("Der skete en fejl i Room", "Room blev ikke oprettet");
+                await MessageDialogUtil.MessageDialogAsync("Der skete en fejl i Room", "Lokalet blev ikke oprettet");
             }
             else
             {
-                await MessageDialogUtil.MessageDialogAsync("Alt gik godt", $"Lokalet {aRoom.RoomNo} blev oprettet");
+                await MessageDialogUtil.MessageDialogAsync("Alt gik godt", $"Lokalet blev oprettet");
                 RoomViewModel.RoomCatalog.Rooms.Clear();
                 RoomViewModel.NewRoom = new Room();
                 RoomViewModel.RoomCatalog.LoadRooms();
@@ -46,7 +42,7 @@ namespace SikonUWP.Handlers
 
         public async void DeleteRoom()
         {
-            string roomNo = RoomViewModel.NewRoom.RoomNo;
+            string roomNo = RoomViewModel.SelectedRoom.RoomNo;
             bool ok = await _genericPersistence.Delete(roomNo);
 
             if (!ok)
@@ -65,7 +61,7 @@ namespace SikonUWP.Handlers
 
         public async void UpdateRoom()
         {
-            string roomNo = RoomViewModel.NewRoom.RoomNo;
+            string roomNo = RoomViewModel.SelectedRoom.RoomNo;
             bool ok = await _genericPersistence.Put(roomNo, RoomViewModel.NewRoom);
 
             if (!ok)
