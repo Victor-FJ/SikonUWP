@@ -55,7 +55,7 @@ namespace SikonUWP.Common
             TextBox inputTextBox = new TextBox();
             inputTextBox.AcceptsReturn = false;
             inputTextBox.Height = 32;
-            inputTextBox.Width = 800;
+            inputTextBox.Width = 400;
             StackPanel contentPanel = new StackPanel();
             contentPanel.Children.Add(messageBlock);
             contentPanel.Children.Add(inputTextBox);

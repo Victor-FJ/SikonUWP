@@ -47,5 +47,10 @@ namespace ModelLibrary.Model
             _fullName = fullName;
             _description = description;
         }
-    }
+
+        public override string ToString()
+        {
+            return $"No. {UserName} - {FullName}";
+        }
+	}
 }

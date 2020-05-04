@@ -2,17 +2,25 @@
     x:Class="SikonUWP.View.EventEditorPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:SikonUWP.View"
-    xmlns:resources="using:SikonUWP.Resources"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModel="using:SikonUWP.ViewModel"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    xmlns:resources="using:SikonUWP.Resources"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" d:DesignWidth="1130" d:DesignHeight="600">
+
+    <Page.DataContext>
+        <viewModel:EventEditorViewModel/>
+    </Page.DataContext>
 
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/CommonStyles.xaml"/>
+                <ResourceDictionary>
+                    <resources:ImageConverter x:Key="ImageConverter"/>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
@@ -37,17 +45,62 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <TextBlock Text="Title" Style="{StaticResource TxtBlkStyle}"/>
-            <TextBox Grid.Column="1" Grid.Row="0" Style="{StaticResource SingleLineTxtBoxStyle}"/>
-            <TextBlock Text="Vært" Grid.Column="0" Grid.Row="2" Style="{StaticResource TxtBlkStyle}"/>
-            <ComboBox Grid.Column="1" Grid.Row="2" Margin="8" HorizontalAlignment="Stretch"/>
+            <TextBox x:Name="TitleBox" Grid.Column="1" Grid.Row="0" MaxLength="100" 
+                     PlaceholderText="skriv en title" Text="{Binding Title, Mode=TwoWay}" 
+                     BorderBrush="{Binding ToolTipColor[0]}" Style="{StaticResource SingleLineTxtBoxStyle}">
+                <ToolTipService.ToolTip>
+                    <TextBlock Text="{Binding ToolTipText[0]}" Foreground="{Binding ToolTipColor[0]}"/>
+                </ToolTipService.ToolTip>
+            </TextBox>
+            <ProgressBar Grid.Column="1" Grid.Row="0" Margin="8,0,8,2" Maximum="100" VerticalAlignment="Bottom"
+                         Value="{Binding ElementName=TitleBox, Path=Text.Length}"/>
+
+            <TextBlock Grid.Column="0" Grid.Row="2" Text="Vært" Style="{StaticResource TxtBlkStyle}"/>
+            <ComboBox Grid.Column="1" Grid.Row="2" PlaceholderText="vælg en vært" 
+                      ItemsSource="{Binding Speakers}" SelectedItem="{Binding SelectedSpeaker, Mode=TwoWay}" 
+                      BorderBrush="{Binding ToolTipColor[1]}" Style="{StaticResource ComboBoxStyle}">
+                <ToolTipService.ToolTip>
+                    <TextBlock Text="{Binding ToolTipText[1]}" Foreground="{Binding ToolTipColor[1]}"/>
+                </ToolTipService.ToolTip>
+            </ComboBox>
+
             <TextBlock Grid.Column="0" Grid.Row="3" Text="Dato" Style="{StaticResource TxtBlkStyle}"/>
-            <CalendarDatePicker Grid.Column="1" Grid.Row="3" Margin="8" HorizontalAlignment="Stretch"/>
+            <CalendarDatePicker Grid.Column="1" Grid.Row="3" Margin="8" HorizontalAlignment="Stretch" 
+                                Date="{x:Bind ViewModel.Date, Mode=TwoWay}" BorderBrush="{Binding ToolTipColor[2]}">
+                <ToolTipService.ToolTip>
+                    <TextBlock Text="{Binding ToolTipText[2]}" Foreground="{Binding ToolTipColor[2]}"/>
+                </ToolTipService.ToolTip>
+            </CalendarDatePicker>
+
             <TextBlock Grid.Column="0" Grid.Row="4" Text="Start Tidspunkt" Style="{StaticResource TxtBlkStyle}"/>
-            <TimePicker Grid.Column="1" Grid.Row="4" Margin="8" HorizontalAlignment="Stretch"/>
+            <TimePicker x:Name="TimePicker" Grid.Column="1" Grid.Row="4" Margin="8" HorizontalAlignment="Stretch" 
+                        SelectedTime="{x:Bind ViewModel.StartTime, Mode=TwoWay}">
+                <ToolTipService.ToolTip>
+                    <TextBlock Text="{Binding ToolTipText[3]}" Foreground="{Binding ToolTipColor[3]}"/>
+                </ToolTipService.ToolTip>
+            </TimePicker>
+            <Rectangle Grid.Column="1" Grid.Row="4" Stroke="{Binding ToolTipColor[3]}" Style="{StaticResource BorderBoxStyle}"/>
+
             <TextBlock Grid.Column="0" Grid.Row="5" Text="Slut Tidspunkt" Style="{StaticResource TxtBlkStyle}"/>
-            <TimePicker Grid.Column="1" Grid.Row="5" Margin="8" HorizontalAlignment="Stretch"/>
+            <TimePicker Grid.Column="1" Grid.Row="5" Margin="8" HorizontalAlignment="Stretch" 
+                        SelectedTime="{x:Bind ViewModel.EndTime, Mode=TwoWay}">
+                <ToolTipService.ToolTip>
+                    <TextBlock Text="{Binding ToolTipText[4]}" Foreground="{Binding ToolTipColor[4]}"/>
+                </ToolTipService.ToolTip>
+            </TimePicker>
+            <Rectangle Grid.Column="1" Grid.Row="5" Stroke="{Binding ToolTipColor[4]}" Style="{StaticResource BorderBoxStyle}"/>
+
             <TextBlock Grid.Column="0" Grid.Row="6" Text="Beskrivelse" Style="{StaticResource TxtBlkStyle}"/>
-            <TextBox Grid.Column="1" Grid.Row="6" Style="{StaticResource MultiLineTxtBoxStyle}"/>
+            <TextBox x:Name="DesBox" Grid.Column="1" Grid.Row="6" MaxLength="3000" 
+                     PlaceholderText="skriv en beskrivelse" CornerRadius="2"
+                     Text="{Binding Description, Mode=TwoWay}"
+                     BorderBrush="{Binding ToolTipColor[5]}" Style="{StaticResource MultiLineTxtBoxStyle}">
+                <ToolTipService.ToolTip>
+                    <TextBlock Text="{Binding ToolTipText[5]}" Foreground="{Binding ToolTipColor[5]}"/>
+                </ToolTipService.ToolTip>
+            </TextBox>
+            <ProgressBar Grid.Column="1" Grid.Row="6" Margin="8,0,8,2" Maximum="3000" VerticalAlignment="Bottom" 
+                         Value="{Binding ElementName=DesBox, Path=Text.Length}"/>
         </Grid>
         <Grid Grid.Column="1" Margin="50">
             <Grid.ColumnDefinitions>
@@ -55,24 +108,66 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" Fill="#FFE4B579"/>
-            <TextBlock Text="Rum" Grid.Column="0" Grid.Row="1" Style="{StaticResource TxtBlkStyle}"/>
-            <ComboBox Grid.Column="1" Grid.Row="1" Margin="8" HorizontalAlignment="Stretch"/>
-            <TextBlock Grid.Column="0" Grid.Row="2" Text="Antal Deltagere" Style="{StaticResource TxtBlkStyle}"/>
-            <TextBox Grid.Column="1" Grid.Row="2" Style="{StaticResource SingleLineTxtBoxStyle}"/>
+            <Rectangle Grid.ColumnSpan="2" Grid.RowSpan="2" Fill="#FFE4B579"/>
+            <TextBlock Text="Type" Grid.Column="0" Grid.Row="0" Style="{StaticResource TxtBlkStyle}"/>
+            <ComboBox Grid.Column="1" Grid.Row="0" PlaceholderText="angiv en type"
+                      ItemsSource="{Binding EventTypes}" SelectedItem="{Binding SelectedType, Mode=TwoWay}" 
+                      BorderBrush="{Binding ToolTipColor[6]}" Style="{StaticResource ComboBoxStyle}">
+                <ToolTipService.ToolTip>
+                    <TextBlock Text="{Binding ToolTipText[6]}" Foreground="{Binding ToolTipColor[6]}"/>
+                </ToolTipService.ToolTip>
+            </ComboBox>
+            <TextBlock Text="Emne" Grid.Column="0" Grid.Row="1" Style="{StaticResource TxtBlkStyle}"/>
+            <ComboBox Grid.Column="1" Grid.Row="1" PlaceholderText="angiv et emne"
+                      ItemsSource="{Binding EventSubjects}" SelectedItem="{Binding SelectedSubject, Mode=TwoWay}" 
+                      BorderBrush="{Binding ToolTipColor[7]}" Style="{StaticResource ComboBoxStyle}">
+                <ToolTipService.ToolTip>
+                    <TextBlock Text="{Binding ToolTipText[7]}" Foreground="{Binding ToolTipColor[7]}"/>
+                </ToolTipService.ToolTip>
+            </ComboBox>
 
-            <Rectangle Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Grid.RowSpan="2" Fill="#FFE4B579"/>
-            <TextBlock Text="Billed" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Center" Style="{StaticResource TxtBlkStyle}"/>
-            <Button Grid.Column="0" Grid.Row="5" Content="Vælg Billed" Margin="8"/>
-            <Image Grid.Column="1" Grid.Row="5" Source="/Assets/SplashScreen.png" Margin="8"/>
+            <Rectangle Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Grid.RowSpan="2" Fill="#FFE4B579"/>
+            <TextBlock Text="Lokale" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" Style="{StaticResource TxtBlkStyle}"/>
+            <ComboBox Grid.Column="1" Grid.Row="4" PlaceholderText="vælg et lokale"
+                      ItemsSource="{Binding Rooms}" SelectedItem="{Binding SelectedRoom, Mode=TwoWay}" 
+                      BorderBrush="{Binding ToolTipColor[8]}" Style="{StaticResource ComboBoxStyle}">
+                <ToolTipService.ToolTip>
+                    <TextBlock Text="{Binding ToolTipText[8]}" Foreground="{Binding ToolTipColor[8]}"/>
+                </ToolTipService.ToolTip>
+            </ComboBox>
+            <TextBlock Grid.Column="0" Grid.Row="3" Text="Antal Deltagere" Style="{StaticResource TxtBlkStyle}"/>
+            <controls:NumberBox Grid.Column="0" Grid.Row="4" SpinButtonPlacementMode="Inline" Minimum="0"
+                                Value="{Binding MaxNoParticipant, Mode=TwoWay}" Style="{StaticResource NumberBoxStyle}">
+                <ToolTipService.ToolTip>
+                    <TextBlock Text="{Binding ToolTipText[9]}" Foreground="{Binding ToolTipColor[9]}"/>
+                </ToolTipService.ToolTip>
+            </controls:NumberBox>
+            <Rectangle Grid.Column="0" Grid.Row="4" Stroke="{Binding ToolTipColor[9]}" Style="{StaticResource BorderBoxStyle}"/>
+
+
+            <Rectangle Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" Grid.RowSpan="2" Fill="#FFE4B579"/>
+            <TextBlock Text="Billed" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" 
+                       HorizontalAlignment="Center" Style="{StaticResource TxtBlkStyle}"/>
+            <Button Grid.Column="0" Grid.Row="7" Content="Vælg Billed" 
+                    Command="{Binding GetImageCommand}" Style="{StaticResource ButtonStyle}"/>
+            <Image Grid.Column="1" Grid.Row="7" Margin="8" Source="{Binding ImageView, Converter={StaticResource ImageConverter}}" />
+
+            <Rectangle Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="2" Fill="#FFE4B579"/>
+
+            <Button Grid.Column="0" Grid.Row="9" Content="Reset Info" Command="{Binding ClearCommand}" Style="{StaticResource ButtonStyle}"/>
+            <Button Grid.Column="1" Grid.Row="9" Content="Skab Begivenheden" Command="{Binding CreateCommand}" Style="{StaticResource ButtonStyle}"/>
+
         </Grid>
     </Grid>
 </Page>

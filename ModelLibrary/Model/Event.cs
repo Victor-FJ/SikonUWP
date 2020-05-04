@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using ModelLibrary.Exceptions;
 
 namespace ModelLibrary.Model
 {
@@ -30,29 +31,104 @@ namespace ModelLibrary.Model
 
         public int Id { get; set; }
 
-        public string Title { get; set; }
+        private string _title;
+        public string Title
+        {
+            get => _title;
+            set
+            {
+                if (String.IsNullOrWhiteSpace(value))
+                    throw new EmptyException("Titlen kan ikke være tom");
+                if (value.Length > 100)
+                    throw new OutsideRangeException("Titlen kan ikke være større end 100 karaktere");
+                _title = value;
+            }
+        }
 
-        public string Description { get; set; }
+        private string _description;
+        public string Description
+        {
+            get => _description;
+            set
+            {
+                if (String.IsNullOrWhiteSpace(value))
+                    throw new EmptyException("Beskrivelsen kan ikke være tom");
+                if (value.Length > 3000)
+                    throw new OutsideRangeException("Beskrivelsen kan ikke være større end 3000 karaktere");
+                _description = value;
+            }
+        }
 
         public EventType Type { get; set; }
 
         public EventSubject Subject { get; set; }
 
-        public int MaxNoParticipant { get; set; }
+        private int _maxNoParticipant;
+        public int MaxNoParticipant
+        {
+            get => _maxNoParticipant;
+            set
+            {
+                if (value < 0)
+                    throw new OutsideRangeException("Max antal deltagere kan ikke være mindre end 0");
+                if (value > Room.MaxNoPeople)
+                    throw new OutsideRangeException("Max antal deltagere er højere en rummet kan holde");
+                _maxNoParticipant = value;
+            }
+        }
 
-        public DateTimeOffset Date { get; set; }
+        public DateTimeOffset StartDate { get; set; }
 
-        public TimeSpan Time { get; set; }
+        private DateTimeOffset _endDate;
+        public DateTimeOffset EndDate
+        {
+            get => _endDate;
+            set
+            {
+                if (value < StartDate)
+                    throw new OutsideRangeException("Slut Datoen kan ikke ligge før Start datoen");
+                _endDate = value;
+            }
+        }
 
-        public User Speaker { get; set; }
+        private Room _room;
+        public Room Room
+        {
+            get => _room;
+            set
+            {
+                _room = value;
+                if (_room.MaxNoPeople < _maxNoParticipant)
+                    _maxNoParticipant = _room.MaxNoPeople;
+            }
+        }
 
-        public Room Room { get; set; }
+        public Speaker Speaker { get; set; }
 
         public string ImageName { get; set; }
 
+
         public Event()
         {
+            _title = "Title";
+            _description = "Description";
+            StartDate = DateTimeOffset.Now.AddDays(2);
+            _endDate = DateTimeOffset.Now.AddHours(50);
+        }
 
+        public Event(int id, string title, string description, EventType type, EventSubject subject, int maxNoParticipant, DateTimeOffset startDate, DateTimeOffset endDate, Room room, Speaker speaker, string imageName)
+        {
+            Id = id;
+            Title = title;
+            Description = description;
+            Type = type;
+            Subject = subject;
+            MaxNoParticipant = maxNoParticipant;
+            StartDate = startDate;
+            EndDate = endDate;
+            Speaker = speaker;
+            Room = room;
+            ImageName = imageName;
         }
 
         public override string ToString()

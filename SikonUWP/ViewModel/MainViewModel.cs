@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml.Controls;
+using ModelLibrary.Model;
 using SikonUWP.Common;
+using SikonUWP.Handlers;
+using SikonUWP.Model;
+using SikonUWP.Persistency;
 using SikonUWP.View;
 
 namespace SikonUWP.ViewModel
@@ -23,6 +28,7 @@ namespace SikonUWP.ViewModel
             _frame = mainPageFrame;
             _navigationView = navigationView;
             Instance = this;
+            Load();
         }
 
         #region Navigation
@@ -43,5 +49,19 @@ namespace SikonUWP.ViewModel
         }
 
         #endregion
+
+        private async void Load()
+        {
+            try
+            {
+                await PersistencyManager.TryOpenConn();
+                await ImageHandler.SyncImages();
+            }
+            catch (HttpRequestException)
+            {
+                await MessageDialogUtil.MessageDialogAsync(PersistencyManager.FileName, "Fejl: Kunne ikke forbinde til rest api'et");
+            }
+            
+        }
     }
 }
