@@ -5,11 +5,110 @@
     xmlns:local="using:SikonUWP.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModel="using:SikonUWP.ViewModel"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        
+    <Page.DataContext>
+        <viewModel:RoomViewModel></viewModel:RoomViewModel>
+    </Page.DataContext>
 
-    </Grid>
+    <StackPanel Orientation="Horizontal" Spacing="20" Name="StackPanelOrigin" Background="DeepSkyBlue">
+
+        <StackPanel Orientation="Vertical">
+            <TextBlock Text="Rooms"></TextBlock>
+
+            <ListView ItemsSource="{Binding RoomCatalog.Rooms}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}" SelectedItem="{Binding NewRoom, Mode=TwoWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding RoomNo}" Margin="5,5,5,5"/>
+                                <TextBlock Text="{Binding LocationDescription}" Margin="5,5,5,5"/>
+                                <TextBlock Text="{Binding MaxNoPeople}" Margin="5,5,5,5"/>
+                            </StackPanel>
+
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical">
+
+            <StackPanel>
+                <TextBlock Text="Lokalets dør-Nr."></TextBlock>
+                <TextBox Text="{Binding NewRoom.RoomNo, Mode=TwoWay}"></TextBox>
+            </StackPanel>
+
+            <StackPanel>
+                <TextBlock Text="Lokalets lokation"></TextBlock>
+                <TextBox Text="{Binding NewRoom.LocationDescription, Mode=TwoWay}"></TextBox>
+            </StackPanel>
+
+            <StackPanel>
+                <TextBlock Text="Antal max personer"></TextBlock>
+                <TextBox Text="{Binding NewRoom.MaxNoPeople, Mode=TwoWay}"></TextBox>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Spacing="20">
+                <StackPanel>
+                    <Button Content="Opret lokale" Command="{Binding CreateRoomCommand}" FontWeight="Bold" FontStyle="Normal">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="Black"/>
+                                <GradientStop Color="#FF5BCB16" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+
+                </StackPanel>
+
+                <StackPanel>
+                    <Button Content="Opdater Lokale" Command="{Binding UpdateRoomCommand}" FontWeight="Bold">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="Black"/>
+                                <GradientStop Color="White" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+
+                </StackPanel>
+
+                <StackPanel>
+                    <Button Content="Slet Lokale" Command="{Binding DeleteRoomCommand}" FontWeight="Bold" Click="Button_Click">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="Black"/>
+                                <GradientStop Color="#FFFA4324" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+
+                </StackPanel>
+
+                <StackPanel>
+                    <Button Content="Clear" Command="{Binding ClearRoomCommand}" FontWeight="Normal" HorizontalAlignment="Left" Foreground="AliceBlue">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="Black"/>
+                                <GradientStop Color="#FF3D3635" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+
+                </StackPanel>
+
+            </StackPanel>
+
+
+
+
+
+
+        </StackPanel>
+
+    </StackPanel>
+
 </Page>

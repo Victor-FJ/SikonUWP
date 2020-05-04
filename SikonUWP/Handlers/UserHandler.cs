@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace SikonUWP.Handlers
 {
-    class UserHandler
+    public class UserHandler
     {
+
     }
 }
