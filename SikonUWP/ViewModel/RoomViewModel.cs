@@ -33,6 +33,12 @@ namespace SikonUWP.ViewModel
             {
                 await MessageDialogUtil.MessageDialogAsync(inue.Message, "Dette rum eksistere allerede");
             }
+
+            catch (EmptyException ex)
+            {
+                await MessageDialogUtil.MessageDialogAsync(ex.Message, "Du har ikke udfyldt alle felterne");
+            }
+
         }
         public RoomViewModel()
         {
@@ -51,20 +57,22 @@ namespace SikonUWP.ViewModel
             }
         }
 
-        private void StartUp()
-        {
-            Room r1 = new Room("6B", "Lokalvej 43", 20);
-            Room r2 = new Room("7B", "Allevej 57", 15);
-            Room r3 = new Room("16C", "LykkeVænget 18", 100);
-            Room r4 = new Room("8A", "MangeGård 69", 23);
-            Room r5 = new Room("9A", "StyreVej 15", 20);
+        //Denne metode blev brugt til hjælp for at programmet ikke crashede til at starte med, men
+        //Blev derefter overflødig.
+        //private void StartUp()
+        //{
+        //    Room r1 = new Room("6B", "Lokalvej 43", 20);
+        //    Room r2 = new Room("7B", "Allevej 57", 15);
+        //    Room r3 = new Room("16C", "LykkeVænget 18", 100);
+        //    Room r4 = new Room("8A", "MangeGård 69", 23);
+        //    Room r5 = new Room("9A", "StyreVej 15", 20);
 
-            RoomCatalog.Rooms.Add(r1);
-            RoomCatalog.Rooms.Add(r2);
-            RoomCatalog.Rooms.Add(r3);
-            RoomCatalog.Rooms.Add(r4);
-            RoomCatalog.Rooms.Add(r5);
-        }
+        //    RoomCatalog.Rooms.Add(r1);
+        //    RoomCatalog.Rooms.Add(r2);
+        //    RoomCatalog.Rooms.Add(r3);
+        //    RoomCatalog.Rooms.Add(r4);
+        //    RoomCatalog.Rooms.Add(r5);
+        //}
 
         //Commands
 

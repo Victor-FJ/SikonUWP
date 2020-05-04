@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="using:SikonUWP.ViewModel"
     xmlns:view="using:SikonUWP.View"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -34,6 +35,7 @@
                 </ListView.ItemTemplate>
             </ListView>
         </StackPanel>
+        
 
         <StackPanel Orientation="Vertical">
 
@@ -49,8 +51,9 @@
 
             <StackPanel>
                 <TextBlock Text="Antal max personer"></TextBlock>
-                <TextBox Text="{Binding NewRoom.MaxNoPeople, Mode=TwoWay}" PlaceholderText="skriv antal"></TextBox>
+                <controls:NumberBox Value="{Binding NewRoom.MaxNoPeople, Mode=TwoWay}" PlaceholderText="skriv antal"></controls:NumberBox>
             </StackPanel>
+            
 
             <StackPanel Orientation="Horizontal" Spacing="20">
                 <StackPanel>
@@ -58,7 +61,7 @@
                         <Button.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                 <GradientStop Color="Black"/>
-                                <GradientStop Color="#FF5BCB16" Offset="1"/>
+                                <GradientStop Color="#FFEBF1E7" Offset="1"/>
                             </LinearGradientBrush>
                         </Button.Background>
                     </Button>
@@ -82,7 +85,7 @@
                         <Button.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                 <GradientStop Color="Black"/>
-                                <GradientStop Color="#FFFA4324" Offset="1"/>
+                                <GradientStop Color="#FFF4EAE9" Offset="1"/>
                             </LinearGradientBrush>
                         </Button.Background>
                     </Button>
@@ -94,7 +97,7 @@
                         <Button.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                 <GradientStop Color="Black"/>
-                                <GradientStop Color="#FF3D3635" Offset="1"/>
+                                <GradientStop Color="#FFF7EDEC" Offset="1"/>
                             </LinearGradientBrush>
                         </Button.Background>
                     </Button>

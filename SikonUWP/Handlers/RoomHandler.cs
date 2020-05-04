@@ -32,6 +32,9 @@ namespace SikonUWP.Handlers
         public async Task CreateRoom()
         {
             Validate();
+            if (DoesExist())
+                throw new ItIsNotUniqueException("Something");
+
             bool ok = await _genericPersistence.Post(RoomViewModel.NewRoom);
 
             if (!ok)
@@ -105,16 +108,23 @@ namespace SikonUWP.Handlers
         /// </summary>
         private void Validate()
         {
-                List<Room> collection = RoomCatalogSingleton.Instance.Rooms.ToList();
-                if (collection.Find((x) => x.RoomNo == RoomViewModel.NewRoom.RoomNo) != null)
-                {
-                    throw new ItIsNotUniqueException("Dørnummeret bliver brugt");
-                }
+            if (string.IsNullOrWhiteSpace(RoomViewModel.NewRoom.RoomNo))
+            {
+                throw new EmptyException("Tomt felt i RoomNo");
+            }
 
+            if (string.IsNullOrWhiteSpace(RoomViewModel.NewRoom.LocationDescription))
+            {
+                throw new EmptyException("Tomt felt i LocationsDes");
+            }
         }
-        
+
+        private bool DoesExist()
+        {
+            List<Room> collection = RoomCatalogSingleton.Instance.Rooms.ToList();
+            return collection.Find((x) => x.RoomNo == RoomViewModel.NewRoom.RoomNo) != null;
+        }
 
 
-       
     }
 }
