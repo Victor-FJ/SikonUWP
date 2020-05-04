@@ -14,7 +14,7 @@ namespace SikonUWP.Handlers
     public static class ImageHandler
     {
         private static StorageFolder _imageFolder;
-        public static Dictionary<string, BitmapImage> ImageDictionary { get; set; }
+        public static Dictionary<string, BitmapImage> Dictionary { get; set; }
 
         /// <summary>
         /// Downloads and deletes images so the locally saved images are synchronized with the database
@@ -31,13 +31,13 @@ namespace SikonUWP.Handlers
             Dictionary<string, StorageFile> localImageDictionary = files.ToDictionary(x => x.Name, x => x);
 
             //Synchronising local storage with database
-            ImageDictionary = new Dictionary<string, BitmapImage>();
+            Dictionary = new Dictionary<string, BitmapImage>();
             foreach (string imageName in imageNames)
             {
                 //If an image from the database is already saved locally then we do nothing
                 if (localImageDictionary.ContainsKey(imageName))
                 {
-                    ImageDictionary.Add(imageName, await AsBitmapImage(localImageDictionary[imageName]));
+                    Dictionary.Add(imageName, await AsBitmapImage(localImageDictionary[imageName]));
                     localImageDictionary.Remove(imageName);
                 }
                 else
@@ -46,7 +46,7 @@ namespace SikonUWP.Handlers
                     StorageFile file = await _imageFolder.CreateFileAsync(imageName, CreationCollisionOption.FailIfExists);
                     byte[] pixelBytes = await ImagePersistence.Get(imageName);
                     await FileIO.WriteBytesAsync(file, pixelBytes);
-                    ImageDictionary.Add(imageName, await AsBitmapImage(file));
+                    Dictionary.Add(imageName, await AsBitmapImage(file));
                 }
             }
 
@@ -85,7 +85,7 @@ namespace SikonUWP.Handlers
             if (ok)
             {
                 StorageFile copiedFile = await file.CopyAsync(_imageFolder);
-                ImageDictionary.Add(file.Name, await AsBitmapImage(copiedFile));
+                Dictionary.Add(file.Name, await AsBitmapImage(copiedFile));
             }
 
             return ok;
@@ -103,7 +103,7 @@ namespace SikonUWP.Handlers
             {
                 StorageFile file = await _imageFolder.GetFileAsync(fileName);
                 await file.DeleteAsync();
-                ImageDictionary.Remove(fileName);
+                Dictionary.Remove(fileName);
             }
 
             return ok;

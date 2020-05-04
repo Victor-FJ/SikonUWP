@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.ApplicationModel;
 using ModelLibrary.Model;
 using SikonUWP.Annotations;
 using SikonUWP.Common;
@@ -20,49 +21,59 @@ namespace SikonUWP.ViewModel
 
         public RoomHandler RoomHandler { get; set; }
 
-        
+
         public RoomViewModel()
         {
             RoomCatalog = RoomCatalogSingleton.Instance;
             RoomHandler = new RoomHandler(this);
             _newRoom = new Room();
-            CreateRoomCommand = new RelayCommand(RoomHandler.CreateRoom);
+            _createRoomCommand = new RelayCommand(RoomHandler.CreateRoom);
             _deleteRoomCommand = new RelayCommand(RoomHandler.DeleteRoom, SelectedIndexIsNotSet);
             _updateRoomCommand = new RelayCommand(RoomHandler.UpdateRoom, SelectedIndexIsNotSet);
             _clearRoomCommand = new RelayCommand(RoomHandler.ClearRoom);
+            
+
+            if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
+            {
+                RoomCatalog.LoadRooms();
+            }
+        }
+
+        private void StartUp()
+        {
+            Room r1 = new Room("6B", "Lokalvej 43", 20);
+            Room r2 = new Room("7B", "Allevej 57", 15);
+            Room r3 = new Room("16C", "LykkeVænget 18", 100);
+            Room r4 = new Room("8A", "MangeGård 69", 23);
+            Room r5 = new Room("9A", "StyreVej 15", 20);
+
+            RoomCatalog.Rooms.Add(r1);
+            RoomCatalog.Rooms.Add(r2);
+            RoomCatalog.Rooms.Add(r3);
+            RoomCatalog.Rooms.Add(r4);
+            RoomCatalog.Rooms.Add(r5);
         }
 
         //Commands
 
         //Create
-        public ICommand CreateRoomCommand { get; }
+        private ICommand _createRoomCommand;
+        public ICommand CreateRoomCommand => _createRoomCommand;
 
         //Delete
         private ICommand _deleteRoomCommand;
 
-        public ICommand DeleteRoomCommand
-        {
-            get { return _deleteRoomCommand; }
-            set { _deleteRoomCommand = value; }
-        }
+        public ICommand DeleteRoomCommand => _deleteRoomCommand;
 
         //Update
         private ICommand _updateRoomCommand;
 
-        public ICommand UpdateRoomCommand
-        {
-            get { return _updateRoomCommand; }
-            set { _updateRoomCommand = value; }
-        }
+        public ICommand UpdateRoomCommand => _updateRoomCommand;
 
         //Clear
         private ICommand _clearRoomCommand;
 
-        public ICommand ClearRoomCommand
-        {
-            get { return _clearRoomCommand; }
-            set { _clearRoomCommand = value; }
-        }
+        public ICommand ClearRoomCommand => _clearRoomCommand;
 
 
         //NewRoom
@@ -70,7 +81,16 @@ namespace SikonUWP.ViewModel
         public Room NewRoom 
         {
             get { return _newRoom; }
-            set { _newRoom = value; OnPropertyChanged(); }
+            set
+            {
+                _newRoom = value;
+                if (_newRoom == null)
+                {
+                    _newRoom = new Room();
+                }
+                    
+                
+                OnPropertyChanged(); }
         }
 
         //Func
@@ -98,18 +118,14 @@ namespace SikonUWP.ViewModel
         {
             get { return _selectedRoom; }
             set { _selectedRoom = value;
-                if (value == null) 
-                    _selectedRoom = new Room();
+                if (_selectedRoom != null)
+                    NewRoom = new Room (_selectedRoom.RoomNo, _selectedRoom.LocationDescription, _selectedRoom.MaxNoPeople);
                 OnPropertyChanged(); }
         }
 
 
 
-
-
-
-
-
+        //Property Change
 
         public event PropertyChangedEventHandler PropertyChanged;
 
