@@ -71,13 +71,23 @@ namespace ModelLibrary.Model
             {
                 if (value < 0)
                     throw new OutsideRangeException("Max antal deltagere kan ikke være mindre end 0");
-                if (value > Room.MaxNoPeople)
+                if (Room != null && value > Room.MaxNoPeople)
                     throw new OutsideRangeException("Max antal deltagere er højere en rummet kan holde");
                 _maxNoParticipant = value;
             }
         }
 
-        public DateTimeOffset StartDate { get; set; }
+        private DateTimeOffset _startDate;
+        public DateTimeOffset StartDate
+        {
+            get => _startDate;
+            set
+            {
+                _startDate = value;
+                if (_endDate < _startDate)
+                    _endDate = _startDate.AddHours(2);
+            }
+        }
 
         private DateTimeOffset _endDate;
         public DateTimeOffset EndDate
@@ -98,7 +108,7 @@ namespace ModelLibrary.Model
             set
             {
                 _room = value;
-                if (_room.MaxNoPeople < _maxNoParticipant)
+                if (_room != null && _room.MaxNoPeople < _maxNoParticipant)
                     _maxNoParticipant = _room.MaxNoPeople;
             }
         }
@@ -112,7 +122,7 @@ namespace ModelLibrary.Model
         {
             _title = "Title";
             _description = "Description";
-            StartDate = DateTimeOffset.Now.AddDays(2);
+            _startDate = DateTimeOffset.Now.AddDays(2);
             _endDate = DateTimeOffset.Now.AddHours(50);
         }
 

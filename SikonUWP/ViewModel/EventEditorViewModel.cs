@@ -57,8 +57,7 @@ namespace SikonUWP.ViewModel
                 try
                 {
                     EditedEvent.Title = value;
-                    ToolTip(0);
-                    EventSing.MarkedBools[0] = true;
+                    TooltipAndCom(0, 0);
                 }
                 catch (EmptyException ex)
                 {
@@ -79,7 +78,6 @@ namespace SikonUWP.ViewModel
                 {
                     EditedEvent.Description = value;
                     TooltipAndCom(5, 1);
-                    EventSing.MarkedBools[1] = true;
                 }
                 catch (EmptyException ex)
                 {

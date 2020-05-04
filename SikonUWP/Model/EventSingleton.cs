@@ -18,11 +18,7 @@ namespace SikonUWP.Model
         /// </summary>
         public static readonly EventSingleton Instance = new EventSingleton();
 
-        /// <summary>
-        /// An instance of the generic persistence for event
-        /// </summary>
-        public GenericPersistence<int, Event> EventPersistence { get; set; }
-
+        
         /// <summary>
         /// The list of all events from the database
         /// </summary>
@@ -64,8 +60,13 @@ namespace SikonUWP.Model
 
         private EventSingleton()
         {
-            EventPersistence = new GenericPersistence<int, Event>("http://localhost:52415/api/Event/");
-            EventCatalog = new EventCatalog();
+            EventCatalog = new EventCatalog(new GenericPersistence<int, Event>("http://localhost:52415/api/Event/"));
+            Load();
+        }
+
+        private async void Load()
+        {
+            await EventCatalog.Load();
         }
     }
 }
