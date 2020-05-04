@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.ApplicationModel;
+using ModelLibrary.Exceptions;
 using ModelLibrary.Model;
 using SikonUWP.Annotations;
 using SikonUWP.Common;
@@ -22,12 +23,23 @@ namespace SikonUWP.ViewModel
         public RoomHandler RoomHandler { get; set; }
 
 
+        public async void Create()
+        {
+            try
+            {
+                RoomHandler.CreateRoom();
+            }
+            catch (ItIsNotUniqueException inue)
+            {
+                await MessageDialogUtil.MessageDialogAsync(inue.Message, "Dette rum eksistere allerede");
+            }
+        }
         public RoomViewModel()
         {
             RoomCatalog = RoomCatalogSingleton.Instance;
             RoomHandler = new RoomHandler(this);
             _newRoom = new Room();
-            _createRoomCommand = new RelayCommand(RoomHandler.CreateRoom);
+            _createRoomCommand = new RelayCommand(Create);
             _deleteRoomCommand = new RelayCommand(RoomHandler.DeleteRoom, SelectedIndexIsNotSet);
             _updateRoomCommand = new RelayCommand(RoomHandler.UpdateRoom, SelectedIndexIsNotSet);
             _clearRoomCommand = new RelayCommand(RoomHandler.ClearRoom);
@@ -123,7 +135,8 @@ namespace SikonUWP.ViewModel
                 OnPropertyChanged(); }
         }
 
-
+        
+        
 
         //Property Change
 

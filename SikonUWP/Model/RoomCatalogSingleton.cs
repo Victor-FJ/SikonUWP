@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using ModelLibrary.Model;
+using SikonUWP.Common;
 using SikonUWP.Persistency;
 
 namespace SikonUWP.Model
@@ -37,9 +39,17 @@ namespace SikonUWP.Model
         {
             GenericPersistence<string, Room> roomPersistence = 
                 new GenericPersistence<string, Room>("http://localhost:52415/api/Room/");
-            List<Room> rooms = await roomPersistence.Get();
-            foreach (Room room in rooms)
-                Rooms.Add(room);
+            try
+            {
+                List<Room> rooms = await roomPersistence.Get();
+                foreach (Room room in rooms)
+                    Rooms.Add(room);
+            }
+            catch (HttpRequestException)
+            {
+                await MessageDialogUtil.MessageDialogAsync("Data Forbindelsen", "Forbindelsen blev ikke oprette");
+            }
+           
 
         }
     }
