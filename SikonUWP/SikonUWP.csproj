@@ -122,7 +122,8 @@
     <Compile Include="Common\MessageDialogUtil.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Handlers\ImageHandler.cs" />
-    <Compile Include="Model\EventCatalogSingleton.cs" />
+    <Compile Include="Model\EventCatalog.cs" />
+    <Compile Include="Model\EventSingleton.cs" />
     <Compile Include="Resources\CountListConverter.cs" />
     <Compile Include="Handlers\RoomHandler.cs" />
     <Compile Include="Handlers\UserHandler.cs" />
@@ -132,6 +133,7 @@
     <Compile Include="Persistency\PersistencyManager.cs" />
     <Compile Include="Persistency\ImagePersistence.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Resources\ImageConverter.cs" />
     <Compile Include="ViewModel\EventEditorViewModel.cs" />
     <Compile Include="ViewModel\EventHomeViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
@@ -194,6 +196,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.9</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.UI.Xaml">
+      <Version>2.3.200213001</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>

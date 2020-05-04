@@ -15,29 +15,21 @@ namespace SikonUWP.Persistency
     {
         public const string Uri = "http://localhost:52415/api/Manage/";
 
-        private const string FileName = "DatabaseConnection";
+        public const string FileName = "DatabaseConnection";
 
         private static StorageFile _connectionFile;
 
-        public static async Task<bool> Tester()
+        public static async Task<bool> TryOpenConn()
         {
-            try
-            {
-                if (await GetConnection())
-                    return true;
-                string connString = await MessageDialogUtil.TextInputDialogAsync(FileName, "Indsæt databasens connection string");
-                bool succeeded = await WriteConnection(connString);
-                string message = succeeded
-                    ? "Fik succesfuldt forbundet med givene string"
-                    : "Fejl: Kunne ikke forbinde med givene string";
-                await MessageDialogUtil.MessageDialogAsync(FileName, message);
-                return succeeded;
-            }
-            catch (HttpRequestException)
-            {
-                await MessageDialogUtil.MessageDialogAsync(FileName, "Fejl: Kunne ikke forbinde til rest api'et");
-            }
-            return false;
+            if (await GetConnection())
+                return true;
+            string connString = await MessageDialogUtil.TextInputDialogAsync(FileName, "Indsæt databasens connection string");
+            bool succeeded = await WriteConnection(connString);
+            string message = succeeded
+                ? "Fik succesfuldt forbundet med givene string"
+                : "Fejl: Kunne ikke forbinde med givene string";
+            await MessageDialogUtil.MessageDialogAsync(FileName, message);
+            return succeeded;
         }
 
         public static async Task<bool> GetConnection()

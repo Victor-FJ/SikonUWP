@@ -46,5 +46,9 @@ namespace ModelLibrary.Model
         }
 
 
+        public override string ToString()
+        {
+            return $"No. {RoomNo} - MaxNoPeople {MaxNoPeople}";
+        }
 	}
 }
