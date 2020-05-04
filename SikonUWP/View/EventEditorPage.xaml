@@ -22,6 +22,7 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+
         <Grid Margin="50" Background="WhiteSmoke">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -49,6 +50,7 @@
             <TextBlock Grid.Column="0" Grid.Row="6" Text="Beskrivelse" Style="{StaticResource TxtBlkStyle}"/>
             <TextBox Grid.Column="1" Grid.Row="6" Style="{StaticResource MultiLineTxtBoxStyle}"/>
         </Grid>
+
         <Grid Grid.Column="1" Margin="50">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>

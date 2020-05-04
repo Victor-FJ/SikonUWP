@@ -6,19 +6,20 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="using:SikonUWP.ViewModel"
+    xmlns:view="using:SikonUWP.View"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.DataContext>
-        <viewModel:RoomViewModel></viewModel:RoomViewModel>
+        <viewModel:RoomViewModel/>
     </Page.DataContext>
 
     <StackPanel Orientation="Horizontal" Spacing="20" Name="StackPanelOrigin" Background="DeepSkyBlue">
 
         <StackPanel Orientation="Vertical">
-            <TextBlock Text="Rooms"></TextBlock>
+            <TextBlock Text="Lokaler" FontWeight="Bold"></TextBlock>
 
-            <ListView ItemsSource="{Binding RoomCatalog.Rooms}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}" SelectedItem="{Binding NewRoom, Mode=TwoWay}">
+            <ListView ItemsSource="{Binding RoomCatalog.Rooms}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}" SelectedItem="{Binding SelectedRoom, Mode=TwoWay}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>
@@ -38,17 +39,17 @@
 
             <StackPanel>
                 <TextBlock Text="Lokalets dør-Nr."></TextBlock>
-                <TextBox Text="{Binding NewRoom.RoomNo, Mode=TwoWay}"></TextBox>
+                <TextBox Text="{Binding NewRoom.RoomNo, Mode=TwoWay}" PlaceholderText="Skriv dørens Nr."></TextBox>
             </StackPanel>
 
             <StackPanel>
                 <TextBlock Text="Lokalets lokation"></TextBlock>
-                <TextBox Text="{Binding NewRoom.LocationDescription, Mode=TwoWay}"></TextBox>
+                <TextBox Text="{Binding NewRoom.LocationDescription, Mode=TwoWay}" PlaceholderText="Skriv Lokation"></TextBox>
             </StackPanel>
 
             <StackPanel>
                 <TextBlock Text="Antal max personer"></TextBlock>
-                <TextBox Text="{Binding NewRoom.MaxNoPeople, Mode=TwoWay}"></TextBox>
+                <TextBox Text="{Binding NewRoom.MaxNoPeople, Mode=TwoWay}" PlaceholderText="skriv antal"></TextBox>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Spacing="20">
@@ -101,11 +102,6 @@
                 </StackPanel>
 
             </StackPanel>
-
-
-
-
-
 
         </StackPanel>
 

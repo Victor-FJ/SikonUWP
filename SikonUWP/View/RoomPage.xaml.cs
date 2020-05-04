@@ -31,5 +31,10 @@ namespace SikonUWP.View
         {
 
         }
+
+        private void TextBox_TextChanged()
+        {
+
+        }
     }
 }
