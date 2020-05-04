@@ -121,9 +121,12 @@
     </Compile>
     <Compile Include="Common\MessageDialogUtil.cs" />
     <Compile Include="Common\RelayCommand.cs" />
+    <Compile Include="Handlers\AdminHandler.cs" />
     <Compile Include="Handlers\ImageHandler.cs" />
     <Compile Include="Model\EventCatalog.cs" />
     <Compile Include="Model\EventSingleton.cs" />
+    <Compile Include="Handlers\ParticipantHandler.cs" />
+    <Compile Include="Handlers\SpeakerHandler.cs" />
     <Compile Include="Resources\CountListConverter.cs" />
     <Compile Include="Handlers\RoomHandler.cs" />
     <Compile Include="Handlers\UserHandler.cs" />
@@ -137,7 +140,9 @@
     <Compile Include="ViewModel\EventEditorViewModel.cs" />
     <Compile Include="ViewModel\EventHomeViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\ParticipantCreatorViewModel.cs" />
     <Compile Include="ViewModel\RoomViewModel.cs" />
+    <Compile Include="ViewModel\UserCreatorAdminViewModel.cs" />
     <Compile Include="View\EventEditorPage.xaml.cs">
       <DependentUpon>EventEditorPage.xaml</DependentUpon>
     </Compile>
@@ -150,6 +155,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\RoomPage.xaml.cs">
       <DependentUpon>RoomPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserCreatorAdminPage.xaml.cs">
+      <DependentUpon>UserCreatorAdminPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -189,6 +197,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\RoomPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserCreatorAdminPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
