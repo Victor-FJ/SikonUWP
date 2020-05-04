@@ -49,8 +49,6 @@ namespace SikonUWP.Model
             {
                 await MessageDialogUtil.MessageDialogAsync("Data Forbindelsen", "Forbindelsen blev ikke oprette");
             }
-           
-
         }
     }
 }
