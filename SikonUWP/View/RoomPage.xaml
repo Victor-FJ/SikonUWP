@@ -15,11 +15,26 @@
         <viewModel:RoomViewModel/>
     </Page.DataContext>
 
+
     <StackPanel Orientation="Horizontal" Spacing="20" Name="StackPanelOrigin">
 
         <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel>
+                    <TextBlock TextAlignment="Left" Text="Lokaler" FontWeight="Bold"></TextBlock>
+                </StackPanel>
 
-            <TextBlock Text="Lokaler" FontWeight="Bold"></TextBlock>
+                <StackPanel>
+                    <TextBlock TextAlignment="Center" Text="lokaler"></TextBlock>
+                </StackPanel>
+                
+                <StackPanel>
+                    <TextBlock TextAlignment="Right" Text="lakaler"></TextBlock>
+                </StackPanel>
+                
+            </StackPanel>
+
+           
 
             <ListView ItemsSource="{Binding RoomCatalog.Rooms}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}" SelectedItem="{Binding SelectedRoom, Mode=TwoWay}"
                       Padding="0">
