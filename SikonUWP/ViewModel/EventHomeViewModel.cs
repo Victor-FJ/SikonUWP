@@ -22,8 +22,9 @@ namespace SikonUWP.ViewModel
 
         private async void Load()
         {
-            await EventSingleton.Instance.EventCatalog.Load();
-            FirstTestEvent = EventSingleton.Instance.EventCatalog.Collection[0];
+            bool ok = await EventSingleton.Instance.EventCatalog.Load();
+            if (ok)
+                FirstTestEvent = EventSingleton.Instance.EventCatalog.Collection[0];
             OnPropertyChanged(nameof(FirstTestEvent));
         }
 
