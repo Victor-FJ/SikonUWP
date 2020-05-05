@@ -28,7 +28,7 @@ namespace SikonUWP.Model
             { 
                 if (_instance == null)
                 {
-                    _instance = new RoomCatalogSingleton();//Lazy
+                    _instance = new RoomCatalogSingleton(); //Lazy
                 }
                 return _instance;
             }

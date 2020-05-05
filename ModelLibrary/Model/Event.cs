@@ -37,7 +37,7 @@ namespace ModelLibrary.Model
             get => _title;
             set
             {
-                if (String.IsNullOrWhiteSpace(value))
+                if (string.IsNullOrWhiteSpace(value))
                     throw new EmptyException("Titlen kan ikke være tom");
                 if (value.Length > 100)
                     throw new OutsideRangeException("Titlen kan ikke være større end 100 karaktere");
@@ -51,7 +51,7 @@ namespace ModelLibrary.Model
             get => _description;
             set
             {
-                if (String.IsNullOrWhiteSpace(value))
+                if (string.IsNullOrWhiteSpace(value))
                     throw new EmptyException("Beskrivelsen kan ikke være tom");
                 if (value.Length > 3000)
                     throw new OutsideRangeException("Beskrivelsen kan ikke være større end 3000 karaktere");
@@ -115,7 +115,19 @@ namespace ModelLibrary.Model
 
         public Speaker Speaker { get; set; }
 
-        public string ImageName { get; set; }
+        private string _imageName;
+        public string ImageName
+        {
+            get => _imageName;
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    throw new EmptyException("Billed navn kan ikke være tom");
+                if (value.Length > 50)
+                    throw new OutsideRangeException("Billed navn kan ikke være større end 50 karaktere");
+                _imageName = value;
+            }
+        }
 
 
         public Event()
@@ -124,6 +136,7 @@ namespace ModelLibrary.Model
             _description = "Description";
             _startDate = DateTimeOffset.Now.AddDays(2);
             _endDate = DateTimeOffset.Now.AddHours(50);
+            _imageName = "Billed navn";
         }
 
         public Event(int id, string title, string description, EventType type, EventSubject subject, int maxNoParticipant, DateTimeOffset startDate, DateTimeOffset endDate, Room room, Speaker speaker, string imageName)

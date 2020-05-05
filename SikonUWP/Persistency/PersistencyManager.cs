@@ -16,6 +16,7 @@ namespace SikonUWP.Persistency
         public const string Uri = "http://localhost:52415/api/Manage/";
 
         public const string FileName = "DatabaseConnection";
+        public const string Message = "Fejl: Kunne ikke forbinde til rest api'et";
 
         private static StorageFile _connectionFile;
 
