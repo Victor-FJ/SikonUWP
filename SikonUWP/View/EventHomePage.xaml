@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resources="using:SikonUWP.Resources"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -30,7 +31,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock Text="{Binding FirstTestEvent.Title}" Style="{StaticResource TxtBlkStyle}" HorizontalAlignment="Center" FontSize="100"/>
+        <controls:NumberBox Value="{Binding Number, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20" Width="100" Minimum="0" SpinButtonPlacementMode="Inline"/>
+        <TextBlock Grid.Row="0" Text="{Binding FirstTestEvent.Title}" Style="{StaticResource TxtBlkStyle}" HorizontalAlignment="Center" FontSize="100"/>
         <TextBlock Grid.Row="1" Text="{Binding FirstTestEvent.Description}" TextWrapping="Wrap" FontSize="40"/>
         <Image Grid.Row="2" Margin="10" Source="{Binding FirstTestEvent.ImageName, Converter={StaticResource ImageConverter}}"/>
     </Grid>

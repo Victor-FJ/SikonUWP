@@ -15,6 +15,19 @@ namespace SikonUWP.ViewModel
     {
         public Event FirstTestEvent { get; set; }
 
+        private int _number;
+        public int Number
+        {
+            get => _number;
+            set
+            {
+                _number = value;
+                if (EventSingleton.Instance.EventCatalog.Collection.Count > value)
+                    FirstTestEvent = EventSingleton.Instance.EventCatalog.Collection[value];
+                OnPropertyChanged(nameof(FirstTestEvent));
+            }
+        }
+
         public EventHomeViewModel()
         {
             Load();
@@ -23,8 +36,7 @@ namespace SikonUWP.ViewModel
         private async void Load()
         {
             bool ok = await EventSingleton.Instance.EventCatalog.Load();
-            if (ok)
-                FirstTestEvent = EventSingleton.Instance.EventCatalog.Collection[0];
+            Number = 0;
             OnPropertyChanged(nameof(FirstTestEvent));
         }
 
