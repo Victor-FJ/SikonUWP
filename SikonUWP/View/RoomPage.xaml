@@ -69,7 +69,7 @@
         </StackPanel>
 
 
-        <StackPanel Orientation="Vertical" Grid.Column="1">
+        <StackPanel Orientation="Vertical" Grid.Column="1" Width="500">
 
             <StackPanel>
                 <TextBlock Text="Lokalets dør-nr." FontWeight="Bold"></TextBlock>
@@ -87,59 +87,53 @@
             </StackPanel>
 
 
-            <StackPanel Orientation="Horizontal" Spacing="20">
-                <StackPanel>
-                    <Button Content="Opret lokale" Command="{Binding CreateRoomCommand}" FontWeight="SemiBold" FontStyle="Normal">
-                        <Button.Background>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="Black"/>
-                                <GradientStop Color="White" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Button.Background>
-                    </Button>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Content="Opret lokale" Command="{Binding CreateRoomCommand}" FontWeight="SemiBold" FontStyle="Normal" HorizontalAlignment="Stretch" Margin="5">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
 
-                </StackPanel>
+                <Button Grid.Column="1" HorizontalAlignment="Stretch" Margin="5" Content="Opdater Lokale" Command="{Binding UpdateRoomCommand}" FontWeight="SemiBold">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
 
-                <StackPanel>
-                    <Button Content="Opdater Lokale" Command="{Binding UpdateRoomCommand}" FontWeight="SemiBold">
-                        <Button.Background>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="Black"/>
-                                <GradientStop Color="White" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Button.Background>
+                </Button>
 
-                    </Button>
+                <Button Grid.Column="2" HorizontalAlignment="Stretch" Margin="5" Content="Slet Lokale" Command="{Binding DeleteRoomCommand}" FontWeight="SemiBold" Click="Button_Click">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
 
-                </StackPanel>
+                </Button>
 
-                <StackPanel>
-                    <Button Content="Slet Lokale" Command="{Binding DeleteRoomCommand}" FontWeight="SemiBold" Click="Button_Click">
-                        <Button.Background>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="Black"/>
-                                <GradientStop Color="White" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Button.Background>
+                <Button Grid.Column="3" HorizontalAlignment="Stretch" Margin="5" Content="Clear" Command="{Binding ClearRoomCommand}" FontWeight="SemiBold">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
 
-                    </Button>
+                </Button>
 
-                </StackPanel>
-
-                <StackPanel>
-                    <Button Content="Clear" Command="{Binding ClearRoomCommand}" FontWeight="SemiBold" HorizontalAlignment="Left">
-                        <Button.Background>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="Black"/>
-                                <GradientStop Color="White" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Button.Background>
-
-                    </Button>
-
-                </StackPanel>
-
-            </StackPanel>
+            </Grid>
 
         </StackPanel>
 
