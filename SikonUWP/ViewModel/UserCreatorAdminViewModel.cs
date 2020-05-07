@@ -8,10 +8,13 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.Storage;
+using Windows.UI.Xaml.Media.Imaging;
 using ModelLibrary.Model;
 using SikonUWP.Annotations;
 using SikonUWP.Common;
 using SikonUWP.Handlers;
+using SikonUWP.Model;
 
 namespace SikonUWP.ViewModel
 {
@@ -41,6 +44,7 @@ namespace SikonUWP.ViewModel
         private SpeakerHandler speakerHandler = new SpeakerHandler();
 
         private AdminHandler adminHandler = new AdminHandler();
+
 
         private ICommand _createParticipantCommand;
         public ICommand CreateParticipantCommand
@@ -74,6 +78,17 @@ namespace SikonUWP.ViewModel
 
 
 
+        private ICommand _getImageCommand;
+
+        public ICommand GetImageCommand
+        {
+            get { return _getImageCommand; }
+            set { _getImageCommand = value; }
+        }
+
+
+
+
         //private ICommand _updateUserCommand;
 
         //public ICommand UpdateUserCommand
@@ -99,12 +114,22 @@ namespace SikonUWP.ViewModel
         public Participant.PersonType PersonType { get; set; }
         public string PhoneNumber { get; set; }
         public string FullName { get; set; }
-        //public string Image { get; set; }
         public string Description { get; set; }
+        private BitmapImage _imageView;
 
+        public BitmapImage ImageView
+        {
+            get { return _imageView; }
+            set { _imageView = value; OnPropertyChanged();}
+        }
 
-
+        public StorageFile Image { get; set; }
+        public ImageSingleton ImageCatalog { get; set; }
         
+
+
+
+
 
         private Participant _newParticipant;
 
@@ -182,7 +207,7 @@ namespace SikonUWP.ViewModel
         }
 
 
-
+        
 
 
 
@@ -194,6 +219,8 @@ namespace SikonUWP.ViewModel
             NewParticipant = new Participant();
             NewAdmin = new Admin();
             NewSpeaker = new Speaker();
+            ImageCatalog = ImageSingleton.Instance;
+
 
             UserTypeList = new ObservableCollection<string>();
             UserTypeList.Add("Admin");
@@ -203,6 +230,7 @@ namespace SikonUWP.ViewModel
             CreateParticipantCommand = new RelayCommand(CreateParticipant, ()=> NewParticipant != null);
             CreateSpeakerCommand = new RelayCommand(CreateSpeaker, ()=> NewSpeaker != null);
             CreateAdminCommand = new RelayCommand(CreateAdmin, ()=> NewAdmin != null);
+            GetImageCommand = new RelayCommand(GetImage);
         }
 
 
@@ -212,9 +240,10 @@ namespace SikonUWP.ViewModel
             participantHandler.CreateParticipant(NewParticipant);
         }
 
-        private void CreateSpeaker()
+        private async void CreateSpeaker()
         {
-            NewSpeaker = new Speaker(Username, Password, FullName, Description);
+            NewSpeaker = new Speaker(Username, Password, FullName, Description, Image.Name);
+            await ImageCatalog.ImageCatalog.AddImage(Image, Image.Name);
             speakerHandler.CreateSpeaker(NewSpeaker);
         }
 
@@ -222,6 +251,17 @@ namespace SikonUWP.ViewModel
         {
             NewAdmin = new Admin(Username, Password, PhoneNumber);
             adminHandler.CreateAdmin(NewAdmin);
+        }
+
+        public async void GetImage()
+        {
+            Image = await ImageCatalog.ImageCatalog.PickSingleImage();
+            if (Image != null)
+            {
+                ImageView = await ImageCatalog.ImageCatalog.AsBitmapImage(Image);
+            }
+            else
+                await MessageDialogUtil.MessageDialogAsync("Forkert filtype", "Kunne ikke hente billedet");
         }
 
 

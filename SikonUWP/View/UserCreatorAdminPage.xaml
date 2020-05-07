@@ -7,12 +7,17 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="using:SikonUWP.ViewModel"
     xmlns:sikonUwp="using:SikonUWP"
+    xmlns:resources="using:SikonUWP.Resources"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.DataContext>
         <viewModel:UserCreatorAdminViewModel></viewModel:UserCreatorAdminViewModel>
     </Page.DataContext>
+
+    <Page.Resources>
+        <resources:ImageConverter x:Key="ImageConverter"/>
+    </Page.Resources>
     <Grid RequestedTheme="Default">
         <Button Content="Opret Bruger" Command="{Binding CreateParticipantCommand}" Visibility="{Binding IsParticipantSelected}" Margin="440,500,0,0" VerticalAlignment="Top"/>
         <Button Content="Opret Bruger" Command ="{Binding CreateSpeakerCommand}" Visibility="{Binding IsSpeakerSelected}" Margin="440,500,0,0" VerticalAlignment="Top"/>
@@ -21,11 +26,11 @@
         <TextBox HorizontalAlignment="Left" Margin="642,194,0,0" Text="{Binding Password, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" PlaceholderText="Password" Height="31" Width="160"/>
         <TextBox HorizontalAlignment="Left" Margin="642,259,0,0" Text="{Binding PhoneNumber, Mode = TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" PlaceholderText="Telefon nummer" Visibility="{Binding IsAdminSelected}"/>
         <ComboBox Margin="642,259,0,0" PlaceholderText="Person Type" SelectedItem="{Binding PersonType, Mode=TwoWay}" Visibility="{Binding IsParticipantSelected}"  Width="160" ItemsSource="{Binding PersonTypeList}" ></ComboBox>
-        <TextBox HorizontalAlignment="Left" Margin="642,259,0,0" Text="{Binding FullName}" Visibility ="{Binding IsSpeakerSelected}" TextWrapping="Wrap" VerticalAlignment="Top" PlaceholderText="Fuldt navn" Width="160"></TextBox>
-        <TextBox HorizontalAlignment="Left" Margin="642,328,0,0" Text="{Binding Description}" Visibility ="{Binding IsSpeakerSelected}" TextWrapping="Wrap" VerticalAlignment="Top" PlaceholderText="Beskrivelse" Height="136" Width="202"/>
+        <TextBox HorizontalAlignment="Left" Margin="642,259,0,0" Text="{Binding FullName, Mode=TwoWay}" Visibility ="{Binding IsSpeakerSelected}" TextWrapping="Wrap" VerticalAlignment="Top" PlaceholderText="Fuldt navn" Width="160"></TextBox>
+        <TextBox HorizontalAlignment="Left" Margin="642,328,0,0" Text="{Binding Description, Mode=TwoWay}" Visibility ="{Binding IsSpeakerSelected}" TextWrapping="Wrap" VerticalAlignment="Top" PlaceholderText="Beskrivelse" Height="136" Width="202"/>
         <ComboBox Margin="440,136,0,0" Width="120"  PlaceholderText="UserType"  SelectedItem ="{Binding UserType, Mode = TwoWay}" ItemsSource ="{Binding UserTypeList}" />
-        <Button Content="Vælg Billede..." Margin="438,432,0,0" VerticalAlignment="Top" Width="122" Visibility="{Binding IsSpeakerSelected}"/>
-        <Image HorizontalAlignment="Left" Height="169" Source="/Assets/LockScreenLogo.scale-200.png" Visibility ="{Binding IsSpeakerSelected}" Margin="438,194,0,0" VerticalAlignment="Top" Width="176" Stretch="Uniform"/>
+        <Button Content="Vælg Billede..." Margin="438,432,0,0" VerticalAlignment="Top" Width="122" Visibility="{Binding IsSpeakerSelected}" Command="{Binding GetImageCommand}"/>
+        <Image HorizontalAlignment="Left" Height="169" Source="{Binding ImageView, Converter={StaticResource ImageConverter}}" Visibility ="{Binding IsSpeakerSelected}" Margin="438,194,0,0" VerticalAlignment="Top" Width="176" Stretch="Uniform"/>
         
 
     </Grid>

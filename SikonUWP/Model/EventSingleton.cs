@@ -74,9 +74,9 @@ namespace SikonUWP.Model
 
         public readonly ObservableCollection<Speaker> Speakers = new ObservableCollection<Speaker>()
         {
-            new Speaker("Victor", "2109", "Victor Friis-Jensen", "Jeg er en glad ung gut"),
-            new Speaker("Nicolai", "1234", "Nicolai Höyer Christiansen", "Endnu en gut"),
-            new Speaker("SebastianEx", "9876", "Sebastian Halkjær Petersen", "Så mange gutter")
+            new Speaker("Victor", "2109", "Victor Friis-Jensen", "Jeg er en glad ung gut","Beley"),
+            new Speaker("Nicolai", "1234", "Nicolai Höyer Christiansen", "Endnu en gut","Beley"),
+            new Speaker("SebastianEx", "9876", "Sebastian Halkjær Petersen", "Så mange gutter","Beley")
         };
 
         public readonly ObservableCollection<Room> Rooms = new ObservableCollection<Room>()
