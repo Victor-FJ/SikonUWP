@@ -122,7 +122,6 @@
     <Compile Include="Common\MessageDialogUtil.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Handlers\AdminHandler.cs" />
-    <Compile Include="Handlers\ImageHandler.cs" />
     <Compile Include="Model\AdminCatalogSingleton.cs" />
     <Compile Include="Model\ImageCatalog.cs" />
     <Compile Include="Model\EventCatalog.cs" />
