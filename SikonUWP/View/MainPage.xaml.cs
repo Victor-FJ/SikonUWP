@@ -36,7 +36,8 @@ namespace SikonUWP.View
         {
             if (args.InvokedItemContainer.Tag is Type pageType)
                 ContentFrame.Navigate(pageType);
-            NavigationView.IsBackEnabled = true;
+            if (ContentFrame.CanGoBack)
+                NavigationView.IsBackEnabled = true;
         }
 
         //Navigere tilbage en side i viewet hvis det er mugligt når bruger vælger tilbage knappen i navigationviewet

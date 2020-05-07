@@ -46,7 +46,8 @@ namespace SikonUWP.ViewModel
                     _navigationView.SelectedItem = navigationViewItem;
 
             _frame.Navigate(pageType);
-            _navigationView.IsBackEnabled = true;
+            if (_frame.CanGoBack)
+                _navigationView.IsBackEnabled = true;
         }
 
         #endregion
