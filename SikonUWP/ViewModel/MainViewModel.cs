@@ -54,14 +54,17 @@ namespace SikonUWP.ViewModel
         {
             try
             {
-                await PersistencyManager.TryOpenConn();
-                await ImageHandler.SyncImages();
+                bool ok = await PersistencyManager.TryOpenConn();
+                if (ok)
+                    await ImageSingleton.Instance.ImageCatalog.SyncImages();
+                else
+                    await MessageDialogUtil.MessageDialogAsync(PersistencyManager.FileName,
+                        "ConnectionString er forkert");
             }
             catch (HttpRequestException)
             {
-                await MessageDialogUtil.MessageDialogAsync(PersistencyManager.FileName, "Fejl: Kunne ikke forbinde til rest api'et");
+                await MessageDialogUtil.MessageDialogAsync(PersistencyManager.FileName, PersistencyManager.Message);
             }
-            
         }
     }
 }

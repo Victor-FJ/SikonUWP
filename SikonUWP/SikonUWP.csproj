@@ -124,12 +124,14 @@
     <Compile Include="Handlers\AdminHandler.cs" />
     <Compile Include="Handlers\ImageHandler.cs" />
     <Compile Include="Model\AdminCatalogSingleton.cs" />
+    <Compile Include="Model\ImageCatalog.cs" />
     <Compile Include="Model\EventCatalog.cs" />
     <Compile Include="Model\EventSingleton.cs" />
     <Compile Include="Handlers\ParticipantHandler.cs" />
     <Compile Include="Handlers\SpeakerHandler.cs" />
     <Compile Include="Model\ParticipantCatalogSingleton.cs" />
     <Compile Include="Model\SpeakerCatalogSingleton.cs" />
+    <Compile Include="Model\ImageSingleton.cs" />
     <Compile Include="Resources\CountListConverter.cs" />
     <Compile Include="Handlers\RoomHandler.cs" />
     <Compile Include="Handlers\UserHandler.cs" />

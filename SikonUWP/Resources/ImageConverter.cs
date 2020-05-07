@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media.Imaging;
 using SikonUWP.Handlers;
+using SikonUWP.Model;
 
 namespace SikonUWP.Resources
 {
@@ -13,8 +14,8 @@ namespace SikonUWP.Resources
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value is string imageName && ImageHandler.Dictionary.ContainsKey(imageName))
-                return ImageHandler.Dictionary[imageName];
+            if (value is string imageName && ImageSingleton.Instance.ImageCatalog.Dictionary.ContainsKey(imageName))
+                return ImageSingleton.Instance.ImageCatalog.Dictionary[imageName];
             if (value is BitmapImage image)
                 return image;
             return "/Assets/SplashScreen.png";

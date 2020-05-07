@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="using:SikonUWP.ViewModel"
     xmlns:view="using:SikonUWP.View"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -14,97 +15,128 @@
         <viewModel:RoomViewModel/>
     </Page.DataContext>
 
-    <StackPanel Orientation="Horizontal" Spacing="20" Name="StackPanelOrigin" Background="DeepSkyBlue">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
 
         <StackPanel Orientation="Vertical">
-            <TextBlock Text="Lokaler" FontWeight="Bold"></TextBlock>
+            <Grid BorderBrush="Black" BorderThickness="2" Width="640">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="400"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="130"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Lokaler" Margin="5,5,5,5" FontSize="20"/>
+                <Line Grid.Column="1" Stroke="Black" StrokeThickness="2" X1="0" X2="0" Y1="0" Y2="40"/>
+                <Line Grid.Column="3" Stroke="Black" StrokeThickness="2" X1="0" X2="0" Y1="0" Y2="40"/>
+                <TextBlock Grid.Column="2" Text="Lokation til lokalet" Margin="5,5,5,5" FontSize="20"/>
+                <TextBlock Grid.Column="4" Text="Max Personer" Margin="5,5,5,5" FontSize="20"/>
+            </Grid>
 
-            <ListView ItemsSource="{Binding RoomCatalog.Rooms}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}" SelectedItem="{Binding SelectedRoom, Mode=TwoWay}">
+            <ListView ItemsSource="{Binding RoomCatalog.Rooms}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}" SelectedItem="{Binding SelectedRoom, Mode=TwoWay}"
+                          Padding="0" Width="640">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="MinWidth" Value="0"/>
+                        <Setter Property="MinHeight" Value="0"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding RoomNo}" Margin="5,5,5,5"/>
-                                <TextBlock Text="{Binding LocationDescription}" Margin="5,5,5,5"/>
-                                <TextBlock Text="{Binding MaxNoPeople}" Margin="5,5,5,5"/>
-                            </StackPanel>
-
-                        </StackPanel>
+                        <Grid BorderBrush="Black" BorderThickness="2" Width="640">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="400"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="130"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding RoomNo}" Margin="5,5,5,5"/>
+                            <Line Grid.Column="1" Stroke="Black" StrokeThickness="2" X1="0" X2="0" Y1="0" Y2="35"/>
+                            <Line Grid.Column="3" Stroke="Black" StrokeThickness="2" X1="0" X2="0" Y1="0" Y2="35"/>
+                            <TextBlock Grid.Column="2" Text="{Binding LocationDescription}" Margin="5,5,5,5"/>
+                            <TextBlock Grid.Column="4" Text="{Binding MaxNoPeople}" Margin="5,5,5,5"/>
+                        </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </StackPanel>
 
-        <StackPanel Orientation="Vertical">
+
+        <StackPanel Orientation="Vertical" Grid.Column="1" Width="500">
 
             <StackPanel>
-                <TextBlock Text="Lokalets dør-Nr."></TextBlock>
+                <TextBlock Text="Lokalets dør-nr." FontWeight="Bold"></TextBlock>
                 <TextBox Text="{Binding NewRoom.RoomNo, Mode=TwoWay}" PlaceholderText="Skriv dørens Nr."></TextBox>
             </StackPanel>
 
             <StackPanel>
-                <TextBlock Text="Lokalets lokation"></TextBlock>
+                <TextBlock Text="Lokalets lokation" FontWeight="Bold"></TextBlock>
                 <TextBox Text="{Binding NewRoom.LocationDescription, Mode=TwoWay}" PlaceholderText="Skriv Lokation"></TextBox>
             </StackPanel>
 
             <StackPanel>
-                <TextBlock Text="Antal max personer"></TextBlock>
-                <TextBox Text="{Binding NewRoom.MaxNoPeople, Mode=TwoWay}" PlaceholderText="skriv antal"></TextBox>
+                <TextBlock Text="Antal max personer" FontWeight="Bold"></TextBlock>
+                <controls:NumberBox Value="{Binding NewRoom.MaxNoPeople, Mode=TwoWay}" PlaceholderText="skriv antal"></controls:NumberBox>
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" Spacing="20">
-                <StackPanel>
-                    <Button Content="Opret lokale" Command="{Binding CreateRoomCommand}" FontWeight="Bold" FontStyle="Normal">
-                        <Button.Background>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="Black"/>
-                                <GradientStop Color="#FF5BCB16" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Button.Background>
-                    </Button>
 
-                </StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Content="Opret lokale" Command="{Binding CreateRoomCommand}" FontWeight="SemiBold" FontStyle="Normal" HorizontalAlignment="Stretch" Margin="5">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
 
-                <StackPanel>
-                    <Button Content="Opdater Lokale" Command="{Binding UpdateRoomCommand}" FontWeight="Bold">
-                        <Button.Background>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="Black"/>
-                                <GradientStop Color="White" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Button.Background>
-                    </Button>
+                <Button Grid.Column="1" HorizontalAlignment="Stretch" Margin="5" Content="Opdater Lokale" Command="{Binding UpdateRoomCommand}" FontWeight="SemiBold">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
 
-                </StackPanel>
+                </Button>
 
-                <StackPanel>
-                    <Button Content="Slet Lokale" Command="{Binding DeleteRoomCommand}" FontWeight="Bold" Click="Button_Click">
-                        <Button.Background>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="Black"/>
-                                <GradientStop Color="#FFFA4324" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Button.Background>
-                    </Button>
+                <Button Grid.Column="2" HorizontalAlignment="Stretch" Margin="5" Content="Slet Lokale" Command="{Binding DeleteRoomCommand}" FontWeight="SemiBold" Click="Button_Click">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
 
-                </StackPanel>
+                </Button>
 
-                <StackPanel>
-                    <Button Content="Clear" Command="{Binding ClearRoomCommand}" FontWeight="Normal" HorizontalAlignment="Left" Foreground="AliceBlue">
-                        <Button.Background>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="Black"/>
-                                <GradientStop Color="#FF3D3635" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Button.Background>
-                    </Button>
+                <Button Grid.Column="3" HorizontalAlignment="Stretch" Margin="5" Content="Clear" Command="{Binding ClearRoomCommand}" FontWeight="SemiBold">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
 
-                </StackPanel>
+                </Button>
 
-            </StackPanel>
+            </Grid>
 
         </StackPanel>
 
-    </StackPanel>
+    </Grid>
 
 </Page>

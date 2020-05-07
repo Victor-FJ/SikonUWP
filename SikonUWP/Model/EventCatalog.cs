@@ -21,13 +21,18 @@ namespace SikonUWP.Model
 
         private readonly GenericPersistence<int, Event> _eventPersistence;
 
-        public ObservableCollection<Room> Rooms { get; set; }
+        private readonly ObservableCollection<Speaker> _speakers;
+        private readonly ObservableCollection<Room> _rooms;
+        private readonly List<string> _imageNames;
 
-        public EventCatalog(GenericPersistence<int, Event> eventPersistence)
+        public EventCatalog(GenericPersistence<int, Event> eventPersistence, ObservableCollection<Speaker> speakers, ObservableCollection<Room> rooms, List<string> imageNames)
         {
             _collection = new ObservableCollection<Event>();
             Collection = new ReadOnlyObservableCollection<Event>(_collection);
             _eventPersistence = eventPersistence;
+            _rooms = rooms;
+            _speakers = speakers;
+            _imageNames = imageNames;
         }
 
         public async Task<bool> Load()
@@ -50,17 +55,23 @@ namespace SikonUWP.Model
         /// <param name="event">The event to add</param>
         /// <param name="getId">If true an new id will be made if the events id is not unique if false and exception will be thrown if its not</param>
         /// <returns>Whether the event was succesfully added</returns>
-        public bool Add(Event @event, bool getId)
+        public async Task<bool> Add(Event @event, bool getId)
         {
             List<Event> collection = _collection.ToList();
             if (collection.Find((x) => x.Id == @event.Id) != null)
                 if (getId)
                     @event.Id = GetUniqueId();
                 else
-                    throw new BaseException(""); //TODO: Throw uniqe exception instead
-
+                    throw new ItIsNotUniqueException("Begivenhedens id er ikke unikt");
+            CheckSpeaker(@event);
+            CheckRoom(@event);
             CheckDate(@event);
-            return false;
+            CheckImage(@event, true);
+
+            bool ok = await _eventPersistence.Post(@event);
+            if (ok)
+                _collection.Add(@event);
+            return ok;
         }
 
         public int GetUniqueId()
@@ -77,8 +88,14 @@ namespace SikonUWP.Model
 
         public void CheckSpeaker(Event selectedEvent)
         {
-            if (selectedEvent.Room == null || !_collection.Contains(selectedEvent))
-                throw new EmptyException("Lokalet eksistere ikke ");
+            if (selectedEvent.Room == null || !_speakers.Contains(selectedEvent.Speaker))
+                throw new EmptyException("Værten eksistere ikke i cataloget");
+        }
+
+        public void CheckRoom(Event selectedEvent)
+        {
+            if (selectedEvent.Room == null || !_rooms.Contains(selectedEvent.Room))
+                throw new EmptyException("Lokalet eksistere ikke i cataloget");
         }
 
 
@@ -99,6 +116,15 @@ namespace SikonUWP.Model
             foreach (Event possConEvent in possConSpeakerEvents)
                 if (selectedEvent.StartDate < possConEvent.EndDate && selectedEvent.EndDate > possConEvent.StartDate)
                     throw new OutsideRangeException("Lokalet er brugt af en anden begivenhed på det tidspunkt");
+        }
+
+        public void CheckImage(Event selectedEvent, bool beUnique)
+        {
+            bool doesContain = _imageNames.Contains(selectedEvent.ImageName);
+            if (beUnique && doesContain)
+                throw new ItIsNotUniqueException("Der er allerede et billed med det navn");
+            if (!beUnique && !doesContain)
+                throw new ItIsUniqueException("Der er intet billed med det navn");
         }
     }
 }

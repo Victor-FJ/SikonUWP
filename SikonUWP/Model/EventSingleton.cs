@@ -36,12 +36,14 @@ namespace SikonUWP.Model
                 if (value == null)
                 {
                     _markedEvent = new Event();
-                    MarkedBools = new bool[10];
+                    MarkedBools = new bool[12];
+                    IsNew = true;
                 }
                 else
                 {
                     _markedEvent = value;
-                    MarkedBools = Enumerable.Repeat(true, 10).ToArray();
+                    MarkedBools = Enumerable.Repeat(true, 12).ToArray();
+                    IsNew = false;
                 }
                 MarkedImage = null;
             }
@@ -52,6 +54,10 @@ namespace SikonUWP.Model
         /// </summary>
         public bool[] MarkedBools { get; set; }
         /// <summary>
+        /// Holds whether the markedevent is new or already exist
+        /// </summary>
+        public bool IsNew { get; set; }
+        /// <summary>
         /// A image that is marked for the creator page
         /// </summary>
         public StorageFile MarkedImage { get; set; }
@@ -60,13 +66,27 @@ namespace SikonUWP.Model
 
         private EventSingleton()
         {
-            EventCatalog = new EventCatalog(new GenericPersistence<int, Event>("http://localhost:52415/api/Event/"));
-            Load();
+            EventCatalog = new EventCatalog(new GenericPersistence<int, Event>("http://localhost:52415/api/Event/"), Speakers, Rooms, ImageSingleton.Instance.ImageCatalog.Dictionary.Keys.ToList());
+            MarkedEvent = null;
         }
 
-        private async void Load()
+        #region TestCatalogs
+
+        public readonly ObservableCollection<Speaker> Speakers = new ObservableCollection<Speaker>()
         {
-            await EventCatalog.Load();
-        }
+            new Speaker("Victor", "2109", "Victor Friis-Jensen", "Jeg er en glad ung gut"),
+            new Speaker("Nicolai", "1234", "Nicolai Höyer Christiansen", "Endnu en gut"),
+            new Speaker("SebastianEx", "9876", "Sebastian Halkjær Petersen", "Så mange gutter")
+        };
+
+        public readonly ObservableCollection<Room> Rooms = new ObservableCollection<Room>()
+        {
+            new Room("A4.24", "Op af trappen og til venstre, der vil den ligge på højre side", 20),
+            new Room("A1.01", "You cant miss it", 110),
+            new Room("B2.11", "Some closet on the right", 5),
+            new Room("A13.13", "Hen under stien ved siden af det ødelagte spejl", 13)
+        };
+
+        #endregion
     }
 }

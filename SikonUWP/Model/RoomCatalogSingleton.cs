@@ -13,21 +13,30 @@ namespace SikonUWP.Model
 {
     public class RoomCatalogSingleton
     {
+        /// <summary>
+        /// Singletons Instance
+        /// </summary>
         private static RoomCatalogSingleton _instance = new RoomCatalogSingleton();
 
         
+        /// <summary>
+        /// Singletons Property
+        /// </summary>
         public static RoomCatalogSingleton Instance
         {
             get 
             { 
                 if (_instance == null)
                 {
-                    _instance = new RoomCatalogSingleton();//Lazy
+                    _instance = new RoomCatalogSingleton(); //Lazy
                 }
                 return _instance;
             }
         }
 
+        /// <summary>
+        /// ObservableCollection viser når man opretter, sletter eller ændre noget i listen
+        /// </summary>
         public ObservableCollection<Room> Rooms { get; set; }
 
         private RoomCatalogSingleton()
@@ -35,6 +44,9 @@ namespace SikonUWP.Model
             Rooms = new ObservableCollection<Room>();
         }
 
+        /// <summary>
+        /// Denne metode loader lokaler fra databasen
+        /// </summary>
         public async void LoadRooms()
         {
             GenericPersistence<string, Room> roomPersistence = 

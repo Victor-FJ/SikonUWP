@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Storage;
+using Windows.UI.Xaml.Media.Imaging;
 using ModelLibrary.Exceptions;
 using SikonUWP.Persistency;
 using ModelLibrary.Model;
@@ -22,11 +25,13 @@ namespace SikonUWP.ViewModel
     {
         public EventSingleton EventSing { get; set; }
 
+        public ImageSingleton ImageSing { get; set; }
+
         public Event EditedEvent { get; set; }
 
         #region ControlProperties
 
-        //TooltipAndCom properties for color and text for the tooltips and control borders
+        //ToolTip properties for color and text for the tooltips and control borders
 
         private readonly string[] _toolTipText =
         {
@@ -35,12 +40,12 @@ namespace SikonUWP.ViewModel
             "Det tidspunkt hvor begivenheden slutter", "En beskrivelse af begivenheden",
             "Hvilken form for begivenhed der er tale om", "Hvilket emne som begivenheden handler om",
             "Det lokale hvor begivenheden forgår", "Det antal personer begivenheden højst kan have",
-            "Et billed til begivenheden"
+            "Et billed til begivenheden", "Navnet til billedet"
         };
 
         private const string ColorRed = "Red";
         private const string ColorGray = "DimGray";
-        private readonly string[] _toolTipColor = Enumerable.Repeat(ColorGray, 11).ToArray();
+        private readonly string[] _toolTipColor = Enumerable.Repeat(ColorGray, 12).ToArray();
 
         public string[] ToolTipText { get; private set; }
 
@@ -57,7 +62,7 @@ namespace SikonUWP.ViewModel
                 try
                 {
                     EditedEvent.Title = value;
-                    TooltipAndCom(0, 0);
+                    ToolTip(0);
                 }
                 catch (EmptyException ex)
                 {
@@ -77,11 +82,11 @@ namespace SikonUWP.ViewModel
                 try
                 {
                     EditedEvent.Description = value;
-                    TooltipAndCom(5, 1);
+                    ToolTip(1);
                 }
                 catch (EmptyException ex)
                 {
-                    ToolTip(5, ex.Message);
+                    ToolTip(1, ex.Message);
                 }
             }
         }
@@ -96,16 +101,18 @@ namespace SikonUWP.ViewModel
             set
             {
                 if (value != null) EditedEvent.Type = value.Value;
+                ToolTip(2);
             }
         }
 
         public List<Event.EventSubject> EventSubjects => Enum.GetValues(typeof(Event.EventSubject)).OfType<Event.EventSubject>().ToList();
         public Event.EventSubject? SelectedSubject
         {
-            get => EventSing.MarkedBools[3] ? (Event.EventSubject?)EditedEvent.Type : null;
+            get => EventSing.MarkedBools[3] ? (Event.EventSubject?)EditedEvent.Subject : null;
             set
             {
                 if (value != null) EditedEvent.Subject = value.Value;
+                ToolTip(3);
             }
         }
 
@@ -119,19 +126,16 @@ namespace SikonUWP.ViewModel
                 try
                 {
                     EditedEvent.MaxNoParticipant = value;
-                    TooltipAndCom(9,4);
+                    ToolTip(4);
                 }
                 catch (OutsideRangeException ex)
                 {
-                    ToolTip(9, ex.Message);
+                    ToolTip(4, ex.Message);
                 }
             }
         }
 
         //Date properties for checking that dates do not conflict
-
-        private DateTimeOffset _startDate;
-        private DateTimeOffset _endDate;
 
         private DateTimeOffset? _date;
         public DateTimeOffset? Date
@@ -145,7 +149,11 @@ namespace SikonUWP.ViewModel
                     if (_date < DateTimeOffset.Now.Date)
                         ToolTip(5, "Datoen kan ikke ligge i fortiden");
                     else
+                    {
+                        EditedEvent.StartDate = _date.Value;
+                        ToolTip(5);
                         SetDateTime();
+                    }
                 }
             }
         }
@@ -176,23 +184,16 @@ namespace SikonUWP.ViewModel
 
 
         //Room properties
-        private const string _message = "Max antal deltagere er højere en rummet kan holde";
-
-        private readonly List<Room> _rooms = new List<Room>()
-        {
-            new Room("A4.24", "Op af trappen og til venstre, der vil den ligge på højre side", 20),
-            new Room("A1.01", "You cant miss it", 110),
-            new Room("B2.11", "Some closet on the right", 5)
-        };
-        public List<Room> Rooms => _rooms;
+        public ObservableCollection<Room> Rooms => EventSing.Rooms;
 
         public Room SelectedRoom
         {
-            get => EventSing.MarkedBools[7] ? EditedEvent.Room : null;
+            get => EventSing.MarkedBools[8] ? EditedEvent.Room : null;
             set
             {
                 int number = EditedEvent.MaxNoParticipant;
                 EditedEvent.Room = value;
+                ToolTip(8);
                 try
                 {
                     EditedEvent.MaxNoParticipant = number;
@@ -209,33 +210,54 @@ namespace SikonUWP.ViewModel
 
         //Speaker properties
 
-        private readonly List<Speaker> _speakers = new List<Speaker>()
-        {
-            new Speaker("Victor", "2109", "Victor Friis-Jensen", "Jeg er en glad ung gut"),
-            new Speaker("Nicolai", "1234", "Nicolai Höyer Christiansen", "Endnu en gut"),
-            new Speaker("Sebastian", "hmmm", "Sebastian Halkjær Petersen", "Så mange gutter")
-        };
-        public List<Speaker> Speakers => _speakers;
+        public ObservableCollection<Speaker> Speakers => EventSing.Speakers;
 
         public Speaker SelectedSpeaker
         {
-            get => EventSing.MarkedBools[8] ? EditedEvent.Speaker : null;
-            set => EditedEvent.Speaker = value;
+            get => EventSing.MarkedBools[9] ? EditedEvent.Speaker : null;
+            set
+            {
+                EditedEvent.Speaker = value;
+                ToolTip(9);
+            }
             //TODO: When seting a new speaker perform date check again
         }
 
-        private readonly List<Event> _possConEvents = new List<Event>() { new Event(0, "Test event", "Test", Event.EventType.Tema, Event.EventSubject.Autisme, 10, DateTimeOffset.Now.AddDays(2), DateTimeOffset.Now.AddHours(50), null, null, "SomeImage") };
 
-        
         //ImageView
 
-        private object _imageView;
-        public object ImageView
+        private BitmapImage _imageView;
+        public BitmapImage ImageView
         {
             get => _imageView;
             set
             {
                 _imageView = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _imageName;
+        public string ImageName
+        {
+            get => EventSing.MarkedBools[11] ? EditedEvent.ImageName : _imageName;
+            set
+            {
+                try
+                {
+                    EditedEvent.ImageName = value;
+                    _imageName = value;
+                    EventSing.EventCatalog.CheckImage(EditedEvent, true);
+                    ToolTip(11);
+                }
+                catch (EmptyException ex)
+                {
+                    ToolTip(11, ex.Message);
+                }
+                catch (ItIsNotUniqueException ex)
+                {
+                    ToolTip(11, ex.Message);
+                }
                 OnPropertyChanged();
             }
         }
@@ -250,28 +272,32 @@ namespace SikonUWP.ViewModel
         public EventEditorViewModel()
         {
             EventSing = EventSingleton.Instance;
-            //EventSing.MarkedEvent = new Event(0, "Test event", "Test", Event.EventType.Tema, Event.EventSubject.Autisme, 10,
-            //    DateTimeOffset.Now.AddDays(2), DateTimeOffset.Now.AddHours(50), Rooms[0], Speakers[0], "SomeImage");
+            ImageSing = ImageSingleton.Instance;
 
-            if (EventSing.MarkedEvent == null)
-                EventSing.MarkedEvent = new Event();
+            Load();
+
+            //EventSing.MarkedEvent = new Event(0, "Super Space Event", "Super sjovt rum begivenhed med alle muglige slags rumskibe", Event.EventType.Workshop, Event.EventSubject.Autisme, 4, DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddHours(26), EventSing.Rooms[2], EventSing.Speakers[0], "Avatar Space Station.jpg");
+
             EditedEvent = EventSing.MarkedEvent;
-            
+
             StartUpToolTip();
             StartUpDate();
 
             if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
                 StartUpImage();
 
-            GetImageCommand = new RelayCommand(async () => {
-                EventSing.MarkedImage = await ImageHandler.PickSingleImage();
-                ImageView = await ImageHandler.AsBitmapImage(EventSing.MarkedImage);
-            });
+            GetImageCommand = new RelayCommand(GetImage);
             ClearCommand = new RelayCommand(Clear);
+            CreateCommand = new RelayCommand(Create);
 
         }
 
         #region StartUpMethods
+
+        private async void Load()
+        {
+            await EventSing.EventCatalog.Load();
+        }
 
         private void StartUpToolTip()
         {
@@ -281,34 +307,82 @@ namespace SikonUWP.ViewModel
 
         private void StartUpDate()
         {
-            _date = EditedEvent.StartDate == DateTimeOffset.MinValue ? (DateTimeOffset?)null :
-                new DateTimeOffset(EditedEvent.StartDate.Date, EditedEvent.StartDate.Offset);
-            _startTime = EditedEvent.StartDate.TimeOfDay;
-            if (_startTime == TimeSpan.Zero) _startTime = null;
-            _endTime = EditedEvent.EndDate.TimeOfDay;
-            if (_endTime == TimeSpan.Zero) _endTime = null;
+            _date = EventSing.MarkedBools[5] ? new DateTimeOffset(EditedEvent.StartDate.Date, EditedEvent.StartDate.Offset) : (DateTimeOffset?)null;
+            _startTime = EventSing.MarkedBools[6] ? EditedEvent.StartDate.TimeOfDay : (TimeSpan?)null;
+            _endTime = EventSing.MarkedBools[7] ? EditedEvent.EndDate.TimeOfDay : (TimeSpan?)null;
         }
 
         private async void StartUpImage()
         {
             if (EventSing.MarkedImage != null)
-                ImageView = await ImageHandler.AsBitmapImage(EventSing.MarkedImage);
-            if (ImageHandler.Dictionary != null && EditedEvent.ImageName != null && ImageHandler.Dictionary.ContainsKey(EditedEvent.ImageName))
-                ImageView = EditedEvent.ImageName;
+            {
+                ImageView = await ImageSing.ImageCatalog.AsBitmapImage(EventSing.MarkedImage);
+                ImageName = EditedEvent.ImageName;
+            }
+            else if (!EventSing.IsNew)
+            {
+                ImageView = ImageSing.ImageCatalog.Dictionary[EditedEvent.ImageName];
+                ImageName = EditedEvent.ImageName;
+            }
         }
 
         #endregion
 
         #region CommandMethods
 
+        public async void GetImage()
+        {
+            StorageFile image = await ImageSing.ImageCatalog.PickSingleImage();
+            if (image != null)
+            {
+                EventSing.MarkedImage = image;
+                ImageView = await ImageSing.ImageCatalog.AsBitmapImage(EventSing.MarkedImage);
+                ImageName = image.Name;
+                ToolTip(10);
+            }
+            else
+                await MessageDialogUtil.MessageDialogAsync("Forkert filtype", "Kunne ikke hente billedet");
+
+        }
+
         public async void Clear()
         {
             if (await MessageDialogUtil.InputDialogAsync("Er du sikker?",
                 "Er du sikker på at du vil ryde indtastet begivenheds info og starte forfra blankt?"))
             {
-                EventSing.MarkedEvent = new Event();
-                EventSing.MarkedImage = null;
+                EventSing.MarkedEvent = null;
                 MainViewModel.Instance.NavigateToPage(typeof(EventEditorPage));
+            }
+        }
+
+        public async void Create()
+        {
+            bool[] comBools = EventSing.MarkedBools;
+            if (comBools.All(x => x))
+            {
+                try
+                {
+                    bool ok = await ImageSing.ImageCatalog.AddImage(EventSing.MarkedImage, ImageName);
+                    if (ok)
+                        ok = await EventSing.EventCatalog.Add(EditedEvent, true);
+                    if (!ok)
+                        throw new BaseException("You though this would not be possible. Looks like you missed something");
+                }
+                catch (HttpRequestException)
+                {
+                    await MessageDialogUtil.MessageDialogAsync(PersistencyManager.FileName, PersistencyManager.Message);
+                }
+
+            }
+            else
+            {
+                for (int i = 0; i < comBools.Length; i++)
+                    if (!comBools[i])
+                        ToolTip(i, "Skal være udfyldt");
+                if (!comBools[4])
+                {
+                    ToolTip(4, "Er du sikker på at den skal være 0", "#FFE2C300");
+                }
             }
         }
 
@@ -316,76 +390,58 @@ namespace SikonUWP.ViewModel
 
         #region ViewMethods
 
-        private void TooltipAndCom(int index, int completed)
+        private void ToolTip(int index)
         {
-            EventSing.MarkedBools[completed] = true;
-            ToolTip(index);
+            EventSing.MarkedBools[index] = true;
+            ToolTip(index, _toolTipText[index], ColorGray);
         }
 
-        private void ToolTip(int index) => ToolTip(index, _toolTipText[index], 0);
-        private void ToolTip(int index, string text) => ToolTip(index, text, 1);
+        private void ToolTip(int index, string text) => ToolTip(index, text, ColorRed);
 
-        private void ToolTip(int index, string text, int color)
+        private void ToolTip(int index, string text, string color)
         {
             ToolTipText[index] = text;
-            ToolTipColor[index] = color == 1 ? ColorRed : ColorGray;
+            ToolTipColor[index] = color;
             OnPropertyChanged(nameof(ToolTipText));
             OnPropertyChanged(nameof(ToolTipColor));
         }
 
         private async void SetDateTime()
         {
-            ToolTip(2);
-            TooltipAndCom(3, 5);
-            TooltipAndCom(4, 6);
-
             if (_date != null)
             {
                 bool gotStart = _startTime != null;
                 bool gotEnd = _endTime != null;
-                if (gotStart) _startDate = _date.Value.Add(_startTime.Value);
-                if (gotEnd) _endDate = _date.Value.Add(_endTime.Value);
-                if (gotStart && gotEnd && _startTime.Value > _endTime.Value)
+                if (gotStart)
                 {
-                    _endDate = _endDate.AddDays(1);
-                    await MessageDialogUtil.MessageDialogAsync("Er du sikker?",
-                        "Vær opmærksom på at det valgte slut-tidspunkt først rammes dagen efter start-tidspunktet");
+                    EditedEvent.StartDate = _date.Value.Add(_startTime.Value);
+                    ToolTip(6);
                 }
-
-                bool overlap = false;
-                bool startPo = false;
-                bool endPo = false;
-                foreach (Event possConEvent in _possConEvents)
-                {
-                    const string message1 = "Tidsforløbet overlaber en anden begivenhed som værten er tilmeldt";
-                    const string message2 = "Tidspunktet ligger oven i en anden begivenhed som værten er tilmeldt";
-                    if (gotStart && gotEnd && !overlap && _startDate < possConEvent.EndDate && _endDate > possConEvent.StartDate)
+                if (gotEnd)
+                    try
                     {
-                        ToolTip(3, message1);
-                        ToolTip(4, message1);
-                        overlap = true;
+                        EditedEvent.EndDate = _date.Value.Add(_endTime.Value);
+                        ToolTip(7);
+                    }
+                    catch (OutsideRangeException)
+                    {
+                        DateTimeOffset endDate = _date.Value.Add(_endTime.Value);
+                        EditedEvent.EndDate = endDate.AddDays(1);
+                        ToolTip(7);
+                        await MessageDialogUtil.MessageDialogAsync("Er du sikker?",
+                            "Vær opmærksom på at det valgte slut-tidspunkt først rammes dagen efter start-tidspunktet");
                     }
 
-                    if (gotStart && !startPo && _startDate > possConEvent.StartDate && _startDate < possConEvent.EndDate)
+                if (gotStart && gotEnd)
+                    try
                     {
-                        ToolTip(3, message2);
-                        startPo = true;
+                        EventSing.EventCatalog.CheckDate(EditedEvent);
                     }
-
-                    if (gotEnd && !endPo && _endDate > possConEvent.StartDate && _endDate < possConEvent.EndDate)
+                    catch (OutsideRangeException ex)
                     {
-                        ToolTip(4, message2);
-                        endPo = true;
+                        ToolTip(6, ex.Message);
+                        ToolTip(7, ex.Message);
                     }
-
-                    if (overlap && startPo && endPo)
-                        return;
-                }
-
-                if (overlap || startPo || endPo)
-                    return;
-                EditedEvent.StartDate = _startDate;
-                EditedEvent.EndDate = _endDate;
             }
         }
 
