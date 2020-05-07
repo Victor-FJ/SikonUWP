@@ -47,8 +47,10 @@ namespace SikonUWP.Model
         /// <summary>
         /// Denne metode loader lokaler fra databasen
         /// </summary>
+        /// <param name="room1"></param>
         public async void LoadRooms()
         {
+            Rooms.Clear();
             GenericPersistence<string, Room> roomPersistence = 
                 new GenericPersistence<string, Room>("http://localhost:52415/api/Room/");
             try

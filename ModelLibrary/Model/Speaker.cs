@@ -42,10 +42,11 @@ namespace ModelLibrary.Model
             
         }
 		//constructor mangler image parameter implementeret
-        public Speaker(string userName, string password, string fullName, string description) : base(userName, password)
+        public Speaker(string userName, string password, string fullName, string description, string image) : base(userName, password)
 		{
             _fullName = fullName;
             _description = description;
+            _image = image;
         }
 
         public override string ToString()
