@@ -50,17 +50,7 @@ namespace SikonUWP.ViewModel
             {
                 _createParticipantCommand = value;
 
-                //skal flyttes til metoden UserTypeButtonPress
-                //if (UserType == "participant")
-                //{
-                //    _createUserCommand = new RelayCommand(()=> participantHandler.CreateParticipant(NewParticipant), ()=> NewUser != null);
-                //}else if (UserType == "speaker")
-                //{
-                //    _createUserCommand = new RelayCommand(() => speakerHandler.CreateSpeaker(NewSpeaker), () => NewUser != null);
-                //}else if (UserType == "Admin")
-                //{
-                //    _createUserCommand = new RelayCommand(()=> adminHandler.CreateAdmin(NewAdmin),()=> NewUser != null);
-                //}
+                
                 OnPropertyChanged();
             }
         }
@@ -104,14 +94,17 @@ namespace SikonUWP.ViewModel
         //    set { _deleteUserCommand = value; }
         //}
 
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public Participant.PersonType PersonType { get; set; }
+        public string PhoneNumber { get; set; }
+        public string FullName { get; set; }
+        //public string Image { get; set; }
+        public string Description { get; set; }
 
-        private User _newUser;
 
-        public User NewUser
-        {
-            get { return _newUser; }
-            set { _newUser = value;  OnPropertyChanged(); }
-        }
+
+        
 
         private Participant _newParticipant;
 
@@ -121,11 +114,6 @@ namespace SikonUWP.ViewModel
             set
             {
                 _newParticipant = value;
-                if (NewUser != null)
-                {
-                    _newParticipant.UserName = NewUser.UserName ;
-                    _newParticipant.Password = NewUser.Password;
-                }
                 OnPropertyChanged();
             }
         }
@@ -138,11 +126,6 @@ namespace SikonUWP.ViewModel
             set
             {
                 _newSpeaker = value;
-                if (NewUser != null)
-                {
-                    _newSpeaker.UserName = NewUser.UserName;
-                    _newSpeaker.Password = NewUser.Password;
-                }
                 OnPropertyChanged();
             }
         }
@@ -155,11 +138,6 @@ namespace SikonUWP.ViewModel
             set
             {
                 _newAdmin = value;
-                if (NewUser != null)
-                {
-                    _newAdmin.UserName = NewUser.UserName;
-                    _newAdmin.Password = NewUser.Password;
-                }
                 OnPropertyChanged();
             }
         }
@@ -213,7 +191,6 @@ namespace SikonUWP.ViewModel
             
             PersonTypeList = Enum.GetValues(typeof(Participant.PersonType)).OfType<Participant.PersonType>().ToList();
 
-            NewUser = new User();
             NewParticipant = new Participant();
             NewAdmin = new Admin();
             NewSpeaker = new Speaker();
@@ -223,13 +200,29 @@ namespace SikonUWP.ViewModel
             UserTypeList.Add("Speaker");
             UserTypeList.Add("Participant");
 
-            CreateParticipantCommand = new RelayCommand(() => participantHandler.CreateParticipant(NewParticipant), ()=> NewParticipant != null);
-            CreateSpeakerCommand = new RelayCommand(()=> speakerHandler.CreateSpeaker(NewSpeaker), ()=> NewSpeaker != null);
-            CreateAdminCommand = new RelayCommand(()=> adminHandler.CreateAdmin(NewAdmin), ()=> NewAdmin != null);
+            CreateParticipantCommand = new RelayCommand(CreateParticipant, ()=> NewParticipant != null);
+            CreateSpeakerCommand = new RelayCommand(CreateSpeaker, ()=> NewSpeaker != null);
+            CreateAdminCommand = new RelayCommand(CreateAdmin, ()=> NewAdmin != null);
         }
 
 
+        private void CreateParticipant()
+        {
+            NewParticipant = new Participant(Username, Password, PersonType);
+            participantHandler.CreateParticipant(NewParticipant);
+        }
 
+        private void CreateSpeaker()
+        {
+            NewSpeaker = new Speaker(Username, Password, FullName, Description);
+            speakerHandler.CreateSpeaker(NewSpeaker);
+        }
+
+        private void CreateAdmin()
+        {
+            NewAdmin = new Admin(Username, Password, PhoneNumber);
+            adminHandler.CreateAdmin(NewAdmin);
+        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;

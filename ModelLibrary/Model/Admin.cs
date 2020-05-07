@@ -8,16 +8,13 @@ namespace ModelLibrary.Model
     {
 		private string _phoneNumber;
 
-		public string PhoneNumber			
-		{
-			get { return _phoneNumber; }
-			set { _phoneNumber = value; }
-		}
+        public string PhoneNumber
+        {
+            get { return _phoneNumber; }
+            set { _phoneNumber = value; }
+        }
 
-        public User user { get; set; }
-
-
-        public Admin()
+        public Admin() : base()
         {
             
         }
