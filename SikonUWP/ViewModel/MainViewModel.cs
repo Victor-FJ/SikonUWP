@@ -46,6 +46,7 @@ namespace SikonUWP.ViewModel
                     _navigationView.SelectedItem = navigationViewItem;
 
             _frame.Navigate(pageType);
+            _navigationView.IsBackEnabled = true;
         }
 
         #endregion
@@ -65,6 +66,8 @@ namespace SikonUWP.ViewModel
             {
                 await MessageDialogUtil.MessageDialogAsync(PersistencyManager.FileName, PersistencyManager.Message);
             }
+
+            NavigateToPage(typeof(EventHomePage));
         }
     }
 }
