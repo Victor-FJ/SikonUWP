@@ -44,9 +44,9 @@ namespace SikonUWP.Handlers
             else
             {
                 await MessageDialogUtil.MessageDialogAsync("Alt gik godt", $"Lokalet blev oprettet");
-                RoomViewModel.RoomCatalog.Rooms.Clear();
+                RoomViewModel.RoomCatalog.Rooms.Add(RoomViewModel.NewRoom);
                 RoomViewModel.NewRoom = new Room();
-                RoomViewModel.RoomCatalog.LoadRooms();
+                
                 
             }
         }
@@ -66,9 +66,9 @@ namespace SikonUWP.Handlers
             else
             {
                 await MessageDialogUtil.MessageDialogAsync("Alt gik godt", $"Lokalet {roomNo} blev sletet");
-                RoomViewModel.RoomCatalog.Rooms.Clear();
+                RoomViewModel.RoomCatalog.Rooms.Remove(RoomViewModel.SelectedRoom);
                 RoomViewModel.NewRoom = new Room();
-                RoomViewModel.RoomCatalog.LoadRooms();
+                
 
             }
         }
@@ -88,9 +88,9 @@ namespace SikonUWP.Handlers
             else
             {
                 await MessageDialogUtil.MessageDialogAsync("Alt gik godt", $"Lokalet {roomNo} blev opdateret");
-                RoomViewModel.RoomCatalog.Rooms.Clear();
+               int index = RoomViewModel.RoomCatalog.Rooms.IndexOf(RoomViewModel.SelectedRoom);
+               RoomViewModel.RoomCatalog.Rooms[index] = RoomViewModel.NewRoom;
                 RoomViewModel.NewRoom = new Room();
-                RoomViewModel.RoomCatalog.LoadRooms();
 
             }
         }
