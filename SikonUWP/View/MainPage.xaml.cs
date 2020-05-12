@@ -36,6 +36,17 @@ namespace SikonUWP.View
         {
             if (args.InvokedItemContainer.Tag is Type pageType)
                 ContentFrame.Navigate(pageType);
+            if (ContentFrame.CanGoBack)
+                NavigationView.IsBackEnabled = true;
+        }
+
+        //Navigere tilbage en side i viewet hvis det er mugligt når bruger vælger tilbage knappen i navigationviewet
+        private void NavigationView_OnBackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
+        {
+            if (ContentFrame.CanGoBack)
+                ContentFrame.GoBack();
+            if (!ContentFrame.CanGoBack)
+                NavigationView.IsBackEnabled = false;
         }
 
         //Justere farven på title baren

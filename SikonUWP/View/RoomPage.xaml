@@ -22,7 +22,11 @@
             <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Orientation="Vertical">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
             <Grid BorderBrush="Black" BorderThickness="2" Width="640">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100"/>
@@ -31,15 +35,15 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="130"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Lokaler" Margin="5,5,5,5" FontSize="20"/>
+                <TextBlock Text="Lokaler" Margin="5,5,5,5" FontSize="17" FontWeight="ExtraBlack"/>
                 <Line Grid.Column="1" Stroke="Black" StrokeThickness="2" X1="0" X2="0" Y1="0" Y2="40"/>
                 <Line Grid.Column="3" Stroke="Black" StrokeThickness="2" X1="0" X2="0" Y1="0" Y2="40"/>
-                <TextBlock Grid.Column="2" Text="Lokation til lokalet" Margin="5,5,5,5" FontSize="20"/>
-                <TextBlock Grid.Column="4" Text="Max Personer" Margin="5,5,5,5" FontSize="20"/>
+                <TextBlock Grid.Column="2" Text="Lokation til lokalet" Margin="5,5,5,5" FontSize="17" FontWeight="ExtraBlack"/>
+                <TextBlock Grid.Column="4" Text="Max Personer" Margin="5,5,5,5" FontSize="17" FontWeight="ExtraBlack" />
             </Grid>
 
             <ListView ItemsSource="{Binding RoomCatalog.Rooms}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}" SelectedItem="{Binding SelectedRoom, Mode=TwoWay}"
-                          Padding="0" Width="640">
+                          Grid.Row="1" Padding="0" Width="640" ScrollViewer.VerticalScrollMode="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="Padding" Value="0"/>
@@ -66,7 +70,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-        </StackPanel>
+        </Grid>
 
 
         <StackPanel Orientation="Vertical" Grid.Column="1" Width="500">
