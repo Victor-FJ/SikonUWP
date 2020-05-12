@@ -14,7 +14,8 @@
             <NavigationViewItem Icon="Home" Content="Event Home Page" Tag="EventHomePage"/>
             <NavigationViewItem Icon="Edit" Content="Event Editor Page" Tag="EventEditorPage"/>
             <NavigationViewItemHeader Content="Brugere"/>
-            <NavigationViewItem Icon="Contact" Content="User Page ??" Tag="UserCreatorAdminPage"/>
+            <NavigationViewItem Icon="Contact" Content="AdminUserCreator" Tag="UserCreatorAdminPage"/>
+            <NavigationViewItem Icon="Contact" Content="UserLogin" Tag="UserLogin_CreatePage"/>
             <NavigationViewItemHeader Content="Rum"/>
             <NavigationViewItem Content="Lokaler" Tag="RoomPage">
                 <NavigationViewItem.Icon>
