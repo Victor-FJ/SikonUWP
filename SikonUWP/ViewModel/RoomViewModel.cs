@@ -48,7 +48,7 @@ namespace SikonUWP.ViewModel
             _createRoomCommand = new RelayCommand(Create);
             _deleteRoomCommand = new RelayCommand(RoomHandler.DeleteRoom, SelectedIndexIsNotSet);
             _updateRoomCommand = new RelayCommand(RoomHandler.UpdateRoom, SelectedIndexIsNotSet);
-            _clearRoomCommand = new RelayCommand(RoomHandler.ClearRoom);
+            _clearRoomCommand = new RelayCommand(RoomHandler.ClearRoom, Fade);
             
 
             if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
@@ -108,7 +108,7 @@ namespace SikonUWP.ViewModel
                 {
                     _newRoom = new Room();
                 }
-                    
+                ((RelayCommand)_clearRoomCommand).RaiseCanExecuteChanged();    
                 
                 OnPropertyChanged(); }
         }
@@ -118,17 +118,23 @@ namespace SikonUWP.ViewModel
 
         public int SelectedIndex
         {
-            get { return _selectedIndex; }
+            get { return _selectedIndex -1; }
             set
             {
                 _selectedIndex = value; OnPropertyChanged();
                 ((RelayCommand)_deleteRoomCommand).RaiseCanExecuteChanged();
+                ((RelayCommand)_updateRoomCommand).RaiseCanExecuteChanged();
             }
         }
 
+       /// <summary>
+       /// Denne metode faiter commandoernes knapper i RoomPage, når de ikke er selected til et lokale 
+       /// </summary>
+       /// <returns>faiting</returns>
         public bool SelectedIndexIsNotSet()
         {
             return SelectedIndex != -1;
+            
         }
 
 
@@ -143,6 +149,10 @@ namespace SikonUWP.ViewModel
                 OnPropertyChanged(); }
         }
 
+        public bool Fade()
+        {
+            return NewRoom.RoomNo == null && NewRoom.LocationDescription == null && NewRoom.MaxNoPeople == 0;
+        }
         
         
 
