@@ -267,7 +267,7 @@ namespace SikonUWP.ViewModel
 
         public UserCreatorAdminViewModel()
         {
-            FillUserList();
+            
             
             PersonTypeList = Enum.GetValues(typeof(Participant.PersonType)).OfType<Participant.PersonType>().ToList();
 
@@ -291,6 +291,7 @@ namespace SikonUWP.ViewModel
 
         private async void CreateParticipant()
         {
+            FillUserList();
             NewParticipant = new Participant(Username, Password, PersonType);
             if (!UserNameList.Contains(NewParticipant.UserName))
             {
@@ -304,6 +305,7 @@ namespace SikonUWP.ViewModel
 
         private async void CreateSpeaker()
         {
+            FillUserList();
             NewSpeaker = new Speaker(Username, Password, FullName, Description, Image.Name);
             if (!ImageCatalog.ImageCatalog.Dictionary.Keys.Contains(Image.Name))
             {
@@ -328,6 +330,7 @@ namespace SikonUWP.ViewModel
 
         private async void CreateAdmin()
         {
+            FillUserList();
             NewAdmin = new Admin(Username, Password, PhoneNumber);
             if (!UserNameList.Contains(NewAdmin.UserName))
             {
@@ -352,13 +355,11 @@ namespace SikonUWP.ViewModel
         }
 
 
-        private async Task FillUserList()
+        private async void FillUserList()
         {
-            await Task.Run(() =>
-            {
-                UserList = UserCatalogSingleton.Instance.Users.ToList();
+            await UserCatalogSingleton.Instance.LoadUsers();
+            UserList = UserCatalogSingleton.Instance.Users.ToList();
                 
-            });
             UserNameList = new List<string>();
             foreach (User user in UserList)
             {

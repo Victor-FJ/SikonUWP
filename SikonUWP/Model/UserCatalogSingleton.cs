@@ -31,10 +31,9 @@ namespace SikonUWP.Model
         private UserCatalogSingleton()
         {
             Users = new ObservableCollection<User>();
-            LoadUsers();
         }
 
-        public async void LoadUsers()
+        public async Task LoadUsers()
         {
             Users.Clear();
             GenericPersistence<string, User> facade = new GenericPersistence<string, User>("http://localhost:52415/api/BasicUsers");
