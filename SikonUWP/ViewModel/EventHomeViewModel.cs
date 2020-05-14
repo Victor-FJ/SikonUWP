@@ -1,44 +1,246 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Windows.UI.Xaml.Controls;
 using ModelLibrary.Model;
 using SikonUWP.Annotations;
+using SikonUWP.Common;
 using SikonUWP.Model;
+using SikonUWP.View;
 
 namespace SikonUWP.ViewModel
 {
     public class EventHomeViewModel : INotifyPropertyChanged
     {
-        public Event FirstTestEvent { get; set; }
+        public EventSingleton EventSing { get; set; }
 
-        private int _number;
-        public int Number
+        public ObservableCollection<Event> Events { get; set; }
+
+        #region ControlProperties
+
+        private readonly ReadOnlyCollection<string> _orderList = new List<string>()
         {
-            get => _number;
+            "Id",
+            "Title",
+            "Oplægsholder",
+            "Dato"
+        }.AsReadOnly();
+
+        public ReadOnlyCollection<string> OrderList => _orderList;
+
+        private string _selectedOrder;
+        public string SelectedOrder
+        {
+            get { return _selectedOrder; }
             set
             {
-                _number = value;
-                if (EventSingleton.Instance.EventCatalog.Collection.Count > value)
-                    FirstTestEvent = EventSingleton.Instance.EventCatalog.Collection[value];
-                OnPropertyChanged(nameof(FirstTestEvent));
+                _selectedOrder = value;
+                SortEvents();
             }
         }
 
+
+        private const string TypeText = "Alle typer";
+        public ReadOnlyCollection<string> Types => EnumList<Event.EventType>(TypeText);
+
+        private string _selectedType;
+        public string SelectedType
+        {
+            get { return _selectedType; }
+            set
+            {
+                _selectedType = value;
+                FilterEvents();
+            }
+        }
+
+
+        private const string SubjectText = "Alle emner";
+        public ReadOnlyCollection<string> Subjects => EnumList<Event.EventSubject>(SubjectText);
+
+        private string _selectedSubject;
+        public string SelectedSubject
+        {
+            get { return _selectedSubject; }
+            set
+            {
+                _selectedSubject = value;
+                FilterEvents();
+            }
+        }
+
+
+        private const string SpeakerText = "Alle oplægsholdere";
+        public ReadOnlyCollection<object> Speakers => SpeakerList();
+
+        private object _selectedSpeaker;
+        public object SelectedSpeaker
+        {
+            get { return _selectedSpeaker; }
+            set
+            {
+                _selectedSpeaker = value;
+                FilterEvents();
+            }
+        }
+
+
+        private DateTimeOffset? _selectedDate;
+
+        public DateTimeOffset? SelectedDate
+        {
+            get { return _selectedDate; }
+            set
+            {
+                _selectedDate = value;
+                FilterEvents();
+            }
+        }
+
+
+
+        #endregion
+
+        public ICommand NavigateToEventCommand { get; set; }
+        public ICommand ShowAllCommand { get; set; }
+
         public EventHomeViewModel()
         {
-            Load();
+            EventSing = EventSingleton.Instance;
+
+            if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
+                Load();
+            else
+            {
+                Events = new ObservableCollection<Event>();
+                Events.Add(new Event(0, "En lang title på 100 karaktere er en ret lang title. Den er til for at teste maksimalerne. Sådan sea", "Efterhånden er det ved at blive mere alment kendt, at autisme/Aspergers Syndrom ikke er en 'fabriksfejl', men en anden måde at fungere hjernemæssigt på. Denne måde betyder, at man fra dag 1 er bygget til i mindre grad at fornemme sig vej gennem livet, og i større grad at måtte forstå alt. Dette dræner én mere for kræfter, gør én mere socialt udsat, og ofte får andre menneskers handlinger og motiver til at fremstå ulogiske Det betyder også, at vejen til en identitet – en udvikling, alle mennesker gennemgår, og som er svær nok i sig selv – forløber anderledes end for flertallet af befolkningen.Dette handler både om i et fem - fase - forløb at komme ud over den truende fornemmelse af at være 'forkert' og om at bruge andre måder at finde sig selv på end de måder, som giver mening for mange andre – men netop ikke for mennesker på autismespektret.Vejen til identitet med autisme er således kernen i dette indlæg.Efterhånden er det ved at blive mere alment kendt, at autisme / Aspergers Syndrom ikke er en 'fabriksfejl', men en anden måde at fungere hjernemæssigt på.Denne måde betyder, at man fra dag 1 er bygget til i mindre grad at fornemme sig vej gennem livet, og i større grad at måtte forstå alt.Dette dræner én mere for kræfter, gør én mere socialt udsat, og ofte får andre menneskers handlinger og motiver til at fremstå ulogiske Det betyder også, at vejen til en identitet – en udvikling, alle mennesker gennemgår, og som er svær nok i sig selv – forløber anderledes end for flertallet af befolkningen.Dette handler både om i et fem - fase - forløb at komme ud over den truende fornemmelse af at være 'forkert' og om at bruge andre måder at finde sig selv på end de måder, som giver mening for mange andre – men netop ikke for mennesker på autismespektret.Vejen til identitet med autisme er således kernen i dette indlæg Efterhånden er det ved at blive mere alment kendt, at autisme / Aspergers Syndrom ikke er en 'fabriksfejl', men en anden måde at fungere hjernemæssigt på.Denne måde betyder, at man fra dag 1 er bygget til i mindre grad at fornemme sig vej gennem livet, og i større grad at måtte forstå alt.Dette dræner én mere for kræfter, gør én mere socialt udsat, og ofte får andre menneskers handlinger og motiver til at fremstå ulogiske Det betyder også, at vejen til en identitet – en udvikling, alle mennesker gennemgår, og som er svær nok i sig selv – forløber anderledes end for flertallet af befolkningen.Dette handler både om i et fem - fase - forløb at komme ud over den truende fornemmelse af at være 'forkert' og om at bruge andre måder at finde sig selv på end de måder, som giver mening for mange andre – men netop ikke for mennesker på autismespektret.Vejen til identitet med autisme er således kernen i dette indlæg Efterhånden er det ved at blive mere alment kendt, at autisme / Aspergers Syndrom ikke er en 'fabriksfejl', men en anden måde at fungere hjernemæssigt på.Denne måde betyder, at man fra dag 1 er bygget til i mindre grad at fornemme sig ve", Event.EventType.Konkurrence, Event.EventSubject.PædagogiskUdvikling, 110, DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddHours(26), EventSing.Rooms[1], EventSing.Speakers[0], "Stuff"));
+            }
+
+
+            NavigateToEventCommand = new RelayCommand(NavigateToEvent);
+            ShowAllCommand = new RelayCommand(() => { ShowAll(); FilterEvents(); });
+
+            _selectedOrder = _orderList[0];
+            ShowAll();
         }
 
         private async void Load()
         {
-            bool ok = await EventSingleton.Instance.EventCatalog.Load();
-            Number = 0;
-            OnPropertyChanged(nameof(FirstTestEvent));
+            await EventSing.EventCatalog.Load();
+            Events = new ObservableCollection<Event>(EventSing.EventCatalog.Collection);
+            OnPropertyChanged(nameof(Events));
         }
+
+        #region CommandMethods
+
+        public void NavigateToEvent(object parameter)
+        {
+            EventSing.MarkedEvent = (Event)((ItemClickEventArgs)parameter).ClickedItem;
+            MainViewModel.Instance.NavigateToPage(typeof(EventPage));
+        }
+
+        public void ShowAll()
+        {
+            _selectedType = TypeText;
+            _selectedSubject = SubjectText;
+            _selectedSpeaker = SpeakerText;
+            _selectedDate = null;
+            OnPropertyChanged(nameof(SelectedType));
+            OnPropertyChanged(nameof(SelectedSubject));
+            OnPropertyChanged(nameof(SelectedSpeaker));
+            OnPropertyChanged(nameof(SelectedDate));
+        }
+
+        #endregion
+
+        #region SortAndFilter
+
+        private void SortEvents()
+        {
+            if (_selectedOrder == _orderList[0])
+            {
+                Events = new ObservableCollection<Event>(EventSing.EventCatalog.Collection);
+                OnPropertyChanged(nameof(Events));
+                return;
+            }
+
+            IEnumerable<Event> events;
+
+            if (_selectedOrder == _orderList[1])
+                events = from @event in EventSing.EventCatalog.Collection orderby @event.Title select @event;
+            else if (_selectedOrder == _orderList[2])
+                events = from @event in EventSing.EventCatalog.Collection orderby @event.Speaker.FullName select @event;
+            else if (_selectedOrder == _orderList[3])
+                events = from @event in EventSing.EventCatalog.Collection orderby @event.StartDate select @event;
+            else
+                throw new NotImplementedException();
+
+            Events = new ObservableCollection<Event>(events);
+            OnPropertyChanged(nameof(Events));
+        }
+
+        private void FilterEvents()
+        {
+            bool[] filters = new bool[4];
+
+            if (Enum.TryParse(_selectedType, out Event.EventType typeEnum))
+                filters[0] = true;
+            if (Enum.TryParse(_selectedSubject, out Event.EventSubject subjectEnum))
+                filters[1] = true;
+            if (_selectedSpeaker is Speaker speaker)
+                filters[2] = true;
+            else
+                speaker = null;
+            DateTimeOffset selectedDate;
+            if (_selectedDate != null)
+            {
+                filters[3] = true;
+                selectedDate = _selectedDate.Value;
+            }
+
+            foreach (Event @event in EventSing.EventCatalog.Collection)
+            {
+                bool typInc = !filters[0] || filters[0] && @event.Type == typeEnum;
+                bool subInc = !filters[1] || filters[1] && @event.Subject == subjectEnum;
+                bool speInc = !filters[2] || filters[2] && @event.Speaker == speaker;
+                bool datInc = !filters[3] || filters[3] && @event.StartDate.Date == selectedDate.Date;
+
+                bool eveInc = typInc && subInc && speInc && datInc;
+                bool eveCon = Events.Contains(@event);
+
+                if (eveInc && !eveCon)
+                    Events.Add(@event);
+                else if (!eveInc && eveCon)
+                    Events.Remove(@event);
+            }
+        }
+
+        #endregion
+
+        #region ComboBoxFilers
+
+        private ReadOnlyCollection<string> EnumList<T>(string allString)
+        {
+            List<T> enumList = Enum.GetValues(typeof(T)).OfType<T>().ToList();
+            List<string> comboList = new List<string>(from @enum in enumList select @enum.ToString());
+            comboList.Insert(0, allString);
+            return comboList.AsReadOnly();
+        }
+
+        private ReadOnlyCollection<object> SpeakerList()
+        {
+            List<object> speakerList = new List<object>(EventSing.Speakers);
+            speakerList.Insert(0, SpeakerText);
+            return speakerList.AsReadOnly();
+        }
+
+        #endregion
 
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -39,15 +39,19 @@ namespace SikonUWP.ViewModel
         /// <param name="pageType">The type of the page</param>
         public void NavigateToPage(Type pageType)
         {
+            _frame.Navigate(pageType);
+            UptNaviCursor(pageType);
+            if (_frame.CanGoBack)
+                _navigationView.IsBackEnabled = true;
+        }
+
+        public void UptNaviCursor(Type pageType)
+        {
             foreach (object menuItem in _navigationView.MenuItems)
                 if (menuItem is NavigationViewItem navigationViewItem
                     && navigationViewItem.Tag is Type naviPageType
                     && naviPageType == pageType)
                     _navigationView.SelectedItem = navigationViewItem;
-
-            _frame.Navigate(pageType);
-            if (_frame.CanGoBack)
-                _navigationView.IsBackEnabled = true;
         }
 
         #endregion

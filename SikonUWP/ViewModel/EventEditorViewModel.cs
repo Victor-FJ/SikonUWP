@@ -5,8 +5,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
@@ -15,7 +13,6 @@ using SikonUWP.Persistency;
 using ModelLibrary.Model;
 using SikonUWP.Annotations;
 using SikonUWP.Common;
-using SikonUWP.Handlers;
 using SikonUWP.Model;
 using SikonUWP.View;
 
@@ -35,11 +32,11 @@ namespace SikonUWP.ViewModel
 
         private readonly string[] _toolTipText =
         {
-            "Begivenhedens title tekst", "Den person som er vært for denne begivenheden",
-            "Den dato hvor begivenheden afholdes", "Det tidspunkt hvor begivenheden begynder",
-            "Det tidspunkt hvor begivenheden slutter", "En beskrivelse af begivenheden",
+            "Begivenhedens title tekst", "En beskrivelse af begivenheden",
             "Hvilken form for begivenhed der er tale om", "Hvilket emne som begivenheden handler om",
-            "Det lokale hvor begivenheden forgår", "Det antal personer begivenheden højst kan have",
+            "Det antal personer begivenheden højst kan have", "Den dato hvor begivenheden afholdes", 
+            "Det tidspunkt hvor begivenheden begynder", "Det tidspunkt hvor begivenheden slutter",
+            "Det lokale hvor begivenheden forgår", "Den person som er vært for denne begivenheden",
             "Et billed til begivenheden", "Navnet til billedet"
         };
 
@@ -203,8 +200,8 @@ namespace SikonUWP.ViewModel
                 {
                     ToolTip(4, ex.Message);
                 }
+                SetDateTime();
             }
-            //TODO: When seting a new room perform date check again
         }
 
 
@@ -219,8 +216,8 @@ namespace SikonUWP.ViewModel
             {
                 EditedEvent.Speaker = value;
                 ToolTip(9);
+                SetDateTime();
             }
-            //TODO: When seting a new speaker perform date check again
         }
 
 
@@ -274,22 +271,21 @@ namespace SikonUWP.ViewModel
             EventSing = EventSingleton.Instance;
             ImageSing = ImageSingleton.Instance;
 
-            Load();
-
-            //EventSing.MarkedEvent = new Event(0, "Super Space Event", "Super sjovt rum begivenhed med alle muglige slags rumskibe", Event.EventType.Workshop, Event.EventSubject.Autisme, 4, DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddHours(26), EventSing.Rooms[2], EventSing.Speakers[0], "Avatar Space Station.jpg");
-
             EditedEvent = EventSing.MarkedEvent;
 
             StartUpToolTip();
             StartUpDate();
 
             if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
+            {
                 StartUpImage();
+                Load();
+            }
+                
 
             GetImageCommand = new RelayCommand(GetImage);
             ClearCommand = new RelayCommand(Clear);
             CreateCommand = new RelayCommand(Create);
-
         }
 
         #region StartUpMethods
@@ -362,11 +358,26 @@ namespace SikonUWP.ViewModel
             {
                 try
                 {
-                    bool ok = await ImageSing.ImageCatalog.AddImage(EventSing.MarkedImage, ImageName);
-                    if (ok)
-                        ok = await EventSing.EventCatalog.Add(EditedEvent, true);
-                    if (!ok)
-                        throw new BaseException("You though this would not be possible. Looks like you missed something");
+                    bool eventOk = false;
+                    bool imageOk = await ImageSing.ImageCatalog.AddImage(EventSing.MarkedImage, ImageName);
+                    if (imageOk)
+                        eventOk = await EventSing.EventCatalog.Add(EditedEvent, true);
+                    if (eventOk)
+                    {
+                        bool doNavigate = await MessageDialogUtil.InputDialogAsync("Success",
+                            "Fik succesfuldt lavet begivenheden. Vil du navigere til den?");
+                        if (doNavigate)
+                        {
+                            EventSing.IsNew = false;
+                            MainViewModel.Instance.NavigateToPage(typeof(EventPage));
+                        }
+                        else
+                            throw new NotImplementedException();
+                        return;
+                    }
+                    if (imageOk)
+                        await ImageSing.ImageCatalog.RemoveImage(ImageName);
+                    throw new BaseException("You though this would not be possible. Looks like you missed something");
                 }
                 catch (HttpRequestException)
                 {
@@ -380,9 +391,7 @@ namespace SikonUWP.ViewModel
                     if (!comBools[i])
                         ToolTip(i, "Skal være udfyldt");
                 if (!comBools[4])
-                {
-                    ToolTip(4, "Er du sikker på at den skal være 0", "#FFE2C300");
-                }
+                    ToolTip(4, "Kan ikke være 0", ColorRed);
             }
         }
 

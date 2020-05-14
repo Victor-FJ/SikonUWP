@@ -1,19 +1,22 @@
 ﻿using System;
-using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Windows.UI.Xaml.Data;
 
 namespace SikonUWP.Resources
 {
-    public class CountListConverter : IValueConverter
+    public class DateTimeOffsetConverter : IValueConverter
     {
+        public string Format { get; set; }
+
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            // The value parameter is the data from the source object.
-            IList list = (IList)value;
-            return list.Count;
+            DateTimeOffset date = (DateTimeOffset) value;
+            return date.ToString(Format);
         }
 
-        // ConvertBack is not implemented for a OneWay binding.
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             throw new NotImplementedException();
