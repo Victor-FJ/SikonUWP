@@ -181,7 +181,7 @@ namespace SikonUWP.ViewModel
 
 
         //Room properties
-        public ObservableCollection<Room> Rooms => EventSing.Rooms;
+        public ObservableCollection<Room> Rooms => RoomCatalogSingleton.Instance.Rooms;
 
         public Room SelectedRoom
         {
@@ -207,7 +207,7 @@ namespace SikonUWP.ViewModel
 
         //Speaker properties
 
-        public ObservableCollection<Speaker> Speakers => EventSing.Speakers;
+        public ObservableCollection<Speaker> Speakers => SpeakerCatalogSingleton.Instance.Speakers;
 
         public Speaker SelectedSpeaker
         {

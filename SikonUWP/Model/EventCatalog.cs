@@ -19,20 +19,20 @@ namespace SikonUWP.Model
         private ObservableCollection<Event> _collection;
 
 
-        private readonly GenericPersistence<int, Event> _eventPersistence;
-
         private readonly ObservableCollection<Speaker> _speakers;
         private readonly ObservableCollection<Room> _rooms;
         private readonly List<string> _imageNames;
 
-        public EventCatalog(GenericPersistence<int, Event> eventPersistence, ObservableCollection<Speaker> speakers, ObservableCollection<Room> rooms, List<string> imageNames)
+        private readonly GenericPersistence<int, Event> _eventPersistence;
+
+        public EventCatalog(ObservableCollection<Speaker> speakers, ObservableCollection<Room> rooms, List<string> imageNames, GenericPersistence<int, Event> eventPersistence)
         {
             _collection = new ObservableCollection<Event>();
             Collection = new ReadOnlyObservableCollection<Event>(_collection);
-            _eventPersistence = eventPersistence;
             _rooms = rooms;
             _speakers = speakers;
             _imageNames = imageNames;
+            _eventPersistence = eventPersistence;
         }
 
         public async Task<bool> Load()
