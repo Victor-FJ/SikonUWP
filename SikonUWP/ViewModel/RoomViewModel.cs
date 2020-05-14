@@ -16,7 +16,7 @@ using SikonUWP.Model;
 
 namespace SikonUWP.ViewModel
 {
-    public class RoomViewModel: INotifyPropertyChanged
+    public class RoomViewModel : INotifyPropertyChanged
     {
         public RoomCatalogSingleton RoomCatalog { get; set; }
 
@@ -49,12 +49,15 @@ namespace SikonUWP.ViewModel
             _deleteRoomCommand = new RelayCommand(RoomHandler.DeleteRoom, SelectedIndexIsNotSet);
             _updateRoomCommand = new RelayCommand(RoomHandler.UpdateRoom, SelectedIndexIsNotSet);
             _clearRoomCommand = new RelayCommand(RoomHandler.ClearRoom, Fade);
-            
+
 
             if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
-            {
-                RoomCatalog.LoadRooms();
-            }
+                Load();
+        }
+
+        private async void Load()
+        {
+            await RoomCatalog.LoadRooms();
         }
 
         //Denne metode blev brugt til hjælp for at programmet ikke crashede til at starte med, men
@@ -98,7 +101,7 @@ namespace SikonUWP.ViewModel
 
         //NewRoom
         private Room _newRoom;
-        public Room NewRoom 
+        public Room NewRoom
         {
             get { return _newRoom; }
             set
@@ -108,9 +111,10 @@ namespace SikonUWP.ViewModel
                 {
                     _newRoom = new Room();
                 }
-                ((RelayCommand)_clearRoomCommand).RaiseCanExecuteChanged();    
-                
-                OnPropertyChanged(); }
+                ((RelayCommand)_clearRoomCommand).RaiseCanExecuteChanged();
+
+                OnPropertyChanged();
+            }
         }
 
         //Func
@@ -118,7 +122,7 @@ namespace SikonUWP.ViewModel
 
         public int SelectedIndex
         {
-            get { return _selectedIndex -1; }
+            get { return _selectedIndex - 1; }
             set
             {
                 _selectedIndex = value; OnPropertyChanged();
@@ -127,14 +131,14 @@ namespace SikonUWP.ViewModel
             }
         }
 
-       /// <summary>
-       /// Denne metode faiter commandoernes knapper i RoomPage, når de ikke er selected til et lokale 
-       /// </summary>
-       /// <returns>faiting</returns>
+        /// <summary>
+        /// Denne metode faiter commandoernes knapper i RoomPage, når de ikke er selected til et lokale 
+        /// </summary>
+        /// <returns>faiting</returns>
         public bool SelectedIndexIsNotSet()
         {
             return SelectedIndex != -1;
-            
+
         }
 
 
@@ -143,18 +147,21 @@ namespace SikonUWP.ViewModel
         public Room SelectedRoom
         {
             get { return _selectedRoom; }
-            set { _selectedRoom = value;
+            set
+            {
+                _selectedRoom = value;
                 if (_selectedRoom != null)
-                    NewRoom = new Room (_selectedRoom.RoomNo, _selectedRoom.LocationDescription, _selectedRoom.MaxNoPeople);
-                OnPropertyChanged(); }
+                    NewRoom = new Room(_selectedRoom.RoomNo, _selectedRoom.LocationDescription, _selectedRoom.MaxNoPeople);
+                OnPropertyChanged();
+            }
         }
 
         public bool Fade()
         {
             return NewRoom.RoomNo == null && NewRoom.LocationDescription == null && NewRoom.MaxNoPeople == 0;
         }
-        
-        
+
+
 
         //Property Change
 

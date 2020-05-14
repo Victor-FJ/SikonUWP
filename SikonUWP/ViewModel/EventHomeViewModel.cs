@@ -132,6 +132,8 @@ namespace SikonUWP.ViewModel
 
         private async void Load()
         {
+            await RoomCatalogSingleton.Instance.LoadRooms();
+            await SpeakerCatalogSingleton.Instance.LoadSpeakers();
             await EventSing.EventCatalog.Load();
             Events = new ObservableCollection<Event>(EventSing.EventCatalog.Collection);
             OnPropertyChanged(nameof(Events));
