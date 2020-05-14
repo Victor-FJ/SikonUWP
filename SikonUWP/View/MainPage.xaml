@@ -40,6 +40,7 @@
                 <NavigationViewItemSeparator/>
                 <NavigationViewItemHeader Content="Brugere"/>
                 <NavigationViewItem Icon="Contact" Content="User Page ??" Tag="UserCreatorAdminPage"/>
+                <NavigationViewItem Icon="Contact" Content="UserLogin/Creator" Tag="UserLogin_CreatePage"/>
                 <NavigationViewItemSeparator/>
                 <NavigationViewItemHeader Content="Rum"/>
                 <NavigationViewItem Content="Lokaler" Tag="RoomPage">

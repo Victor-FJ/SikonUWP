@@ -8,7 +8,7 @@ namespace ModelLibrary.Model
     {
         public enum PersonType
         {
-            Autist, ForældreAfAutist, Psykolog, Fagperson, Studerende
+            Vælg_type, Autist, ForældreAfAutist, Psykolog, Fagperson, Studerende
         }
 
         public PersonType Type { get; set; }

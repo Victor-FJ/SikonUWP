@@ -11,16 +11,16 @@ namespace SikonUWP.Model
 {
     class UserCatalogSingleton
     {
-		private static UserCatalogSingleton _instance;
+		private static UserCatalogSingleton _instance = new UserCatalogSingleton();
 
 		public static UserCatalogSingleton Instance
 		{
             get
             {
-                if (_instance == null)
-                {
-                    _instance = new UserCatalogSingleton();
-                }
+                //if (_instance == null)
+                //{
+                //    _instance = new UserCatalogSingleton();
+                //}
 
                 return _instance;
             }
@@ -37,12 +37,14 @@ namespace SikonUWP.Model
         public async void LoadUsers()
         {
             Users.Clear();
-            GenericPersistence<string, User> facade = new GenericPersistence<string, User>("http://localhost:52415/api/Users");
+            GenericPersistence<string, User> facade = new GenericPersistence<string, User>("http://localhost:52415/api/BasicUsers");
             List<User> userList = await facade.Get();
             foreach (User user in userList)
             {
                 Users.Add(user);
             }
         }
+
+        
 	}
 }
