@@ -101,21 +101,20 @@ namespace SikonUWP.Model
 
         public void CheckDate(Event selectedEvent)
         {
-            List<Event> possConSpeakerEvents = (from @event in _collection
-                where selectedEvent.Speaker == @event.Speaker
-                select @event).ToList();
+            int speakerConflicts = (from @event in _collection
+                where selectedEvent.Speaker == @event.Speaker && selectedEvent.StartDate < @event.EndDate && selectedEvent.EndDate > @event.StartDate
+                select @event).Count();
 
-            foreach (Event possConEvent in possConSpeakerEvents)
-                if (selectedEvent.StartDate < possConEvent.EndDate && selectedEvent.EndDate > possConEvent.StartDate)
-                    throw new OutsideRangeException("Værten er optaget af en anden begivenhed på det tidspunkt");
+            if (speakerConflicts != 0)
+                throw new OutsideRangeException("Værten er optaget på dette tidspunkt");
 
-            List<Event> possConRoomEvents = (from @event in _collection
-                where selectedEvent.Room == @event.Room
-                select @event).ToList();
-
-            foreach (Event possConEvent in possConSpeakerEvents)
-                if (selectedEvent.StartDate < possConEvent.EndDate && selectedEvent.EndDate > possConEvent.StartDate)
-                    throw new OutsideRangeException("Lokalet er brugt af en anden begivenhed på det tidspunkt");
+            int roomConflicts = (from @event in _collection
+                where selectedEvent.Room == @event.Room && selectedEvent.StartDate < @event.EndDate &&
+                      selectedEvent.EndDate > @event.StartDate
+                select @event).Count();
+            
+            if (roomConflicts != 0) 
+                throw new OutsideRangeException("Lokalet bliver brugt på dette tidspunktet");
         }
 
         public void CheckImage(Event selectedEvent, bool beUnique)

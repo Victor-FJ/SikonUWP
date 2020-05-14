@@ -8,7 +8,7 @@
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:resources="using:SikonUWP.Resources"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" d:DesignWidth="1130" d:DesignHeight="600">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" d:DesignWidth="1390" d:DesignHeight="620">
 
     <Page.DataContext>
         <viewModel:EventEditorViewModel/>
@@ -31,7 +31,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Grid Margin="50" Background="WhiteSmoke">
+        <Grid Margin="50" Background="#FFE4B579">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
@@ -104,7 +104,7 @@
                          Value="{Binding ElementName=DesBox, Path=Text.Length}"/>
         </Grid>
 
-        <Grid Grid.Column="1" Margin="50">
+        <Grid Grid.Column="1" Margin="50" Background="#FFE4B579">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
@@ -121,7 +121,6 @@
                 <RowDefinition/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Rectangle Grid.ColumnSpan="2" Grid.RowSpan="2" Fill="#FFE4B579"/>
             <TextBlock Text="Type" Grid.Column="0" Grid.Row="0" Style="{StaticResource TxtBlkStyle}"/>
             <ComboBox Grid.Column="1" Grid.Row="0" PlaceholderText="angiv en type"
                       ItemsSource="{Binding EventTypes}" SelectedItem="{Binding SelectedType, Mode=TwoWay}" 
@@ -149,7 +148,7 @@
                 </ToolTipService.ToolTip>
             </ComboBox>
             <TextBlock Grid.Column="0" Grid.Row="3" Text="Antal Deltagere" Style="{StaticResource TxtBlkStyle}"/>
-            <controls:NumberBox Grid.Column="0" Grid.Row="4" SpinButtonPlacementMode="Inline" Minimum="0"
+            <controls:NumberBox Grid.Column="0" Grid.Row="4" Minimum="0"
                                 Value="{Binding MaxNoParticipant, Mode=TwoWay}" Style="{StaticResource NumberBoxStyle}">
                 <ToolTipService.ToolTip>
                     <TextBlock Text="{Binding ToolTipText[4]}" Foreground="{Binding ToolTipColor[4]}"/>
@@ -157,8 +156,6 @@
             </controls:NumberBox>
             <Rectangle Grid.Column="0" Grid.Row="4" Stroke="{Binding ToolTipColor[4]}" Style="{StaticResource BorderBoxStyle}"/>
 
-
-            <Rectangle Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" Grid.RowSpan="2" Fill="#FFE4B579"/>
             <TextBlock Text="Billed" Grid.Column="0" Grid.Row="6" VerticalAlignment="Top"
                        HorizontalAlignment="Center" Style="{StaticResource TxtBlkStyle}"/>
             <Button Grid.Column="0" Grid.Row="6" Content="Vælg Billed" 
@@ -167,7 +164,7 @@
                     <TextBlock Text="{Binding ToolTipText[10]}" Foreground="{Binding ToolTipColor[10]}"/>
                 </ToolTipService.ToolTip>
             </Button>
-            <Image Grid.Column="1" Grid.Row="6" Margin="8" Source="{Binding ImageView, Converter={StaticResource ImageConverter}}">
+            <Image Grid.Column="1" Grid.Row="6" Margin="8" Source="{Binding ImageView, Converter={StaticResource ImageConverter}}" MaxHeight="220">
                 <ToolTipService.ToolTip>
                     <TextBlock Text="{Binding ToolTipText[10]}" Foreground="{Binding ToolTipColor[10]}"/>
                 </ToolTipService.ToolTip>
@@ -185,10 +182,8 @@
             <ProgressBar Grid.Column="1" Grid.Row="7" Margin="8,0,8,2" Maximum="50" VerticalAlignment="Bottom"
                          Value="{Binding ElementName=ImageNameBox, Path=Text.Length}"/>
 
-            <Rectangle Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="2" Fill="#FFE4B579"/>
             <Button Grid.Column="0" Grid.Row="9" Content="Reset Info" Command="{Binding ClearCommand}" Style="{StaticResource ButtonStyle}"/>
             <Button Grid.Column="1" Grid.Row="9" Content="Skab Begivenheden" Command="{Binding CreateCommand}" Style="{StaticResource ButtonStyle}"/>
-
         </Grid>
     </Grid>
 </Page>

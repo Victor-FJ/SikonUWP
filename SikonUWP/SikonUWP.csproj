@@ -131,7 +131,6 @@
     <Compile Include="Model\ParticipantCatalogSingleton.cs" />
     <Compile Include="Model\SpeakerCatalogSingleton.cs" />
     <Compile Include="Model\ImageSingleton.cs" />
-    <Compile Include="Resources\CountListConverter.cs" />
     <Compile Include="Handlers\RoomHandler.cs" />
     <Compile Include="Handlers\UserHandler.cs" />
     <Compile Include="Model\RoomCatalogSingleton.cs" />
@@ -140,9 +139,12 @@
     <Compile Include="Persistency\PersistencyManager.cs" />
     <Compile Include="Persistency\ImagePersistence.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Resources\DateTimeOffsetConverter.cs" />
+    <Compile Include="Resources\DictionaryConverter.cs" />
     <Compile Include="Resources\ImageConverter.cs" />
     <Compile Include="ViewModel\EventEditorViewModel.cs" />
     <Compile Include="ViewModel\EventHomeViewModel.cs" />
+    <Compile Include="ViewModel\EventViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ParticipantCreatorViewModel.cs" />
     <Compile Include="ViewModel\RoomViewModel.cs" />
@@ -152,6 +154,9 @@
     </Compile>
     <Compile Include="View\EventHomePage.xaml.cs">
       <DependentUpon>EventHomePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EventPage.xaml.cs">
+      <DependentUpon>EventPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -170,8 +175,9 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Beley.jpg" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
-    <Content Include="Assets\sikonBillede.png" />
+    <Content Include="Assets\SikonBillede.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.scale-200.png" />
@@ -196,6 +202,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\EventPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -215,6 +225,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.3.200213001</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Uwp.Managed">
+      <Version>2.0.1</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
