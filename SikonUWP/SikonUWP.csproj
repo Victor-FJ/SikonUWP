@@ -149,6 +149,7 @@
     <Compile Include="ViewModel\ParticipantCreatorViewModel.cs" />
     <Compile Include="ViewModel\RoomViewModel.cs" />
     <Compile Include="ViewModel\UserCreatorAdminViewModel.cs" />
+    <Compile Include="ViewModel\UserLogin_CreateViewModel.cs" />
     <Compile Include="View\EventEditorPage.xaml.cs">
       <DependentUpon>EventEditorPage.xaml</DependentUpon>
     </Compile>
@@ -167,6 +168,9 @@
     </Compile>
     <Compile Include="View\UserCreatorAdminPage.xaml.cs">
       <DependentUpon>UserCreatorAdminPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserLogin_CreatePage.xaml.cs">
+      <DependentUpon>UserLogin_CreatePage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -215,6 +219,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\UserCreatorAdminPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserLogin_CreatePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
