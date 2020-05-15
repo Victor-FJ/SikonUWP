@@ -48,9 +48,8 @@ namespace SikonUWP.ViewModel
             _createRoomCommand = new RelayCommand(Create);
             _deleteRoomCommand = new RelayCommand(RoomHandler.DeleteRoom, SelectedIndexIsNotSet);
             _updateRoomCommand = new RelayCommand(RoomHandler.UpdateRoom, SelectedIndexIsNotSet);
-            _clearRoomCommand = new RelayCommand(RoomHandler.ClearRoom, Fade);
+            _clearRoomCommand = new RelayCommand(RoomHandler.ClearRoom,Fade);
             
-
             if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
                 RoomCatalog.LoadRooms();
@@ -108,9 +107,9 @@ namespace SikonUWP.ViewModel
                 {
                     _newRoom = new Room();
                 }
-                ((RelayCommand)_clearRoomCommand).RaiseCanExecuteChanged();    
-                
-                OnPropertyChanged(); }
+                OnPropertyChanged();
+                ((RelayCommand)_clearRoomCommand).RaiseCanExecuteChanged();
+            }
         }
 
         //Func
@@ -118,12 +117,13 @@ namespace SikonUWP.ViewModel
 
         public int SelectedIndex
         {
-            get { return _selectedIndex -1; }
+            get { return _selectedIndex; }
             set
             {
                 _selectedIndex = value; OnPropertyChanged();
                 ((RelayCommand)_deleteRoomCommand).RaiseCanExecuteChanged();
                 ((RelayCommand)_updateRoomCommand).RaiseCanExecuteChanged();
+                
             }
         }
 
@@ -146,15 +146,20 @@ namespace SikonUWP.ViewModel
             set { _selectedRoom = value;
                 if (_selectedRoom != null)
                     NewRoom = new Room (_selectedRoom.RoomNo, _selectedRoom.LocationDescription, _selectedRoom.MaxNoPeople);
+                
                 OnPropertyChanged(); }
         }
 
+        /// <summary>
+        /// Fader clear commandoen når der ikke er noget i tekstbokserne
+        /// </summary>
+        /// <returns>Fading</returns>
         public bool Fade()
         {
-            return NewRoom.RoomNo == null && NewRoom.LocationDescription == null && NewRoom.MaxNoPeople == 0;
+            return NewRoom.RoomNo != null && NewRoom.LocationDescription != null && NewRoom.MaxNoPeople != 0;
         }
-        
-        
+
+
 
         //Property Change
 

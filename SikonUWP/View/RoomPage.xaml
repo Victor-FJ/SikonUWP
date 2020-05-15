@@ -27,19 +27,20 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition />
             </Grid.RowDefinitions>
+            
             <Grid BorderBrush="Black" BorderThickness="2" Width="640">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="102"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="400"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="130"/>
+                    <ColumnDefinition Width="120"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Lokaler" Margin="5,5,5,5" FontSize="17" FontWeight="ExtraBlack"/>
+                <TextBlock Text="Lokalets nr." Margin="5,5,5,5" FontSize="16" FontWeight="ExtraBlack"/>
                 <Line Grid.Column="1" Stroke="Black" StrokeThickness="2" X1="0" X2="0" Y1="0" Y2="40"/>
                 <Line Grid.Column="3" Stroke="Black" StrokeThickness="2" X1="0" X2="0" Y1="0" Y2="40"/>
-                <TextBlock Grid.Column="2" Text="Lokation til lokalet" Margin="5,5,5,5" FontSize="17" FontWeight="ExtraBlack"/>
-                <TextBlock Grid.Column="4" Text="Max Personer" Margin="5,5,5,5" FontSize="17" FontWeight="ExtraBlack" />
+                <TextBlock Grid.Column="2" Text="Lokation" Margin="5,5,5,5" FontSize="16" FontWeight="ExtraBlack"/>
+                <TextBlock Grid.Column="4" Text="Max Personer" Margin="5,5,5,5" FontSize="16" FontWeight="ExtraBlack" />
             </Grid>
 
             <ListView ItemsSource="{Binding RoomCatalog.Rooms}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}" SelectedItem="{Binding SelectedRoom, Mode=TwoWay}"
@@ -76,12 +77,12 @@
         <StackPanel Orientation="Vertical" Grid.Column="1" Width="500">
 
             <StackPanel>
-                <TextBlock Text="Lokalets dør-nr." FontWeight="Bold"></TextBlock>
-                <TextBox Text="{Binding NewRoom.RoomNo, Mode=TwoWay}" PlaceholderText="Skriv dørens Nr."></TextBox>
+                <TextBlock Text="Lokalets nr." FontWeight="Bold"></TextBlock>
+                <TextBox Text="{Binding NewRoom.RoomNo, Mode=TwoWay}" PlaceholderText="Skriv nr."></TextBox>
             </StackPanel>
 
             <StackPanel>
-                <TextBlock Text="Lokalets lokation" FontWeight="Bold"></TextBlock>
+                <TextBlock Text="Lokation" FontWeight="Bold"></TextBlock>
                 <TextBox Text="{Binding NewRoom.LocationDescription, Mode=TwoWay}" PlaceholderText="Skriv Lokation"></TextBox>
             </StackPanel>
 
@@ -127,7 +128,7 @@
 
                 </Button>
 
-                <Button Grid.Column="3" HorizontalAlignment="Stretch" Margin="5" Content="Clear" Command="{Binding ClearRoomCommand}" FontWeight="SemiBold">
+                <Button Grid.Column="3" HorizontalAlignment="Stretch" Margin="5" Content="Clear" Command="{Binding ClearRoomCommand}" FontWeight="SemiBold" Click="Button_Click_1">
                     <Button.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="Black"/>

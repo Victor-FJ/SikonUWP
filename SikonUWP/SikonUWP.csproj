@@ -143,6 +143,7 @@
     <Compile Include="Resources\ImageConverter.cs" />
     <Compile Include="ViewModel\EventEditorViewModel.cs" />
     <Compile Include="ViewModel\EventHomeViewModel.cs" />
+    <Compile Include="ViewModel\EventScheduleViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ParticipantCreatorViewModel.cs" />
     <Compile Include="ViewModel\RoomViewModel.cs" />
@@ -153,6 +154,9 @@
     </Compile>
     <Compile Include="View\EventHomePage.xaml.cs">
       <DependentUpon>EventHomePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EventSchedulePage.xaml.cs">
+      <DependentUpon>EventSchedulePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -197,6 +201,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\EventHomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EventSchedulePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

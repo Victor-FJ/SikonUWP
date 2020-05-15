@@ -65,7 +65,7 @@ namespace SikonUWP.Handlers
             }
             else
             {
-                await MessageDialogUtil.MessageDialogAsync("Alt gik godt", $"Lokalet {roomNo} blev sletet");
+                await MessageDialogUtil.MessageDialogAsync("Alt gik godt", $"Lokalet {roomNo} blev slettet");
                 RoomViewModel.RoomCatalog.Rooms.Remove(RoomViewModel.SelectedRoom);
                 RoomViewModel.NewRoom = new Room();
                 
@@ -101,6 +101,7 @@ namespace SikonUWP.Handlers
         public void ClearRoom()
         {
             RoomViewModel.NewRoom = new Room();
+            RoomViewModel.SelectedIndex = - 1;
         }
 
         /// <summary>
