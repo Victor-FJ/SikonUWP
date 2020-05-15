@@ -45,6 +45,7 @@ namespace SikonUWP.View
         {
             if (ContentFrame.CanGoBack)
                 ContentFrame.GoBack();
+            ((MainViewModel)this.DataContext).UptNaviCursor(ContentFrame.CurrentSourcePageType);
             if (!ContentFrame.CanGoBack)
                 NavigationView.IsBackEnabled = false;
         }

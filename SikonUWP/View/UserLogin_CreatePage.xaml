@@ -15,14 +15,14 @@
 
             <Grid>
         
-        <TextBox HorizontalAlignment="Left" Margin="712,321,0,0" Text="{Binding NewParticipant.UserName, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" PlaceholderText="Username" Width="178"/>
-        <TextBox HorizontalAlignment="Left" Margin="712,368,0,0" Text="{Binding NewParticipant.Password, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" PlaceholderText="Password" Width="178"/>
-        <ComboBox Margin="712,436,0,0" SelectedItem ="{Binding NewParticipant.Type, Mode=TwoWay}" ItemsSource="{Binding PersonTypeList}" Width="178"/>
+        <TextBox HorizontalAlignment="Left" Margin="712,321,0,0" Text="{Binding Username, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" PlaceholderText="Username" Width="178"/>
+        <TextBox HorizontalAlignment="Left" Margin="712,368,0,0" Text="{Binding Password, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" PlaceholderText="Password" Width="178"/>
+        <ComboBox Margin="712,436,0,0" SelectedItem ="{Binding PersonType, Mode=TwoWay}" ItemsSource="{Binding PersonTypeList}" Visibility="{Binding Mode2}" Width="178"/>
 
         <Button Content="Log ind" Visibility="{Binding Mode1}" Margin="677,606,0,0" VerticalAlignment="Top" Width="118" Height="32"/>
-        <Button Content="Opret bruger" Visibility="{Binding Mode2}" Command="{Binding ChangeModeCommand}" Margin="677,606,0,0" VerticalAlignment="Top" Width="118" Height="32"/>
+        <Button Content="Opret ny bruger" Visibility="{Binding Mode1}" Command="{Binding ChangeModeCommand}" Margin="806,606,0,0" VerticalAlignment="Top" Width="118" Height="32"/>
         <Button Content="Afbryd" Visibility="{Binding Mode2}" Command="{Binding ChangeModeCommand}" Margin="806,606,0,0" VerticalAlignment="Top" Width="118" Height="32"/>
-        <Button Content="Opret ny bruger" Visibility="{Binding Mode1}" Command ="{Binding CreateParticipantCommand}" Margin="806,606,0,0" VerticalAlignment="Top" Height="32" Width="118"/>
+        <Button Content="Opret bruger" Visibility="{Binding Mode2}" Command ="{Binding CreateParticipantCommand}" Margin="677,606,0,0" VerticalAlignment="Top" Height="32" Width="118"/>
 
     </Grid>
 </Page>

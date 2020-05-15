@@ -17,11 +17,10 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="2*"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Image Source="../Assets/sikonBillede.png" Height="100" Margin="30,0,30,0"/>
-            <TextBlock Grid.Column="1" Text="Super sej header" FontSize="64" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Image Source="../Assets/SikonBillede.png" Height="80" Margin="40,0,40,5"/>
             <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="20" HorizontalAlignment="Center">
                 <PersonPicture Height="60"/>
                 <TextBlock Text="Victor Friis-Jensen" FontSize="24" VerticalAlignment="Center"/>
@@ -40,6 +39,7 @@
                 <NavigationViewItemSeparator/>
                 <NavigationViewItemHeader Content="Brugere"/>
                 <NavigationViewItem Icon="Contact" Content="User Page ??" Tag="UserCreatorAdminPage"/>
+                <NavigationViewItem Icon="Contact" Content="UserLogin/Creator" Tag="UserLogin_CreatePage"/>
                 <NavigationViewItemSeparator/>
                 <NavigationViewItemHeader Content="Rum"/>
                 <NavigationViewItem Content="Lokaler" Tag="RoomPage">

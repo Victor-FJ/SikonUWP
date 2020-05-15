@@ -22,6 +22,8 @@ namespace SikonUWP.ViewModel
     {
         public ObservableCollection<string> UserTypeList { get; set; }
         public List<Participant.PersonType> PersonTypeList { get; set; }
+        public List<User> UserList { get; set; }
+        public List<string> UserNameList { get; set; }
 
         private string _userType;
 
@@ -111,10 +113,39 @@ namespace SikonUWP.ViewModel
 
         public string Username { get; set; }
         public string Password { get; set; }
-        public Participant.PersonType PersonType { get; set; }
-        public string PhoneNumber { get; set; }
-        public string FullName { get; set; }
-        public string Description { get; set; }
+
+        private Participant.PersonType _personType;
+
+        public Participant.PersonType PersonType
+        {
+            get { return _personType; }
+            set { _personType = value; ((RelayCommand)CreateParticipantCommand).RaiseCanExecuteChanged(); }
+        }
+
+        private string _phoneNumber;
+
+        public string PhoneNumber
+        {
+            get { return _phoneNumber; }
+            set { _phoneNumber = value; ((RelayCommand)CreateAdminCommand).RaiseCanExecuteChanged(); }
+        }
+
+        private string _fullName;
+
+        public string FullName
+        {
+            get { return _fullName; }
+            set { _fullName = value; ((RelayCommand)CreateSpeakerCommand).RaiseCanExecuteChanged(); }
+        }
+
+        private string _description;
+
+        public string Description
+        {
+            get { return _description; }
+            set { _description = value; ((RelayCommand)CreateSpeakerCommand).RaiseCanExecuteChanged(); }
+        }
+
         private BitmapImage _imageView;
 
         public BitmapImage ImageView
@@ -123,7 +154,15 @@ namespace SikonUWP.ViewModel
             set { _imageView = value; OnPropertyChanged();}
         }
 
-        public StorageFile Image { get; set; }
+        private StorageFile _image;
+
+        public StorageFile Image
+        {
+            get { return _image; }
+            set { _image = value; ((RelayCommand)CreateSpeakerCommand).RaiseCanExecuteChanged(); }
+        }
+
+       
         public ImageSingleton ImageCatalog { get; set; }
         
 
@@ -205,14 +244,30 @@ namespace SikonUWP.ViewModel
                 ((RelayCommand)_createParticipantCommand).RaiseCanExecuteChanged();
             }
         }
+        private bool IsBasicUserNull()
+        {
+            return Username != null && Password != null;
+        }
+        private bool IsParticipantNull()
+        {
+            return IsBasicUserNull() && PersonType != Participant.PersonType.Vælg_type;
+        }
+        private bool IsSpeakerNull()
+        {
+            return IsBasicUserNull() && FullName != null && Description != null && Image != null;
+        }
+        private bool IsAdminNull()
+        {
+            return IsBasicUserNull() && PhoneNumber != null;
+        }
 
 
-        
 
 
 
         public UserCreatorAdminViewModel()
         {
+            
             
             PersonTypeList = Enum.GetValues(typeof(Participant.PersonType)).OfType<Participant.PersonType>().ToList();
 
@@ -227,30 +282,65 @@ namespace SikonUWP.ViewModel
             UserTypeList.Add("Speaker");
             UserTypeList.Add("Participant");
 
-            CreateParticipantCommand = new RelayCommand(CreateParticipant, ()=> NewParticipant != null);
-            CreateSpeakerCommand = new RelayCommand(CreateSpeaker, ()=> NewSpeaker != null);
-            CreateAdminCommand = new RelayCommand(CreateAdmin, ()=> NewAdmin != null);
+            CreateParticipantCommand = new RelayCommand(CreateParticipant, IsParticipantNull);
+            CreateSpeakerCommand = new RelayCommand(CreateSpeaker, IsSpeakerNull);
+            CreateAdminCommand = new RelayCommand(CreateAdmin, IsAdminNull);
             GetImageCommand = new RelayCommand(GetImage);
         }
 
 
-        private void CreateParticipant()
+        private async void CreateParticipant()
         {
+            FillUserList();
             NewParticipant = new Participant(Username, Password, PersonType);
-            participantHandler.CreateParticipant(NewParticipant);
+            if (!UserNameList.Contains(NewParticipant.UserName))
+            {
+
+                participantHandler.CreateParticipant(NewParticipant);
+            }
+            else
+                await MessageDialogUtil.MessageDialogAsync("Username Already taken",
+                    "brugernavnet du har angivet er allerede i brug \nbenyt venligst et andet brugernavn");
         }
 
         private async void CreateSpeaker()
         {
+            FillUserList();
             NewSpeaker = new Speaker(Username, Password, FullName, Description, Image.Name);
-            await ImageCatalog.ImageCatalog.AddImage(Image, Image.Name);
-            speakerHandler.CreateSpeaker(NewSpeaker);
+            if (!ImageCatalog.ImageCatalog.Dictionary.Keys.Contains(Image.Name))
+            {
+                await ImageCatalog.ImageCatalog.AddImage(Image, Image.Name);
+                if (!UserNameList.Contains(NewSpeaker.UserName))
+                {
+                   speakerHandler.CreateSpeaker(NewSpeaker);
+                }
+                else
+                    await MessageDialogUtil.MessageDialogAsync("Username Already taken",
+                        "brugernavnet du har angivet er allerede i brug \nbenyt venligst et andet brugernavn");
+
+            }
+            else
+            {
+                await MessageDialogUtil.MessageDialogAsync("Billede eksisterer allerede",
+                    "navnet af det valgte billede eksistere allerede i systemet vælg venligst et andet billede eller ændre navnet på din billedfil");
+            }
+            
+            
         }
 
-        private void CreateAdmin()
+        private async void CreateAdmin()
         {
+            FillUserList();
             NewAdmin = new Admin(Username, Password, PhoneNumber);
-            adminHandler.CreateAdmin(NewAdmin);
+            if (!UserNameList.Contains(NewAdmin.UserName))
+            {
+                
+                adminHandler.CreateAdmin(NewAdmin);
+            }
+            else
+                await MessageDialogUtil.MessageDialogAsync("Username Already taken",
+                    "brugernavnet du har angivet er allerede i brug \nbenyt venligst et andet brugernavn");
+
         }
 
         public async void GetImage()
@@ -263,6 +353,20 @@ namespace SikonUWP.ViewModel
             else
                 await MessageDialogUtil.MessageDialogAsync("Forkert filtype", "Kunne ikke hente billedet");
         }
+
+
+        private async void FillUserList()
+        {
+            await UserCatalogSingleton.Instance.LoadUsers();
+            UserList = UserCatalogSingleton.Instance.Users.ToList();
+                
+            UserNameList = new List<string>();
+            foreach (User user in UserList)
+            {
+                UserNameList.Add(user.UserName);
+            }
+        }
+
 
 
         public event PropertyChangedEventHandler PropertyChanged;

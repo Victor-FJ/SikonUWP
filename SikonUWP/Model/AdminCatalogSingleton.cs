@@ -5,38 +5,44 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ModelLibrary.Model;
+using SikonUWP.Persistency;
 
 namespace SikonUWP.Model
 {
     class AdminCatalogSingleton
     {
-		private static AdminCatalogSingleton _instance;
+		private static AdminCatalogSingleton _instance = null;
 
 		public static AdminCatalogSingleton Instance
 		{
-			get { return _instance; }
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new AdminCatalogSingleton();
+                }
+                return _instance;
+            }
 			set { _instance = value; }
 		}
 
-		public UserCatalogSingleton UserCatalogSingleton { get; set; }
         public ObservableCollection<Admin> Admins { get; set; }
 
         private AdminCatalogSingleton()
         {
             Admins=new ObservableCollection<Admin>();
-            UserCatalogSingleton = UserCatalogSingleton.Instance;
             LoadAdmins();
         }
 
 
-        public void LoadAdmins()
+        public async void LoadAdmins()
         {
-            foreach (User user in UserCatalogSingleton.Users)
+            Admins.Clear();
+            GenericPersistence<string, Admin> facade = new GenericPersistence<string, Admin>("http://localhost:52415/api/Admins");
+            List<Admin> adminList = await facade.Get();
+            foreach (Admin user in adminList)
             {
-                if (user is Admin admin)
-                {
-                    Admins.Add(admin);
-                }
+                Admins.Add(user);
             }
         }
     }

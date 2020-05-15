@@ -5,37 +5,43 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ModelLibrary.Model;
+using SikonUWP.Persistency;
 
 namespace SikonUWP.Model
 {
     class ParticipantCatalogSingleton
     {
-		private ParticipantCatalogSingleton _instance;
+        private ParticipantCatalogSingleton _instance = null;
 
 		public ParticipantCatalogSingleton Instance
 		{
-			get { return _instance; }
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new ParticipantCatalogSingleton();
+                }
+                return _instance;
+            }
 			set { _instance = value; }
 		}
 
-        private UserCatalogSingleton userCatalogSingleton { get; set; }
 		public  ObservableCollection<Participant> Participants { get; set; }
 
         private ParticipantCatalogSingleton()
         {
 			Participants = new ObservableCollection<Participant>();
-            userCatalogSingleton = UserCatalogSingleton.Instance;
             LoadParticipants();
         }
 
-        public void LoadParticipants()
+        public async void LoadParticipants()
         {
-            foreach (User user in userCatalogSingleton.Users)
+            Participants.Clear();
+            GenericPersistence<string, Participant> facade = new GenericPersistence<string, Participant>("http://localhost:52415/api/Participants");
+            List<Participant> participantList = await facade.Get();
+            foreach (Participant user in participantList)
             {
-                if (user is Participant participant)
-                {
-                    Participants.Add(participant);
-                }
+                Participants.Add(user);
             }
         }
 	}

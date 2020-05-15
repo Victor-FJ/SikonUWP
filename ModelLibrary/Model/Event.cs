@@ -6,7 +6,7 @@ using ModelLibrary.Exceptions;
 
 namespace ModelLibrary.Model
 {
-    public class Event
+    public class Event : ICloneable
     {
         #region Enums
 
@@ -14,6 +14,7 @@ namespace ModelLibrary.Model
         {
             Plenum,
             Tema,
+            WakeUp,
             Workshop,
             Marked,
             Konkurrence,
@@ -23,8 +24,9 @@ namespace ModelLibrary.Model
         public enum EventSubject
         {
             Autisme,
+            Familien,
             PædagogiskUdvikling,
-            WakeUp
+            LowArousal
         }
 
         #endregion
@@ -157,6 +159,15 @@ namespace ModelLibrary.Model
         public override string ToString()
         {
             return $"No. {Id} - {Title}";
+        }
+
+        /// <summary>
+        /// Shallowclone
+        /// </summary>
+        /// <returns></returns>
+        public object Clone()
+        {
+            return MemberwiseClone();
         }
     }
 }

@@ -9,7 +9,7 @@
     xmlns:view="using:SikonUWP.View"
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" d:DesignWidth="1390" d:DesignHeight="620">
 
     <Page.DataContext>
         <viewModel:RoomViewModel/>

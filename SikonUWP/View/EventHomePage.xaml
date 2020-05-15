@@ -7,8 +7,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resources="using:SikonUWP.Resources"
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" d:DesignWidth="1390" d:DesignHeight="620">
 
     <Page.DataContext>
         <viewModel:EventHomeViewModel/>
@@ -20,6 +22,8 @@
                 <ResourceDictionary Source="/Resources/CommonStyles.xaml"/>
                 <ResourceDictionary>
                     <resources:ImageConverter x:Key="ImageConverter"/>
+                    <resources:DateTimeOffsetConverter x:Key="DateTimeOffsetConverter" Format="dd. MMM. yyyy"/>
+                    <resources:DictionaryConverter x:Key="DictionaryConverter"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -28,12 +32,80 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
+            <RowDefinition Height="549"/>
         </Grid.RowDefinitions>
-        <controls:NumberBox Value="{Binding Number, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20" Width="100" Minimum="0" SpinButtonPlacementMode="Inline"/>
-        <TextBlock Grid.Row="0" Text="{Binding FirstTestEvent.Title}" Style="{StaticResource TxtBlkStyle}" HorizontalAlignment="Center" FontSize="100"/>
-        <TextBlock Grid.Row="1" Text="{Binding FirstTestEvent.Description}" TextWrapping="Wrap" FontSize="40"/>
-        <Image Grid.Row="2" Margin="10" Source="{Binding FirstTestEvent.ImageName, Converter={StaticResource ImageConverter}}"/>
+        <Grid Background="#FF44A4CA">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="8"/>
+            </Grid.ColumnDefinitions>
+            <ComboBox Grid.Column="1" Header="Sorter efter" Style="{StaticResource ComboBoxStyle}"
+                      ItemsSource="{Binding OrderList}" SelectedItem="{Binding SelectedOrder, Mode=TwoWay}"/>
+            <Button Grid.Column="2" Content="Se alle begivenheder" Margin="20,0,20,8" 
+                    VerticalAlignment="Bottom" Command="{Binding ShowAllCommand}"/>
+            <ComboBox Grid.Column="3" Header="Type" Style="{StaticResource ComboBoxStyle}"
+                      ItemsSource="{Binding Types}" SelectedItem="{Binding SelectedType, Mode=TwoWay}"/>
+            <ComboBox Grid.Column="4" Header="Emne" Style="{StaticResource ComboBoxStyle}"
+                      ItemsSource="{Binding Subjects}" SelectedItem="{Binding SelectedSubject, Mode=TwoWay}"/>
+            <ComboBox Grid.Column="5" Header="Oplægsholder" Style="{StaticResource ComboBoxStyle}"
+                      ItemsSource="{Binding Speakers}" SelectedItem="{Binding SelectedSpeaker, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding FullName}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <CalendarDatePicker Grid.Column="6" Date="{x:Bind ViewModel.SelectedDate, Mode=TwoWay}" 
+                                Header="Dato" Margin="8" PlaceholderText="Alle dage"
+                                VerticalAlignment="Bottom" HorizontalAlignment="Stretch"/>
+            <controls:NumberBox Grid.Column="7" Header="Antal Pladser" Style="{StaticResource NumberBoxStyle}" Height="55"/>
+        </Grid>
+        <GridView Grid.Row="1" ItemsSource="{Binding Events}" Margin="5" IsItemClickEnabled="True">
+            <interactivity:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="ItemClick">
+                    <core:InvokeCommandAction Command="{Binding NavigateToEventCommand}"/>
+                </core:EventTriggerBehavior>
+            </interactivity:Interaction.Behaviors>
+            <GridView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Height="200" Width="450" Background="{Binding Type, Converter={StaticResource DictionaryConverter}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Image VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="250"
+                               Source="{Binding ImageName, Converter={StaticResource ImageConverter}}"/>
+                        <Grid Grid.Column="1" Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="{Binding Subject}" HorizontalAlignment="Right"/>
+                            <TextBlock Grid.Row="0" Text="{Binding StartDate, Converter={StaticResource DateTimeOffsetConverter}}"/>
+                            <TextBlock Grid.Row="1" Text="{Binding Title}" FontSize="28" FontWeight="Bold" TextWrapping="Wrap"/>
+                            <TextBlock Grid.Row="2">
+                                <Run Text="v/"/>
+                                <Run Text="{Binding Speaker.FullName}"/>
+                            </TextBlock>
+                            <TextBlock Grid.Row="3" Margin="0,10,0,0" Text="{Binding Description}" TextWrapping="Wrap" TextTrimming="WordEllipsis"/>
+                        </Grid>
+                    </Grid>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+            <GridView.ItemContainerStyle>
+                <Style TargetType="GridViewItem">
+                    <Setter Property="Margin" Value="5,5,5,5"/>
+                </Style>
+            </GridView.ItemContainerStyle>
+        </GridView>
     </Grid>
 </Page>

@@ -47,7 +47,7 @@ namespace SikonUWP.ViewModel
         public string Username { get; set; }
         public string Password { get; set; }
         public Participant.PersonType PersonType { get; set; }
-        private string _mode1;
+        private string _mode1 = "Visible";
 
         public string Mode1
         {
@@ -105,8 +105,15 @@ namespace SikonUWP.ViewModel
 
         private void ChangeMode()
         {
-           Mode1 = Mode1 == "Collapsed" ? "Visible" : "Collapsed";
-           Mode2 = Mode1 != "Collapsed" ? "Visible" : "Collapsed";
+            if (Mode1 == "Collapsed")
+            {
+                Mode1 = "Visible";
+                Mode2 = "Collapsed";
+            }else if (Mode1 == "Visible")
+            {
+                Mode1 = "Collapsed";
+                Mode2 = "Visible";
+            }
         }
 
 
