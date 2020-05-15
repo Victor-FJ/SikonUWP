@@ -36,7 +36,6 @@
                 <NavigationViewItemHeader Content="Events"/>
                 <NavigationViewItem Icon="Home" Content="Event Home Page" Tag="EventHomePage"/>
                 <NavigationViewItem Icon="Edit" Content="Event Editor Page" Tag="EventEditorPage"/>
-                <NavigationViewItem Icon="Camera" Content="Event Page" Tag="EventPage"/>
                 <NavigationViewItemSeparator/>
                 <NavigationViewItemHeader Content="Brugere"/>
                 <NavigationViewItem Icon="Contact" Content="User Page ??" Tag="UserCreatorAdminPage"/>

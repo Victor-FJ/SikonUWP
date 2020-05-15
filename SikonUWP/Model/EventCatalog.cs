@@ -19,13 +19,13 @@ namespace SikonUWP.Model
         private ObservableCollection<Event> _collection;
 
 
-        private readonly ObservableCollection<Speaker> _speakers;
         private readonly ObservableCollection<Room> _rooms;
+        private readonly ObservableCollection<Speaker> _speakers;
         private readonly List<string> _imageNames;
 
         private readonly GenericPersistence<int, Event> _eventPersistence;
 
-        public EventCatalog(ObservableCollection<Speaker> speakers, ObservableCollection<Room> rooms, List<string> imageNames, GenericPersistence<int, Event> eventPersistence)
+        public EventCatalog(ObservableCollection<Room> rooms, ObservableCollection<Speaker> speakers, List<string> imageNames, GenericPersistence<int, Event> eventPersistence)
         {
             _collection = new ObservableCollection<Event>();
             Collection = new ReadOnlyObservableCollection<Event>(_collection);
@@ -41,6 +41,26 @@ namespace SikonUWP.Model
             {
                 _collection = new ObservableCollection<Event>(await _eventPersistence.Get());
                 Collection = new ReadOnlyObservableCollection<Event>(_collection);
+                foreach (Event @event in _collection)
+                {
+                    try
+                    {
+                        @event.Room = _rooms.Single((x) => x.RoomNo == @event.Room.RoomNo);
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        throw new BaseException("Problem 1");
+                    }
+
+                    try
+                    {
+                        @event.Speaker = _speakers.Single((x) => x.UserName == @event.Speaker.UserName);
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        throw new BaseException("Problem 2");
+                    }
+                }
                 return true;
             }
             catch (HttpRequestException)

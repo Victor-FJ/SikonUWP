@@ -24,9 +24,13 @@ namespace SikonUWP.Model
         /// </summary>
         public EventCatalog EventCatalog { get; set; }
 
+        /// <summary>
+        /// A event that is currently viewed
+        /// </summary>
+        public Event ViewedEvent { get; set; }
 
         /// <summary>
-        /// A event that is marked for other pages to use (Is always a shallow copy from the <see cref="EventCatalog"/>)
+        /// A event that is marked for editor pages to use (Is always a shallow copy from the <see cref="EventCatalog"/>)
         /// </summary>
         public Event MarkedEvent
         {
@@ -66,7 +70,7 @@ namespace SikonUWP.Model
 
         private EventSingleton()
         {
-            EventCatalog = new EventCatalog(SpeakerCatalogSingleton.Instance.Speakers, RoomCatalogSingleton.Instance.Rooms, 
+            EventCatalog = new EventCatalog(RoomCatalogSingleton.Instance.Rooms, SpeakerCatalogSingleton.Instance.Speakers,
                 ImageSingleton.Instance.ImageCatalog.Dictionary.Keys.ToList(), new GenericPersistence<int, Event>("http://localhost:52415/api/Event/"));
             MarkedEvent = null;
         }

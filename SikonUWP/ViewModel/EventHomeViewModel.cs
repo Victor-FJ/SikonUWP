@@ -20,6 +20,7 @@ namespace SikonUWP.ViewModel
     {
         public EventSingleton EventSing { get; set; }
 
+        private IEnumerable<Event> _events;
         public ObservableCollection<Event> Events { get; set; }
 
         #region ControlProperties
@@ -76,11 +77,13 @@ namespace SikonUWP.ViewModel
         }
 
 
-        private const string SpeakerText = "Alle oplægsholdere";
-        public ReadOnlyCollection<object> Speakers => SpeakerList();
+        private readonly Speaker _speakerText = new Speaker("dummySpeaker", "1", "Alle oplægsholdere", "f", "f");
 
-        private object _selectedSpeaker;
-        public object SelectedSpeaker
+        private ReadOnlyCollection<Speaker> _speakers;
+        public ReadOnlyCollection<Speaker> Speakers => _speakers;
+
+        private Speaker _selectedSpeaker;
+        public Speaker SelectedSpeaker
         {
             get { return _selectedSpeaker; }
             set
@@ -118,8 +121,9 @@ namespace SikonUWP.ViewModel
                 Load();
             else
             {
+                SpeakerList();
                 Events = new ObservableCollection<Event>();
-                Events.Add(new Event(0, "En lang title på 100 karaktere er en ret lang title. Den er til for at teste maksimalerne. Sådan sea", "Efterhånden er det ved at blive mere alment kendt, at autisme/Aspergers Syndrom ikke er en 'fabriksfejl', men en anden måde at fungere hjernemæssigt på. Denne måde betyder, at man fra dag 1 er bygget til i mindre grad at fornemme sig vej gennem livet, og i større grad at måtte forstå alt. Dette dræner én mere for kræfter, gør én mere socialt udsat, og ofte får andre menneskers handlinger og motiver til at fremstå ulogiske Det betyder også, at vejen til en identitet – en udvikling, alle mennesker gennemgår, og som er svær nok i sig selv – forløber anderledes end for flertallet af befolkningen.Dette handler både om i et fem - fase - forløb at komme ud over den truende fornemmelse af at være 'forkert' og om at bruge andre måder at finde sig selv på end de måder, som giver mening for mange andre – men netop ikke for mennesker på autismespektret.Vejen til identitet med autisme er således kernen i dette indlæg.Efterhånden er det ved at blive mere alment kendt, at autisme / Aspergers Syndrom ikke er en 'fabriksfejl', men en anden måde at fungere hjernemæssigt på.Denne måde betyder, at man fra dag 1 er bygget til i mindre grad at fornemme sig vej gennem livet, og i større grad at måtte forstå alt.Dette dræner én mere for kræfter, gør én mere socialt udsat, og ofte får andre menneskers handlinger og motiver til at fremstå ulogiske Det betyder også, at vejen til en identitet – en udvikling, alle mennesker gennemgår, og som er svær nok i sig selv – forløber anderledes end for flertallet af befolkningen.Dette handler både om i et fem - fase - forløb at komme ud over den truende fornemmelse af at være 'forkert' og om at bruge andre måder at finde sig selv på end de måder, som giver mening for mange andre – men netop ikke for mennesker på autismespektret.Vejen til identitet med autisme er således kernen i dette indlæg Efterhånden er det ved at blive mere alment kendt, at autisme / Aspergers Syndrom ikke er en 'fabriksfejl', men en anden måde at fungere hjernemæssigt på.Denne måde betyder, at man fra dag 1 er bygget til i mindre grad at fornemme sig vej gennem livet, og i større grad at måtte forstå alt.Dette dræner én mere for kræfter, gør én mere socialt udsat, og ofte får andre menneskers handlinger og motiver til at fremstå ulogiske Det betyder også, at vejen til en identitet – en udvikling, alle mennesker gennemgår, og som er svær nok i sig selv – forløber anderledes end for flertallet af befolkningen.Dette handler både om i et fem - fase - forløb at komme ud over den truende fornemmelse af at være 'forkert' og om at bruge andre måder at finde sig selv på end de måder, som giver mening for mange andre – men netop ikke for mennesker på autismespektret.Vejen til identitet med autisme er således kernen i dette indlæg Efterhånden er det ved at blive mere alment kendt, at autisme / Aspergers Syndrom ikke er en 'fabriksfejl', men en anden måde at fungere hjernemæssigt på.Denne måde betyder, at man fra dag 1 er bygget til i mindre grad at fornemme sig ve", Event.EventType.Konkurrence, Event.EventSubject.PædagogiskUdvikling, 110, DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddHours(26), RoomCatalogSingleton.Instance.Rooms[0], SpeakerCatalogSingleton.Instance.Speakers[0], "Stuff"));
+                Events.Add(new Event(0, "En lang title på 100 karaktere er en ret lang title. Den er til for at teste maksimalerne. Sådan sea", "Efterhånden er det ved at blive mere alment kendt, at autisme/Aspergers Syndrom ikke er en 'fabriksfejl', men en anden måde at fungere hjernemæssigt på. Denne måde betyder, at man fra dag 1 er bygget til i mindre grad at fornemme sig vej gennem livet, og i større grad at måtte forstå alt. Dette dræner én mere for kræfter, gør én mere socialt udsat, og ofte får andre menneskers handlinger og motiver til at fremstå ulogiske Det betyder også, at vejen til en identitet – en udvikling, alle mennesker gennemgår, og som er svær nok i sig selv – forløber anderledes end for flertallet af befolkningen.Dette handler både om i et fem - fase - forløb at komme ud over den truende fornemmelse af at være 'forkert' og om at bruge andre måder at finde sig selv på end de måder, som giver mening for mange andre – men netop ikke for mennesker på autismespektret.Vejen til identitet med autisme er således kernen i dette indlæg.Efterhånden er det ved at blive mere alment kendt, at autisme / Aspergers Syndrom ikke er en 'fabriksfejl', men en anden måde at fungere hjernemæssigt på.Denne måde betyder, at man fra dag 1 er bygget til i mindre grad at fornemme sig vej gennem livet, og i større grad at måtte forstå alt.Dette dræner én mere for kræfter, gør én mere socialt udsat, og ofte får andre menneskers handlinger og motiver til at fremstå ulogiske Det betyder også, at vejen til en identitet – en udvikling, alle mennesker gennemgår, og som er svær nok i sig selv – forløber anderledes end for flertallet af befolkningen.Dette handler både om i et fem - fase - forløb at komme ud over den truende fornemmelse af at være 'forkert' og om at bruge andre måder at finde sig selv på end de måder, som giver mening for mange andre – men netop ikke for mennesker på autismespektret.Vejen til identitet med autisme er således kernen i dette indlæg Efterhånden er det ved at blive mere alment kendt, at autisme / Aspergers Syndrom ikke er en 'fabriksfejl', men en anden måde at fungere hjernemæssigt på.Denne måde betyder, at man fra dag 1 er bygget til i mindre grad at fornemme sig vej gennem livet, og i større grad at måtte forstå alt.Dette dræner én mere for kræfter, gør én mere socialt udsat, og ofte får andre menneskers handlinger og motiver til at fremstå ulogiske Det betyder også, at vejen til en identitet – en udvikling, alle mennesker gennemgår, og som er svær nok i sig selv – forløber anderledes end for flertallet af befolkningen.Dette handler både om i et fem - fase - forløb at komme ud over den truende fornemmelse af at være 'forkert' og om at bruge andre måder at finde sig selv på end de måder, som giver mening for mange andre – men netop ikke for mennesker på autismespektret.Vejen til identitet med autisme er således kernen i dette indlæg Efterhånden er det ved at blive mere alment kendt, at autisme / Aspergers Syndrom ikke er en 'fabriksfejl', men en anden måde at fungere hjernemæssigt på.Denne måde betyder, at man fra dag 1 er bygget til i mindre grad at fornemme sig ve", Event.EventType.Konkurrence, Event.EventSubject.PædagogiskUdvikling, 110, DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddHours(26), null, null, "Stuff"));
             }
 
 
@@ -134,7 +138,9 @@ namespace SikonUWP.ViewModel
         {
             await RoomCatalogSingleton.Instance.LoadRooms();
             await SpeakerCatalogSingleton.Instance.LoadSpeakers();
+            SpeakerList();
             await EventSing.EventCatalog.Load();
+            SortEvents();
             Events = new ObservableCollection<Event>(EventSing.EventCatalog.Collection);
             OnPropertyChanged(nameof(Events));
         }
@@ -143,7 +149,7 @@ namespace SikonUWP.ViewModel
 
         public void NavigateToEvent(object parameter)
         {
-            EventSing.MarkedEvent = (Event)((ItemClickEventArgs)parameter).ClickedItem;
+            EventSing.ViewedEvent = (Event)((ItemClickEventArgs)parameter).ClickedItem;
             MainViewModel.Instance.NavigateToPage(typeof(EventPage));
         }
 
@@ -151,7 +157,7 @@ namespace SikonUWP.ViewModel
         {
             _selectedType = TypeText;
             _selectedSubject = SubjectText;
-            _selectedSpeaker = SpeakerText;
+            _selectedSpeaker = _speakerText;
             _selectedDate = null;
             OnPropertyChanged(nameof(SelectedType));
             OnPropertyChanged(nameof(SelectedSubject));
@@ -166,39 +172,32 @@ namespace SikonUWP.ViewModel
         private void SortEvents()
         {
             if (_selectedOrder == _orderList[0])
-            {
-                Events = new ObservableCollection<Event>(EventSing.EventCatalog.Collection);
-                OnPropertyChanged(nameof(Events));
-                return;
-            }
-
-            IEnumerable<Event> events;
-
-            if (_selectedOrder == _orderList[1])
-                events = from @event in EventSing.EventCatalog.Collection orderby @event.Title select @event;
+                _events = new ObservableCollection<Event>(EventSing.EventCatalog.Collection);
+            else if (_selectedOrder == _orderList[1])
+                _events = from @event in EventSing.EventCatalog.Collection orderby @event.Title select @event;
             else if (_selectedOrder == _orderList[2])
-                events = from @event in EventSing.EventCatalog.Collection orderby @event.Speaker.FullName select @event;
+                _events = from @event in EventSing.EventCatalog.Collection orderby @event.Speaker.FullName select @event;
             else if (_selectedOrder == _orderList[3])
-                events = from @event in EventSing.EventCatalog.Collection orderby @event.StartDate select @event;
+                _events = from @event in EventSing.EventCatalog.Collection orderby @event.StartDate select @event;
             else
                 throw new NotImplementedException();
 
-            Events = new ObservableCollection<Event>(events);
-            OnPropertyChanged(nameof(Events));
+            FilterEvents();
         }
 
         private void FilterEvents()
         {
+            if (Events == null)
+                return;
+
             bool[] filters = new bool[4];
 
             if (Enum.TryParse(_selectedType, out Event.EventType typeEnum))
                 filters[0] = true;
             if (Enum.TryParse(_selectedSubject, out Event.EventSubject subjectEnum))
                 filters[1] = true;
-            if (_selectedSpeaker is Speaker speaker)
+            if (_selectedSpeaker != _speakerText)
                 filters[2] = true;
-            else
-                speaker = null;
             DateTimeOffset selectedDate;
             if (_selectedDate != null)
             {
@@ -206,19 +205,25 @@ namespace SikonUWP.ViewModel
                 selectedDate = _selectedDate.Value;
             }
 
-            foreach (Event @event in EventSing.EventCatalog.Collection)
+            int position = 0;
+            foreach (Event @event in _events)
             {
                 bool typInc = !filters[0] || filters[0] && @event.Type == typeEnum;
                 bool subInc = !filters[1] || filters[1] && @event.Subject == subjectEnum;
-                bool speInc = !filters[2] || filters[2] && @event.Speaker == speaker;
+                bool speInc = !filters[2] || filters[2] && @event.Speaker == _selectedSpeaker;
                 bool datInc = !filters[3] || filters[3] && @event.StartDate.Date == selectedDate.Date;
 
                 bool eveInc = typInc && subInc && speInc && datInc;
                 bool eveCon = Events.Contains(@event);
+                int eveIndex = Events.IndexOf(@event);
 
                 if (eveInc && !eveCon)
-                    Events.Add(@event);
-                else if (!eveInc && eveCon)
+                    Events.Insert(position++, @event);
+                else if (eveInc && eveIndex != position)
+                    Events.Move(eveIndex, position++);
+                else if (eveInc)
+                    position++;
+                else if (eveCon)
                     Events.Remove(@event);
             }
         }
@@ -235,11 +240,12 @@ namespace SikonUWP.ViewModel
             return comboList.AsReadOnly();
         }
 
-        private ReadOnlyCollection<object> SpeakerList()
+        private void SpeakerList()
         {
-            List<object> speakerList = new List<object>(SpeakerCatalogSingleton.Instance.Speakers);
-            speakerList.Insert(0, SpeakerText);
-            return speakerList.AsReadOnly();
+            List<Speaker> speakerList = new List<Speaker>(SpeakerCatalogSingleton.Instance.Speakers);
+            speakerList.Insert(0, _speakerText);
+            _speakers = speakerList.AsReadOnly();
+            OnPropertyChanged(nameof(Speakers));
         }
 
         #endregion

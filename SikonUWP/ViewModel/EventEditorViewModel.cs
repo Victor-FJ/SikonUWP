@@ -292,7 +292,11 @@ namespace SikonUWP.ViewModel
 
         private async void Load()
         {
+            await RoomCatalogSingleton.Instance.LoadRooms(); 
+            await SpeakerCatalogSingleton.Instance.LoadSpeakers();
             await EventSing.EventCatalog.Load();
+            OnPropertyChanged(nameof(Rooms));
+            OnPropertyChanged(nameof(Speakers));
         }
 
         private void StartUpToolTip()

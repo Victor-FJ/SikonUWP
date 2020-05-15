@@ -60,7 +60,7 @@
                  HorizontalAlignment="Center" Margin="413,0,0,0" Fill="White"/>
         <Polygon Grid.Row="1" Grid.RowSpan="2" Points="50,37 13,0 87,0" 
                  HorizontalAlignment="Center" Margin="400,0,0,0" Fill="{Binding ShownEvent.Type, Converter={StaticResource DictionaryConverter}}"/>
-        <Grid Grid.Row="2" Margin="40">
+        <Grid Grid.Row="2" Margin="40,20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="20"/>
@@ -75,7 +75,7 @@
             <TextBlock Text="{Binding ShownEvent.Speaker.FullName}" FontSize="14" FontWeight="Bold"/>
             <TextBlock Grid.Column="0" Grid.Row="0" Margin="0,20,0,0" 
                        Text="{Binding ShownEvent.Speaker.Description}" Style="{StaticResource PlainTextStyle}"/>
-            <ScrollViewer Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" 
+            <ScrollViewer Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" Margin="0,0,0,40"
                           VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
                 <TextBlock Text="{Binding ShownEvent.Description}" Style="{StaticResource PlainTextStyle}"/>
             </ScrollViewer>
@@ -109,8 +109,12 @@
                     </Flyout>
                 </Button.Flyout>
             </Button>
-            <Image Grid.Column="3" Grid.Row="0" Grid.RowSpan="3" Margin="30,20,0,0" MaxWidth="650"
+            <Image Grid.Column="3" Grid.Row="0" Grid.RowSpan="3" Margin="30,40,0,0" MaxWidth="650"
                    Source="{Binding ShownEvent.ImageName, Converter={StaticResource ImageConverter}}"/>
         </Grid>
+        <Polygon Grid.Row="2" Points="50,50 0,0 100,0" 
+                 HorizontalAlignment="Left" VerticalAlignment="Bottom" Fill="White"/>
+        <Polygon Grid.Row="1" Grid.RowSpan="2" Points="50,37 13,0 87,0" 
+                 HorizontalAlignment="Center" Margin="400,0,0,0" Fill="{Binding ShownEvent.Type, Converter={StaticResource DictionaryConverter}}"/>
     </Grid>
 </Page>
