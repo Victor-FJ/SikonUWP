@@ -5,6 +5,7 @@
     xmlns:local="using:SikonUWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" d:DesignWidth="1430" d:DesignHeight="730">
 
@@ -28,7 +29,8 @@
             
         </Grid>
         <Rectangle Grid.Row="1" Height="10" Fill="#FFF18800"/>
-        <NavigationView x:Name="NavigationView" Grid.Row="2" ItemInvoked="NavigationView_OnItemInvoked" BackRequested="NavigationView_OnBackRequested" PaneDisplayMode="LeftCompact">
+        <NavigationView x:Name="NavigationView" Grid.Row="2" PaneDisplayMode="LeftCompact" IsSettingsVisible="False"
+                        ItemInvoked="NavigationView_OnItemInvoked" BackRequested="NavigationView_OnBackRequested">
             <NavigationView.AutoSuggestBox>
                 <AutoSuggestBox QueryIcon="Find" PlaceholderText="Søg"/>
             </NavigationView.AutoSuggestBox>
@@ -48,6 +50,23 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
+            <NavigationView.PaneFooter>
+                <Grid HorizontalAlignment="Stretch">
+                    <Button HorizontalAlignment="Center" Command="{Binding ReloadCommand}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <SymbolIcon Symbol="Refresh" Margin="1"/>
+                            <TextBlock Grid.Column="2" Text="Refresh"/>
+                        </Grid>
+                    </Button>
+                    <TextBlock Text="{Binding LoadText}" Margin="6,80,5,0" HorizontalAlignment="Stretch" TextAlignment="Center"/>
+                    <ProgressRing IsActive="{Binding LoadRing}" Margin="0,100,0,0"/>
+                </Grid>
+            </NavigationView.PaneFooter>
             <Grid>
                 <Frame x:Name="ContentFrame"/>
             </Grid>

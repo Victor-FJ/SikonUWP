@@ -45,7 +45,7 @@ namespace SikonUWP.Model
                 }
                 else
                 {
-                    _markedEvent = value;
+                    _markedEvent = (Event)value.Clone();
                     MarkedBools = Enumerable.Repeat(true, 12).ToArray();
                     IsNew = false;
                 }

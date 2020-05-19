@@ -42,24 +42,9 @@ namespace SikonUWP.Model
                 _collection = new ObservableCollection<Event>(await _eventPersistence.Get());
                 Collection = new ReadOnlyObservableCollection<Event>(_collection);
                 foreach (Event @event in _collection)
-                {
-                    try
-                    {
-                        @event.Room = _rooms.Single((x) => x.RoomNo == @event.Room.RoomNo);
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        throw new BaseException("Problem 1");
-                    }
-
-                    try
-                    {
-                        @event.Speaker = _speakers.Single((x) => x.UserName == @event.Speaker.UserName);
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        throw new BaseException("Problem 2");
-                    }
+                { 
+                    @event.Room = _rooms.Single((x) => x.RoomNo == @event.Room.RoomNo);
+                    @event.Speaker = _speakers.Single((x) => x.UserName == @event.Speaker.UserName);
                 }
                 return true;
             }
@@ -77,8 +62,7 @@ namespace SikonUWP.Model
         /// <returns>Whether the event was succesfully added</returns>
         public async Task<bool> Add(Event @event, bool getId)
         {
-            List<Event> collection = _collection.ToList();
-            if (collection.Find((x) => x.Id == @event.Id) != null)
+            if (_collection.Single((x) => x.Id == @event.Id) != null)
                 if (getId)
                     @event.Id = GetUniqueId();
                 else
@@ -91,6 +75,33 @@ namespace SikonUWP.Model
             bool ok = await _eventPersistence.Post(@event);
             if (ok)
                 _collection.Add(@event);
+            return ok;
+        }
+
+        public async Task<bool> Update(int id, Event @event)
+        {
+            Event oldEvent = _collection.Single((x) => x.Id == id);
+            CheckSpeaker(@event);
+            CheckRoom(@event);
+            CheckDate(@event);
+            CheckImage(@event, true);
+
+            bool ok = await _eventPersistence.Put(id, @event);
+            if (ok)
+            {
+                _collection.Remove(oldEvent);
+                _collection.Add(@event);
+            }
+            return ok;
+        }
+
+        public async Task<bool> Remove(int id)
+        {
+            Event @event = _collection.Single((x) => x.Id == id);
+
+            bool ok = await _eventPersistence.Delete(id);
+            if (ok)
+                _collection.Remove(@event);
             return ok;
         }
 

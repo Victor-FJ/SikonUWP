@@ -63,9 +63,9 @@
                                   Target="{x:Bind StatusButton}" IsOpen="{Binding StatusBoxOpen, Mode=TwoWay}">
                 <controls:TeachingTip.Content>
                     <StackPanel Orientation="Horizontal" Spacing="10">
-                        <Button Content="Update"/>
-                        <Button Content="Delete"/>
-                        <Button Content="Clear"/>
+                        <Button Content="Update" Command="{Binding UpdateCommand}"/>
+                        <Button Content="Delete" Command="{Binding DeleteCommand}"/>
+                        <Button Content="Clear" Command="{Binding ClearCommand}"/>
                     </StackPanel>
                 </controls:TeachingTip.Content>
             </controls:TeachingTip>

@@ -118,7 +118,7 @@ namespace SikonUWP.ViewModel
             EventSing = EventSingleton.Instance;
 
             if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
-                Load();
+                StartUp();
             else
             {
                 SpeakerList();
@@ -134,12 +134,9 @@ namespace SikonUWP.ViewModel
             ShowAll();
         }
 
-        private async void Load()
+        private void StartUp()
         {
-            await RoomCatalogSingleton.Instance.LoadRooms();
-            await SpeakerCatalogSingleton.Instance.LoadSpeakers();
             SpeakerList();
-            await EventSing.EventCatalog.Load();
             SortEvents();
             Events = new ObservableCollection<Event>(EventSing.EventCatalog.Collection);
             OnPropertyChanged(nameof(Events));
@@ -171,16 +168,14 @@ namespace SikonUWP.ViewModel
 
         private void SortEvents()
         {
-            if (_selectedOrder == _orderList[0])
-                _events = new ObservableCollection<Event>(EventSing.EventCatalog.Collection);
-            else if (_selectedOrder == _orderList[1])
+            if (_selectedOrder == _orderList[1])
                 _events = from @event in EventSing.EventCatalog.Collection orderby @event.Title select @event;
             else if (_selectedOrder == _orderList[2])
                 _events = from @event in EventSing.EventCatalog.Collection orderby @event.Speaker.FullName select @event;
             else if (_selectedOrder == _orderList[3])
                 _events = from @event in EventSing.EventCatalog.Collection orderby @event.StartDate select @event;
             else
-                throw new NotImplementedException();
+                _events = new ObservableCollection<Event>(EventSing.EventCatalog.Collection);
 
             FilterEvents();
         }
