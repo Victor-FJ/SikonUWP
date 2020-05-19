@@ -26,6 +26,7 @@ namespace SikonUWP.ViewModel
         public static MainViewModel Instance { get; private set; }
 
         
+
         public bool LoadRing { get; 
             set; }
         private string _loadText;
