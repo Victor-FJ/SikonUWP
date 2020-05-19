@@ -11,7 +11,6 @@ using Windows.UI.Xaml.Controls;
 using ModelLibrary.Annotations;
 using ModelLibrary.Model;
 using SikonUWP.Common;
-using SikonUWP.Handlers;
 using SikonUWP.Model;
 using SikonUWP.Persistency;
 using SikonUWP.View;
@@ -25,11 +24,10 @@ namespace SikonUWP.ViewModel
 
         public static MainViewModel Instance { get; private set; }
 
-        
 
-        public bool LoadRing { get; 
-            set; }
+        public bool LoadRing { get; set; }
         private string _loadText;
+
         public string LoadText
         {
             get => _loadText;
@@ -67,7 +65,11 @@ namespace SikonUWP.ViewModel
             Instance = this;
             Load();
 
-            ReloadCommand = new RelayCommand(async () => { bool ok = await Reload(); if (ok) NavigateToPage(mainPageFrame.CurrentSourcePageType);});
+            ReloadCommand = new RelayCommand(async () =>
+            {
+                bool ok = await Reload();
+                if (ok) NavigateToPage(mainPageFrame.CurrentSourcePageType);
+            });
         }
 
         #region Navigation
@@ -125,6 +127,7 @@ namespace SikonUWP.ViewModel
                     LoadText = "Fejl";
                     await MessageDialogUtil.MessageDialogAsync(PersistencyManager.FileName, "ConnectionString er forkert");
                 }
+
                 return ok;
             }
             catch (HttpRequestException)
