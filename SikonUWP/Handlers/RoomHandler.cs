@@ -56,6 +56,12 @@ namespace SikonUWP.Handlers
         /// </summary>
         public async void DeleteRoom()
         {
+            bool sure = await MessageDialogUtil.InputDialogAsync("Hvad?", "er du sikker på du vil slette");
+            if (!sure)
+            {
+                return;
+            }
+
             string roomNo = RoomViewModel.SelectedRoom.RoomNo;
             bool ok = await _genericPersistence.Delete(roomNo);
 
