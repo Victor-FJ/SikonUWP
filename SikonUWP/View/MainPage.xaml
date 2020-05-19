@@ -9,6 +9,67 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Image Source="../Assets/SikonBillede.png" Height="80" Margin="40,0,40,5"/>
+            <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="20" HorizontalAlignment="Center">
+                
+                <PersonPicture Height="60"/>
+                <TextBlock Text="{Binding LoggedUser.UserName}" FontSize="24" VerticalAlignment="Center" Width="100" FocusVisualPrimaryBrush="White"/>
+            </StackPanel>
+        </Grid>
 
+        <Rectangle Grid.Row="1" Height="10" Fill="#FFF18800"/>
+        <NavigationView x:Name="NavigationView" Grid.Row="2" PaneDisplayMode="LeftCompact" IsSettingsVisible="False"
+                        ItemInvoked="NavigationView_OnItemInvoked" BackRequested="NavigationView_OnBackRequested">
+            <NavigationView.AutoSuggestBox>
+                <AutoSuggestBox QueryIcon="Find" PlaceholderText="Søg"/>
+            </NavigationView.AutoSuggestBox>
+            <NavigationView.MenuItems>
+                <NavigationViewItemHeader Content="Events"/>
+                <NavigationViewItem Icon="Home" Content="Event Home Page" Tag="EventHomePage"/>
+                <NavigationViewItem Icon="Edit" Content="Event Editor Page" Tag="EventEditorPage"/>
+                <NavigationViewItemSeparator/>
+                <NavigationViewItemHeader Content="Brugere"/>
+                <NavigationViewItem Icon="Contact" Content="User Page ??" Tag="UserCreatorAdminPage"/>
+                <NavigationViewItem Icon="Contact" Content="UserLogin/Creator" Tag="UserLogin_CreatePage"/>
+                <NavigationViewItemSeparator/>
+                <NavigationViewItemHeader Content="Rum"/>
+                <NavigationViewItem Content="Lokaler" Tag="RoomPage">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE707;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+            <NavigationView.PaneFooter>
+                <Grid HorizontalAlignment="Stretch">
+                    <Button HorizontalAlignment="Center" Command="{Binding ReloadCommand}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <SymbolIcon Symbol="Refresh" Margin="1"/>
+                            <TextBlock Grid.Column="2" Text="Refresh"/>
+                        </Grid>
+                    </Button>
+                    <TextBlock Text="{Binding LoadText}" Margin="6,80,5,0" HorizontalAlignment="Stretch" TextAlignment="Center"/>
+                    <ProgressRing IsActive="{Binding LoadRing}" Margin="0,100,0,0"/>
+                </Grid>
+            </NavigationView.PaneFooter>
+            <Grid>
+                <Frame x:Name="ContentFrame"/>
+            </Grid>
+        </NavigationView>
     </Grid>
 </Page>
