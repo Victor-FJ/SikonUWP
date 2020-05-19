@@ -10,7 +10,6 @@ using System.Windows.Input;
 using Windows.UI.Xaml.Controls;
 using ModelLibrary.Annotations;
 using ModelLibrary.Model;
-using SikonUWP.Annotations;
 using SikonUWP.Common;
 using SikonUWP.Handlers;
 using SikonUWP.Model;
