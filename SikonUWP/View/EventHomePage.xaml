@@ -55,7 +55,13 @@
             <ComboBox Grid.Column="4" Header="Emne" Style="{StaticResource ComboBoxStyle}"
                       ItemsSource="{Binding Subjects}" SelectedItem="{Binding SelectedSubject, Mode=TwoWay}"/>
             <ComboBox Grid.Column="5" Header="Oplægsholder" Style="{StaticResource ComboBoxStyle}"
-                      ItemsSource="{Binding Speakers}" SelectedItem="{Binding SelectedSpeaker, Mode=TwoWay}"/>
+                      ItemsSource="{Binding Speakers}" SelectedItem="{Binding SelectedSpeaker, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding FullName}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
             <CalendarDatePicker Grid.Column="6" Date="{x:Bind ViewModel.SelectedDate, Mode=TwoWay}" 
                                 Header="Dato" Margin="8" PlaceholderText="Alle dage"
                                 VerticalAlignment="Bottom" HorizontalAlignment="Stretch"/>

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
@@ -181,7 +182,7 @@ namespace SikonUWP.ViewModel
 
 
         //Room properties
-        public ObservableCollection<Room> Rooms => EventSing.Rooms;
+        public ObservableCollection<Room> Rooms => RoomCatalogSingleton.Instance.Rooms;
 
         public Room SelectedRoom
         {
@@ -207,7 +208,7 @@ namespace SikonUWP.ViewModel
 
         //Speaker properties
 
-        public ObservableCollection<Speaker> Speakers => EventSing.Speakers;
+        public ObservableCollection<Speaker> Speakers => SpeakerCatalogSingleton.Instance.Speakers;
 
         public Speaker SelectedSpeaker
         {
@@ -234,6 +235,10 @@ namespace SikonUWP.ViewModel
             }
         }
 
+        public bool EditImage { get; set; }
+
+        private string _oldImageName;
+
         private string _imageName;
         public string ImageName
         {
@@ -244,7 +249,8 @@ namespace SikonUWP.ViewModel
                 {
                     EditedEvent.ImageName = value;
                     _imageName = value;
-                    EventSing.EventCatalog.CheckImage(EditedEvent, true);
+                    if (EditImage)
+                        EventSing.EventCatalog.CheckImage(EditedEvent, true);
                     ToolTip(11);
                 }
                 catch (EmptyException ex)
@@ -264,36 +270,42 @@ namespace SikonUWP.ViewModel
 
         public ICommand GetImageCommand { get; set; }
         public ICommand ClearCommand { get; set; }
-        public ICommand CreateCommand { get; set; }
+        public ICommand EditEventCommand { get; set; }
 
         public EventEditorViewModel()
         {
+            //Gets singletons
             EventSing = EventSingleton.Instance;
             ImageSing = ImageSingleton.Instance;
 
+            //Gets the event marked by previous pages as the event to edit
             EditedEvent = EventSing.MarkedEvent;
 
+            //Start ups
             StartUpToolTip();
             StartUpDate();
-
+            //Start ups not done by designer
             if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
                 StartUpImage();
-                Load();
             }
                 
-
+            //Commands
             GetImageCommand = new RelayCommand(GetImage);
             ClearCommand = new RelayCommand(Clear);
-            CreateCommand = new RelayCommand(Create);
+
+            //Checks if the marked event is new or not to determine wether to create or update
+            if (EventSing.IsNew)
+                EditEventCommand = new RelayCommand(() => Edit(Create));
+            else
+            {
+                EditEventCommand = new RelayCommand(() => Edit(Update));
+                _oldImageName = EditedEvent.ImageName;
+            }
+                
         }
 
         #region StartUpMethods
-
-        private async void Load()
-        {
-            await EventSing.EventCatalog.Load();
-        }
 
         private void StartUpToolTip()
         {
@@ -333,12 +345,13 @@ namespace SikonUWP.ViewModel
             {
                 EventSing.MarkedImage = image;
                 ImageView = await ImageSing.ImageCatalog.AsBitmapImage(EventSing.MarkedImage);
+                EditImage = true;
+                OnPropertyChanged(nameof(EditImage));
                 ImageName = image.Name;
                 ToolTip(10);
             }
             else
                 await MessageDialogUtil.MessageDialogAsync("Forkert filtype", "Kunne ikke hente billedet");
-
         }
 
         public async void Clear()
@@ -351,39 +364,19 @@ namespace SikonUWP.ViewModel
             }
         }
 
-        public async void Create()
+        public async void Edit(Func<Task> method)
         {
             bool[] comBools = EventSing.MarkedBools;
             if (comBools.All(x => x))
             {
                 try
                 {
-                    bool eventOk = false;
-                    bool imageOk = await ImageSing.ImageCatalog.AddImage(EventSing.MarkedImage, ImageName);
-                    if (imageOk)
-                        eventOk = await EventSing.EventCatalog.Add(EditedEvent, true);
-                    if (eventOk)
-                    {
-                        bool doNavigate = await MessageDialogUtil.InputDialogAsync("Success",
-                            "Fik succesfuldt lavet begivenheden. Vil du navigere til den?");
-                        if (doNavigate)
-                        {
-                            EventSing.IsNew = false;
-                            MainViewModel.Instance.NavigateToPage(typeof(EventPage));
-                        }
-                        else
-                            throw new NotImplementedException();
-                        return;
-                    }
-                    if (imageOk)
-                        await ImageSing.ImageCatalog.RemoveImage(ImageName);
-                    throw new BaseException("You though this would not be possible. Looks like you missed something");
+                    await method.Invoke();
                 }
                 catch (HttpRequestException)
                 {
                     await MessageDialogUtil.MessageDialogAsync(PersistencyManager.FileName, PersistencyManager.Message);
                 }
-
             }
             else
             {
@@ -393,6 +386,56 @@ namespace SikonUWP.ViewModel
                 if (!comBools[4])
                     ToolTip(4, "Kan ikke være 0", ColorRed);
             }
+        }
+
+        public async Task Create()
+        {
+            bool eventOk = false;
+            bool imageOk = await ImageSing.ImageCatalog.AddImage(EventSing.MarkedImage, ImageName);
+            if (imageOk)
+                eventOk = await EventSing.EventCatalog.Add(EditedEvent, true);
+            if (eventOk)
+            {
+                bool doNavigate = await MessageDialogUtil.InputDialogAsync("Success",
+                    "Fik succesfuldt lavet begivenheden. Vil du navigere til den?");
+                if (doNavigate)
+                {
+                    EventSing.IsNew = false;
+                    EventSing.ViewedEvent = EditedEvent;
+                    MainViewModel.Instance.NavigateToPage(typeof(EventPage));
+                }
+                else
+                    throw new NotImplementedException();
+                return;
+            }
+            if (imageOk)
+                await ImageSing.ImageCatalog.RemoveImage(ImageName);
+            throw new BaseException("You though this would not be possible. Looks like you missed something");
+        }
+
+        public async Task Update()
+        {
+            bool eventOk = false;
+            bool imageOk;
+            if (EventSing.MarkedImage != null)
+            {
+                imageOk = await ImageSing.ImageCatalog.RemoveImage(_oldImageName);
+                imageOk = imageOk && await ImageSing.ImageCatalog.AddImage(EventSing.MarkedImage, ImageName);
+            }
+            else
+                imageOk = true;
+            if (imageOk)
+                eventOk = await EventSing.EventCatalog.Update(EditedEvent.Id, EditedEvent);
+            if (eventOk)
+            {
+                EventSing.MarkedEvent = null;
+                EventSing.ViewedEvent = EditedEvent;
+                MainViewModel.Instance.NavigateToPage(typeof(EventPage));
+                return;
+            }
+            if (imageOk)
+                await ImageSing.ImageCatalog.RemoveImage(ImageName);
+            throw new BaseException("You though this would not be possible. Looks like you missed something");
         }
 
         #endregion

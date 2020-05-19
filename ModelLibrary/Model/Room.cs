@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
+using ModelLibrary.Annotations;
 
 namespace ModelLibrary.Model
 {
@@ -50,5 +53,6 @@ namespace ModelLibrary.Model
         {
             return $"No. {RoomNo} - MaxNoPeople {MaxNoPeople}";
         }
-	}
+
+    }
 }

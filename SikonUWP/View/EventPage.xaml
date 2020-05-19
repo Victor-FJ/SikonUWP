@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="using:SikonUWP.ViewModel"
     xmlns:resources="using:SikonUWP.Resources"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" d:DesignWidth="1390" d:DesignHeight="620">
 
@@ -37,18 +38,47 @@
         <Grid Background="{Binding ShownEvent.Type, Converter={StaticResource DictionaryConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Image Source="{Binding ShownEvent.Speaker.Image, Converter={StaticResource ImageConverter}}" Margin="40,0,0,0" MaxWidth="450"/>
-            <TextBlock Grid.Column="1" FontSize="40" Foreground="White" VerticalAlignment="Bottom" Margin="20,0,40,60" TextWrapping="Wrap"
+            <TextBlock Grid.Column="1" Grid.ColumnSpan="3" FontSize="40" Foreground="White" 
+                       VerticalAlignment="Bottom" Margin="20,0,40,60" TextWrapping="Wrap"
                        Text="{Binding ShownEvent.Title}"/>
-            <TextBlock Grid.Column="1" FontSize="30" Foreground="White" VerticalAlignment="Bottom" Margin="20">
+            <TextBlock Grid.Column="1" FontSize="30" Foreground="White" 
+                       VerticalAlignment="Bottom" Margin="20" Width="450" HorizontalAlignment="Left">
                 <Run Text="{Binding ShownEvent.StartDate, Converter={StaticResource DateTimeOffsetConverter}}"/>
                 <Run Text="  kl."/>
                 <Run Text="{Binding ShownEvent.StartDate, Converter={StaticResource TimeOffsetConverter}}"/>
                 <Run Text="-"/>
                 <Run Text="{Binding ShownEvent.EndDate, Converter={StaticResource TimeOffsetConverter}}"/>
             </TextBlock>
+
+            <Button x:Name="StatusButton" Grid.Column="2" Content="Admin Funktioner" FontSize="20" Foreground="White"
+                    Command="{Binding OpenStatusBox}"
+                    HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,32"/>
+            <controls:TeachingTip Grid.Column="2" PreferredPlacement="Bottom" PlacementMargin="10"
+                                  IsLightDismissEnabled="True"
+                                  Target="{x:Bind StatusButton}" IsOpen="{Binding StatusBoxOpen, Mode=TwoWay}">
+                <controls:TeachingTip.Content>
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <Button Content="Update" Command="{Binding UpdateCommand}"/>
+                        <Button Content="Delete" Command="{Binding DeleteCommand}"/>
+                        <Button Content="Clear" Command="{Binding ClearCommand}"/>
+                    </StackPanel>
+                </controls:TeachingTip.Content>
+            </controls:TeachingTip>
+
+            <Grid Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20">
+                <Rectangle Fill="White" Margin="5,5"/>
+                <Rectangle Margin="10,10">
+                    <Rectangle.Fill>
+                        <AcrylicBrush TintColor="{Binding ShownEvent.Type, Converter={StaticResource DictionaryConverter}}" TintOpacity="0.4"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <TextBlock Text="{Binding ShownEvent.Subject}" Margin="20" FontSize="20"/>
+            </Grid>
         </Grid>
         <Rectangle Grid.Row="1" Height="10" Fill="White"/>
         <Rectangle Grid.Row="2">
@@ -60,7 +90,7 @@
                  HorizontalAlignment="Center" Margin="413,0,0,0" Fill="White"/>
         <Polygon Grid.Row="1" Grid.RowSpan="2" Points="50,37 13,0 87,0" 
                  HorizontalAlignment="Center" Margin="400,0,0,0" Fill="{Binding ShownEvent.Type, Converter={StaticResource DictionaryConverter}}"/>
-        <Grid Grid.Row="2" Margin="40">
+        <Grid Grid.Row="2" Margin="40,20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="20"/>
@@ -75,7 +105,7 @@
             <TextBlock Text="{Binding ShownEvent.Speaker.FullName}" FontSize="14" FontWeight="Bold"/>
             <TextBlock Grid.Column="0" Grid.Row="0" Margin="0,20,0,0" 
                        Text="{Binding ShownEvent.Speaker.Description}" Style="{StaticResource PlainTextStyle}"/>
-            <ScrollViewer Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" 
+            <ScrollViewer Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" Margin="0,0,0,40"
                           VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
                 <TextBlock Text="{Binding ShownEvent.Description}" Style="{StaticResource PlainTextStyle}"/>
             </ScrollViewer>
@@ -95,7 +125,7 @@
                     HorizontalAlignment="Stretch" CornerRadius="16" Margin="0,80,0,0"
                     Background="{Binding ShownEvent.Type, Converter={StaticResource DictionaryConverter}}">
                 <Grid>
-                    <TextBlock>
+                    <TextBlock Foreground="White">
                         <Run Text="Forgår i lokale"/>
                         <Run Text="{Binding ShownEvent.Room.RoomNo}"/>
                     </TextBlock>
@@ -109,8 +139,14 @@
                     </Flyout>
                 </Button.Flyout>
             </Button>
-            <Image Grid.Column="3" Grid.Row="0" Grid.RowSpan="3" Margin="30,20,0,0" MaxWidth="650"
+            <Image Grid.Column="3" Grid.Row="0" Grid.RowSpan="3" Margin="30,40,0,0" MaxWidth="650"
                    Source="{Binding ShownEvent.ImageName, Converter={StaticResource ImageConverter}}"/>
         </Grid>
+        <Polygon Grid.Row="2" Points="0,0 202,0 221,19 202,38 0,38" Margin="0,0,0,16"
+                 HorizontalAlignment="Left" VerticalAlignment="Bottom" Fill="White"/>
+        <Polygon Grid.Row="1" Grid.RowSpan="2" Points="0,0 200,0 215,15 200,30 0,30" Margin="0,0,0,20"
+                 HorizontalAlignment="Left" VerticalAlignment="Bottom" Fill="{Binding ShownEvent.Type, Converter={StaticResource DictionaryConverter}}"/>
+        <TextBlock Grid.Row="2" Text="{Binding ShownEvent.Type}" Foreground="White" Margin="10,27" Width="180" TextAlignment="Center"
+                   HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
     </Grid>
 </Page>

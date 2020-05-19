@@ -24,9 +24,13 @@ namespace SikonUWP.Model
         /// </summary>
         public EventCatalog EventCatalog { get; set; }
 
+        /// <summary>
+        /// A event that is currently viewed
+        /// </summary>
+        public Event ViewedEvent { get; set; }
 
         /// <summary>
-        /// A event that is marked for other pages to use (Is always a shallow copy from the <see cref="EventCatalog"/>)
+        /// A event that is marked for editor pages to use (Is always a shallow copy from the <see cref="EventCatalog"/>)
         /// </summary>
         public Event MarkedEvent
         {
@@ -41,7 +45,7 @@ namespace SikonUWP.Model
                 }
                 else
                 {
-                    _markedEvent = value;
+                    _markedEvent = (Event)value.Clone();
                     MarkedBools = Enumerable.Repeat(true, 12).ToArray();
                     IsNew = false;
                 }
@@ -66,26 +70,27 @@ namespace SikonUWP.Model
 
         private EventSingleton()
         {
-            EventCatalog = new EventCatalog(new GenericPersistence<int, Event>("http://localhost:52415/api/Event/"), Speakers, Rooms, ImageSingleton.Instance.ImageCatalog.Dictionary.Keys.ToList());
+            EventCatalog = new EventCatalog(RoomCatalogSingleton.Instance.Rooms, SpeakerCatalogSingleton.Instance.Speakers,
+                ImageSingleton.Instance.ImageCatalog.Dictionary.Keys.ToList(), new GenericPersistence<int, Event>("http://localhost:52415/api/Event/"));
             MarkedEvent = null;
         }
 
         #region TestCatalogs
 
-        public readonly ObservableCollection<Speaker> Speakers = new ObservableCollection<Speaker>()
-        {
-            new Speaker("Victor", "2109", "Victor Friis-Jensen", "Jeg er en glad ung gut som godt kan lide rumskibe og wienerbrød og som kun har set sømænd når det regner i roskilde hvor jeg har en uddannelse i melmaling hvor man maler med mel til ære en fyr uden navn og uden hjem i australien ved et vandfald forladt af vand og med en sten i hånden gik han ned afv","Beley"),
-            new Speaker("Nicolai", "1234", "Nicolai Höyer Christiansen", "Endnu en gut","Beley"),
-            new Speaker("SebastianEx", "9876", "Sebastian Halkjær Petersen", "Så mange gutter","Beley")
-        };
+        //public readonly ObservableCollection<Speaker> Speakers = new ObservableCollection<Speaker>()
+        //{
+        //    new Speaker("Victor", "2109", "Victor Friis-Jensen", "Jeg er en glad ung gut som godt kan lide rumskibe og wienerbrød og som kun har set sømænd når det regner i roskilde hvor jeg har en uddannelse i melmaling hvor man maler med mel til ære en fyr uden navn og uden hjem i australien ved et vandfald forladt af vand og med en sten i hånden gik han ned afv","Beley"),
+        //    new Speaker("Nicolai", "1234", "Nicolai Höyer Christiansen", "Endnu en gut","Beley"),
+        //    new Speaker("SebastianEx", "9876", "Sebastian Halkjær Petersen", "Så mange gutter","Beley")
+        //};
 
-        public readonly ObservableCollection<Room> Rooms = new ObservableCollection<Room>()
-        {
-            new Room("A4.24", "Op af trappen og til venstre, der vil den ligge på højre side", 20),
-            new Room("A1.01", "Jeg er en glad ung gut som godt kan lide rumskibe og wienerbrød og som kun har set sømænd når det regner i roskilde hvor jeg har en uddannelse i melmaling hvor man maler med mel til ære en fyr uden navn og uden hjem i australien ved et vandfald forladt af vand og med en sten i hånden gik han ned afv", 110),
-            new Room("B2.11", "Some closet on the right", 5),
-            new Room("A13.13", "Hen under stien ved siden af det ødelagte spejl", 13)
-        };
+        //public readonly ObservableCollection<Room> Rooms = new ObservableCollection<Room>()
+        //{
+        //    new Room("A4.24", "Op af trappen og til venstre, der vil den ligge på højre side", 20),
+        //    new Room("A1.01", "Jeg er en glad ung gut som godt kan lide rumskibe og wienerbrød og som kun har set sømænd når det regner i roskilde hvor jeg har en uddannelse i melmaling hvor man maler med mel til ære en fyr uden navn og uden hjem i australien ved et vandfald forladt af vand og med en sten i hånden gik han ned afv", 110),
+        //    new Room("B2.11", "Some closet on the right", 5),
+        //    new Room("A13.13", "Hen under stien ved siden af det ødelagte spejl", 13)
+        //};
 
         #endregion
     }

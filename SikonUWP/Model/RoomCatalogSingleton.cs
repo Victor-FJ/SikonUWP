@@ -47,8 +47,7 @@ namespace SikonUWP.Model
         /// <summary>
         /// Denne metode loader lokaler fra databasen
         /// </summary>
-        /// <param name="room1"></param>
-        public async void LoadRooms()
+        public async Task LoadRooms()
         {
             Rooms.Clear();
             GenericPersistence<string, Room> roomPersistence = 

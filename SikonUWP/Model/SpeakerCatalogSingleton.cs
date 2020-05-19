@@ -32,10 +32,9 @@ namespace SikonUWP.Model
         private SpeakerCatalogSingleton()
         {
             Speakers = new ObservableCollection<Speaker>();
-            LoadSpeakers();
         }
 
-        public async void LoadSpeakers()
+        public async Task LoadSpeakers()
         {
             Speakers.Clear();
             GenericPersistence<string, Speaker> facade = new GenericPersistence<string, Speaker>("http://localhost:52415/api/Speakers");

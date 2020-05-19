@@ -19,20 +19,20 @@ namespace SikonUWP.Model
         private ObservableCollection<Event> _collection;
 
 
-        private readonly GenericPersistence<int, Event> _eventPersistence;
-
-        private readonly ObservableCollection<Speaker> _speakers;
         private readonly ObservableCollection<Room> _rooms;
+        private readonly ObservableCollection<Speaker> _speakers;
         private readonly List<string> _imageNames;
 
-        public EventCatalog(GenericPersistence<int, Event> eventPersistence, ObservableCollection<Speaker> speakers, ObservableCollection<Room> rooms, List<string> imageNames)
+        private readonly GenericPersistence<int, Event> _eventPersistence;
+
+        public EventCatalog(ObservableCollection<Room> rooms, ObservableCollection<Speaker> speakers, List<string> imageNames, GenericPersistence<int, Event> eventPersistence)
         {
             _collection = new ObservableCollection<Event>();
             Collection = new ReadOnlyObservableCollection<Event>(_collection);
-            _eventPersistence = eventPersistence;
             _rooms = rooms;
             _speakers = speakers;
             _imageNames = imageNames;
+            _eventPersistence = eventPersistence;
         }
 
         public async Task<bool> Load()
@@ -41,6 +41,11 @@ namespace SikonUWP.Model
             {
                 _collection = new ObservableCollection<Event>(await _eventPersistence.Get());
                 Collection = new ReadOnlyObservableCollection<Event>(_collection);
+                foreach (Event @event in _collection)
+                { 
+                    @event.Room = _rooms.Single((x) => x.RoomNo == @event.Room.RoomNo);
+                    @event.Speaker = _speakers.Single((x) => x.UserName == @event.Speaker.UserName);
+                }
                 return true;
             }
             catch (HttpRequestException)
@@ -57,8 +62,7 @@ namespace SikonUWP.Model
         /// <returns>Whether the event was succesfully added</returns>
         public async Task<bool> Add(Event @event, bool getId)
         {
-            List<Event> collection = _collection.ToList();
-            if (collection.Find((x) => x.Id == @event.Id) != null)
+            if (_collection.Single((x) => x.Id == @event.Id) != null)
                 if (getId)
                     @event.Id = GetUniqueId();
                 else
@@ -71,6 +75,33 @@ namespace SikonUWP.Model
             bool ok = await _eventPersistence.Post(@event);
             if (ok)
                 _collection.Add(@event);
+            return ok;
+        }
+
+        public async Task<bool> Update(int id, Event @event)
+        {
+            Event oldEvent = _collection.Single((x) => x.Id == id);
+            CheckSpeaker(@event);
+            CheckRoom(@event);
+            CheckDate(@event);
+            CheckImage(@event, true);
+
+            bool ok = await _eventPersistence.Put(id, @event);
+            if (ok)
+            {
+                _collection.Remove(oldEvent);
+                _collection.Add(@event);
+            }
+            return ok;
+        }
+
+        public async Task<bool> Remove(int id)
+        {
+            Event @event = _collection.Single((x) => x.Id == id);
+
+            bool ok = await _eventPersistence.Delete(id);
+            if (ok)
+                _collection.Remove(@event);
             return ok;
         }
 

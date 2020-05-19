@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml.Controls;
+using ModelLibrary.Annotations;
 using ModelLibrary.Model;
 using SikonUWP.Annotations;
 using SikonUWP.Common;
@@ -18,13 +19,38 @@ using SikonUWP.View;
 
 namespace SikonUWP.ViewModel
 {
-    public class MainViewModel: INotifyPropertyChanged
+    public class MainViewModel : INotifyPropertyChanged
     {
         private readonly Frame _frame;
         private readonly NavigationView _navigationView;
 
         public static MainViewModel Instance { get; private set; }
 
+        
+        public bool LoadRing { get; 
+            set; }
+        private string _loadText;
+        public string LoadText
+        {
+            get => _loadText;
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    _loadText = "Loaded successfuldt";
+                    LoadRing = false;
+                }
+                else
+                {
+                    _loadText = value;
+                    LoadRing = true;
+                }
+                OnPropertyChanged(nameof(LoadRing));
+                OnPropertyChanged();
+            }
+        }
+
+        public ICommand ReloadCommand { get; set; }
         private User _loggedUser;
 
         public User LoggedUser
@@ -34,16 +60,14 @@ namespace SikonUWP.ViewModel
         }
 
 
-        public MainViewModel()
-        {
-            
-        }
         public MainViewModel(Frame mainPageFrame, NavigationView navigationView)
         {
             _frame = mainPageFrame;
             _navigationView = navigationView;
             Instance = this;
             Load();
+
+            ReloadCommand = new RelayCommand(async () => { bool ok = await Reload(); if (ok) NavigateToPage(mainPageFrame.CurrentSourcePageType);});
         }
 
         #region Navigation
@@ -73,21 +97,42 @@ namespace SikonUWP.ViewModel
 
         private async void Load()
         {
+            await Reload();
+            NavigateToPage(typeof(EventHomePage));
+        }
+
+        public async Task<bool> Reload()
+        {
             try
             {
+                LoadText = "1/6 - Opretter forbindelse";
                 bool ok = await PersistencyManager.TryOpenConn();
                 if (ok)
+                {
+                    LoadText = "2/6 - Henter billeder";
                     await ImageSingleton.Instance.ImageCatalog.SyncImages();
+                    LoadText = "3/6 - Henter lokaler";
+                    await RoomCatalogSingleton.Instance.LoadRooms();
+                    LoadText = "4/6 - Henter oplægsholdere";
+                    await SpeakerCatalogSingleton.Instance.LoadSpeakers();
+                    LoadText = "5/6 - Henter deltagere";
+                    LoadText = "6/6 - Henter begivenheder";
+                    await EventSingleton.Instance.EventCatalog.Load();
+                    LoadText = null;
+                }
                 else
-                    await MessageDialogUtil.MessageDialogAsync(PersistencyManager.FileName,
-                        "ConnectionString er forkert");
+                {
+                    LoadText = "Fejl";
+                    await MessageDialogUtil.MessageDialogAsync(PersistencyManager.FileName, "ConnectionString er forkert");
+                }
+                return ok;
             }
             catch (HttpRequestException)
             {
+                LoadText = "Fejl";
                 await MessageDialogUtil.MessageDialogAsync(PersistencyManager.FileName, PersistencyManager.Message);
+                return false;
             }
-
-            NavigateToPage(typeof(EventHomePage));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

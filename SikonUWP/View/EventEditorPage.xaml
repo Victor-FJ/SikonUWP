@@ -172,7 +172,7 @@
             <Rectangle Grid.Column="1" Grid.Row="6" Stroke="{Binding ToolTipColor[10]}" Margin="4" StrokeThickness="2"/>
             <TextBlock Text="Billed Navn" Grid.Column="0" Grid.Row="7"
                        HorizontalAlignment="Center" Style="{StaticResource TxtBlkStyle}"/>
-            <TextBox x:Name="ImageNameBox" Grid.Column="1" Grid.Row="7" MaxLength="50" 
+            <TextBox x:Name="ImageNameBox" Grid.Column="1" Grid.Row="7" MaxLength="50" IsEnabled="{Binding EditImage}"
                      PlaceholderText="skriv billedets navn" Text="{Binding ImageName, Mode=TwoWay}" 
                      BorderBrush="{Binding ToolTipColor[11]}" Style="{StaticResource SingleLineTxtBoxStyle}">
                 <ToolTipService.ToolTip>
@@ -183,7 +183,7 @@
                          Value="{Binding ElementName=ImageNameBox, Path=Text.Length}"/>
 
             <Button Grid.Column="0" Grid.Row="9" Content="Reset Info" Command="{Binding ClearCommand}" Style="{StaticResource ButtonStyle}"/>
-            <Button Grid.Column="1" Grid.Row="9" Content="Skab Begivenheden" Command="{Binding CreateCommand}" Style="{StaticResource ButtonStyle}"/>
+            <Button Grid.Column="1" Grid.Row="9" Content="Skab Begivenheden" Command="{Binding EditEventCommand}" Style="{StaticResource ButtonStyle}"/>
         </Grid>
     </Grid>
 </Page>
