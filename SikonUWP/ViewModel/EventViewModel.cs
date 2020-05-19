@@ -77,6 +77,7 @@ namespace SikonUWP.ViewModel
             if (ok)
             {
                 ok = await EventSing.EventCatalog.Remove(ShownEvent.Id);
+                ok = ok && await ImageSingleton.Instance.ImageCatalog.RemoveImage(ShownEvent.ImageName);
                 if (ok)
                     MainViewModel.Instance.NavigateToPage(typeof(EventHomePage));
                 else

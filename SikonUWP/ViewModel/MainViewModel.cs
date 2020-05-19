@@ -43,7 +43,6 @@ namespace SikonUWP.ViewModel
                     _loadText = value;
                     LoadRing = true;
                 }
-
                 OnPropertyChanged(nameof(LoadRing));
                 OnPropertyChanged();
             }
@@ -55,15 +54,8 @@ namespace SikonUWP.ViewModel
         public User LoggedUser
         {
             get { return _loggedUser; }
-            set
-            {
-                _loggedUser = value;
-                OnPropertyChanged();
-            }
+            set { _loggedUser = value; OnPropertyChanged(); }
         }
-
-
-
 
 
         public MainViewModel(Frame mainPageFrame, NavigationView navigationView)
@@ -133,8 +125,7 @@ namespace SikonUWP.ViewModel
                 else
                 {
                     LoadText = "Fejl";
-                    await MessageDialogUtil.MessageDialogAsync(PersistencyManager.FileName,
-                        "ConnectionString er forkert");
+                    await MessageDialogUtil.MessageDialogAsync(PersistencyManager.FileName, "ConnectionString er forkert");
                 }
 
                 return ok;

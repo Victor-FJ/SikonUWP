@@ -235,7 +235,17 @@ namespace SikonUWP.ViewModel
             }
         }
 
-        public bool EditImage { get; set; }
+
+        private bool _editImage;
+        public bool EditImage
+        {
+            get => _editImage;
+            set
+            {
+                _editImage = value;
+                OnPropertyChanged();
+            }
+        }
 
         private string _oldImageName;
 
@@ -249,7 +259,7 @@ namespace SikonUWP.ViewModel
                 {
                     EditedEvent.ImageName = value;
                     _imageName = value;
-                    if (EditImage)
+                    if (EventSing.MarkedImage != null)
                         EventSing.EventCatalog.CheckImage(EditedEvent, true);
                     ToolTip(11);
                 }
@@ -264,6 +274,9 @@ namespace SikonUWP.ViewModel
                 OnPropertyChanged();
             }
         }
+
+
+        public string EditButtonText { get; set; }
 
 
         #endregion
@@ -296,11 +309,15 @@ namespace SikonUWP.ViewModel
 
             //Checks if the marked event is new or not to determine wether to create or update
             if (EventSing.IsNew)
+            {
                 EditEventCommand = new RelayCommand(() => Edit(Create));
+                EditButtonText = "Skab Begivenheden";
+            }
             else
             {
                 EditEventCommand = new RelayCommand(() => Edit(Update));
                 _oldImageName = EditedEvent.ImageName;
+                EditButtonText = "Opdater Begivenheden";
             }
                 
         }
@@ -324,6 +341,7 @@ namespace SikonUWP.ViewModel
         {
             if (EventSing.MarkedImage != null)
             {
+                EditImage = true;
                 ImageView = await ImageSing.ImageCatalog.AsBitmapImage(EventSing.MarkedImage);
                 ImageName = EditedEvent.ImageName;
             }
@@ -344,9 +362,8 @@ namespace SikonUWP.ViewModel
             if (image != null)
             {
                 EventSing.MarkedImage = image;
-                ImageView = await ImageSing.ImageCatalog.AsBitmapImage(EventSing.MarkedImage);
                 EditImage = true;
-                OnPropertyChanged(nameof(EditImage));
+                ImageView = await ImageSing.ImageCatalog.AsBitmapImage(EventSing.MarkedImage);
                 ImageName = image.Name;
                 ToolTip(10);
             }
@@ -372,6 +389,9 @@ namespace SikonUWP.ViewModel
                 try
                 {
                     await method.Invoke();
+                    EventSing.MarkedEvent = null;
+                    EventSing.ViewedEvent = EditedEvent;
+                    MainViewModel.Instance.NavigateToPage(typeof(EventPage));
                 }
                 catch (HttpRequestException)
                 {
@@ -395,19 +415,7 @@ namespace SikonUWP.ViewModel
             if (imageOk)
                 eventOk = await EventSing.EventCatalog.Add(EditedEvent, true);
             if (eventOk)
-            {
-                bool doNavigate = await MessageDialogUtil.InputDialogAsync("Success",
-                    "Fik succesfuldt lavet begivenheden. Vil du navigere til den?");
-                if (doNavigate)
-                {
-                    EventSing.IsNew = false;
-                    EventSing.ViewedEvent = EditedEvent;
-                    MainViewModel.Instance.NavigateToPage(typeof(EventPage));
-                }
-                else
-                    throw new NotImplementedException();
                 return;
-            }
             if (imageOk)
                 await ImageSing.ImageCatalog.RemoveImage(ImageName);
             throw new BaseException("You though this would not be possible. Looks like you missed something");
@@ -427,12 +435,7 @@ namespace SikonUWP.ViewModel
             if (imageOk)
                 eventOk = await EventSing.EventCatalog.Update(EditedEvent.Id, EditedEvent);
             if (eventOk)
-            {
-                EventSing.MarkedEvent = null;
-                EventSing.ViewedEvent = EditedEvent;
-                MainViewModel.Instance.NavigateToPage(typeof(EventPage));
                 return;
-            }
             if (imageOk)
                 await ImageSing.ImageCatalog.RemoveImage(ImageName);
             throw new BaseException("You though this would not be possible. Looks like you missed something");
