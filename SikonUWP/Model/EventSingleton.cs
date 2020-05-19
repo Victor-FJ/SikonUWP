@@ -71,7 +71,7 @@ namespace SikonUWP.Model
         private EventSingleton()
         {
             EventCatalog = new EventCatalog(RoomCatalogSingleton.Instance.Rooms, SpeakerCatalogSingleton.Instance.Speakers,
-                ImageSingleton.Instance.ImageCatalog.Dictionary.Keys.ToList(), new GenericPersistence<int, Event>("http://localhost:52415/api/Event/"));
+                ImageSingleton.Instance.ImageCatalog.Dictionary, new GenericPersistence<int, Event>("http://localhost:52415/api/Event/"));
             MarkedEvent = null;
         }
 

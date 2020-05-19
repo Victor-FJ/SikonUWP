@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Media.Imaging;
 using ModelLibrary.Exceptions;
 using ModelLibrary.Model;
 using SikonUWP.Persistency;
@@ -21,11 +22,11 @@ namespace SikonUWP.Model
 
         private readonly ObservableCollection<Room> _rooms;
         private readonly ObservableCollection<Speaker> _speakers;
-        private readonly List<string> _imageNames;
+        private readonly ReadOnlyDictionary<string, BitmapImage> _imageNames;
 
         private readonly GenericPersistence<int, Event> _eventPersistence;
 
-        public EventCatalog(ObservableCollection<Room> rooms, ObservableCollection<Speaker> speakers, List<string> imageNames, GenericPersistence<int, Event> eventPersistence)
+        public EventCatalog(ObservableCollection<Room> rooms, ObservableCollection<Speaker> speakers, ReadOnlyDictionary<string, BitmapImage> imageNames, GenericPersistence<int, Event> eventPersistence)
         {
             _collection = new ObservableCollection<Event>();
             Collection = new ReadOnlyObservableCollection<Event>(_collection);
@@ -70,7 +71,7 @@ namespace SikonUWP.Model
             CheckSpeaker(@event);
             CheckRoom(@event);
             CheckDate(@event);
-            CheckImage(@event, true);
+            CheckImage(@event, false);
 
             bool ok = await _eventPersistence.Post(@event);
             if (ok)
@@ -84,7 +85,7 @@ namespace SikonUWP.Model
             CheckSpeaker(@event);
             CheckRoom(@event);
             CheckDate(@event);
-            CheckImage(@event, true);
+            CheckImage(@event, false);
 
             bool ok = await _eventPersistence.Put(id, @event);
             if (ok)
@@ -150,7 +151,7 @@ namespace SikonUWP.Model
 
         public void CheckImage(Event selectedEvent, bool beUnique)
         {
-            bool doesContain = _imageNames.Contains(selectedEvent.ImageName);
+            bool doesContain = _imageNames.Keys.Contains(selectedEvent.ImageName);
             if (beUnique && doesContain)
                 throw new ItIsNotUniqueException("Der er allerede et billed med det navn");
             if (!beUnique && !doesContain)
