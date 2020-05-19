@@ -183,7 +183,7 @@
                          Value="{Binding ElementName=ImageNameBox, Path=Text.Length}"/>
 
             <Button Grid.Column="0" Grid.Row="9" Content="Reset Info" Command="{Binding ClearCommand}" Style="{StaticResource ButtonStyle}"/>
-            <Button Grid.Column="1" Grid.Row="9" Content="Skab Begivenheden" Command="{Binding EditEventCommand}" Style="{StaticResource ButtonStyle}"/>
+            <Button Grid.Column="1" Grid.Row="9" Content="{Binding EditButtonText}" Command="{Binding EditEventCommand}" Style="{StaticResource ButtonStyle}"/>
         </Grid>
     </Grid>
 </Page>

@@ -106,8 +106,6 @@ namespace SikonUWP.ViewModel
             }
         }
 
-
-
         #endregion
 
         public ICommand NavigateToEventCommand { get; set; }
