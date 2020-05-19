@@ -11,9 +11,9 @@ namespace SikonUWP.Model
 {
     class ParticipantCatalogSingleton
     {
-        private ParticipantCatalogSingleton _instance = null;
+        private static ParticipantCatalogSingleton _instance = null;
 
-		public ParticipantCatalogSingleton Instance
+		public static ParticipantCatalogSingleton Instance
 		{
             get
             {

@@ -10,6 +10,7 @@ using System.Windows.Input;
 using Windows.UI.Xaml.Controls;
 using ModelLibrary.Annotations;
 using ModelLibrary.Model;
+using SikonUWP.Annotations;
 using SikonUWP.Common;
 using SikonUWP.Handlers;
 using SikonUWP.Model;
@@ -51,6 +52,14 @@ namespace SikonUWP.ViewModel
         }
 
         public ICommand ReloadCommand { get; set; }
+        private User _loggedUser;
+
+        public User LoggedUser
+        {
+            get { return _loggedUser; }
+            set { _loggedUser = value; OnPropertyChanged(); }
+        }
+
 
         public MainViewModel(Frame mainPageFrame, NavigationView navigationView)
         {
