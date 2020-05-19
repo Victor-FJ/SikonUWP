@@ -295,7 +295,7 @@ namespace SikonUWP.ViewModel
             
             if (PersonType == Participant.PersonType.Vælg_type)
             {
-                MessageDialogUtil.MessageDialogAsync("Ingen PersonType",
+                await MessageDialogUtil.MessageDialogAsync("Ingen PersonType",
                     "Der er ikke valgt en PersonType\nVælg venligst persontype");
             }else
             {
@@ -341,7 +341,7 @@ namespace SikonUWP.ViewModel
             
             if (Regex.Matches(_phoneNumber, @"[a-zA-Z]").Count > 0)
             {
-                MessageDialogUtil.MessageDialogAsync("Bogstav i dit telefon nummer",
+                await MessageDialogUtil.MessageDialogAsync("Bogstav i dit telefon nummer",
                     "Der er et eller flere bogstaver i dit telefon nummer\nprøv venligst igen kun med tal");
             }else 
             {
