@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using SikonUWP.ViewModel;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -26,5 +27,14 @@ namespace SikonUWP.View
         {
             this.InitializeComponent();
         }
+
+        //private async void LogIn(object sender, RoutedEventArgs e)
+        //{
+        //    bool ok = await UserLogin_CreateViewModel.vmInstance.LogIn();
+        //    if (ok == true)
+        //    {
+        //        Frame.Navigate(typeof(MainPage));
+        //    }
+        //}
     }
 }
