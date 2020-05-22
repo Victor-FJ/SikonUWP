@@ -24,6 +24,7 @@ namespace SikonUWP.ViewModel
 
         public static MainViewModel Instance { get; private set; }
 
+        #region ControlProperties
 
         public bool LoadRing { get; set; }
         private string _loadText;
@@ -33,13 +34,15 @@ namespace SikonUWP.ViewModel
             get => _loadText;
             set
             {
-                if (string.IsNullOrWhiteSpace(value))
+                if (value == null)
                 {
-                    _loadText = "Loaded successfuldt";
+                    _loadText = "Færdig";
                     LoadRing = false;
                 }
+                else if (value.Contains("Fejl"))
+                    LoadRing = false;
                 else
-                {
+                { 
                     _loadText = value;
                     LoadRing = true;
                 }
@@ -48,15 +51,18 @@ namespace SikonUWP.ViewModel
             }
         }
 
-        public ICommand ReloadCommand { get; set; }
-        private User _loggedUser;
 
+        private User _loggedUser;
         public User LoggedUser
         {
             get { return _loggedUser; }
             set { _loggedUser = value; OnPropertyChanged(); }
         }
 
+        #endregion
+        
+
+        public ICommand ReloadCommand { get; set; }
 
         public MainViewModel(Frame mainPageFrame, NavigationView navigationView)
         {
@@ -127,7 +133,6 @@ namespace SikonUWP.ViewModel
                     LoadText = "Fejl";
                     await MessageDialogUtil.MessageDialogAsync(PersistencyManager.FileName, "ConnectionString er forkert");
                 }
-
                 return ok;
             }
             catch (HttpRequestException)

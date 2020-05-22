@@ -10,6 +10,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using ModelLibrary.Exceptions;
 using ModelLibrary.Model;
 using SikonUWP.Persistency;
+using SikonUWP.ViewModel;
 
 namespace SikonUWP.Model
 {
@@ -19,6 +20,7 @@ namespace SikonUWP.Model
 
         private ObservableCollection<Event> _collection;
 
+        private MainViewModel _main = MainViewModel.Instance;
 
         private readonly ObservableCollection<Room> _rooms;
         private readonly ObservableCollection<Speaker> _speakers;
@@ -73,37 +75,51 @@ namespace SikonUWP.Model
             CheckDate(@event);
             CheckImage(@event, false);
 
+            _collection.Add(@event);
             bool ok = await _eventPersistence.Post(@event);
-            if (ok)
-                _collection.Add(@event);
-            return ok;
+            if (!ok)
+            {
+                _collection.Remove(@event);
+                throw new BaseException("Thing no. 1. you thought would never happen. But of course it did");
+            }
+            return true;
         }
 
         public async Task<bool> Update(int id, Event @event)
         {
             Event oldEvent = _collection.Single((x) => x.Id == id);
+            int index = _collection.IndexOf(oldEvent);
+            _collection.Remove(oldEvent);
             CheckSpeaker(@event);
             CheckRoom(@event);
             CheckDate(@event);
             CheckImage(@event, false);
 
+            _collection.Insert(index, @event);
             bool ok = await _eventPersistence.Put(id, @event);
-            if (ok)
+            if (!ok)
             {
-                _collection.Remove(oldEvent);
-                _collection.Add(@event);
+                _collection.Remove(@event);
+                _collection.Insert(index, oldEvent);
+                throw new BaseException("Thing no. 2. you thought would never happen. But of course it did");
             }
-            return ok;
+
+            return true;
         }
 
         public async Task<bool> Remove(int id)
         {
             Event @event = _collection.Single((x) => x.Id == id);
 
+            _collection.Remove(@event);
             bool ok = await _eventPersistence.Delete(id);
-            if (ok)
-                _collection.Remove(@event);
-            return ok;
+            if (!ok)
+            {
+                _collection.Add(@event);
+                throw new BaseException("Thing no. 3. you thought would never happen. But of course it did");
+            }
+                
+            return true;
         }
 
         public int GetUniqueId()
@@ -120,7 +136,7 @@ namespace SikonUWP.Model
 
         public void CheckSpeaker(Event selectedEvent)
         {
-            if (selectedEvent.Room == null || !_speakers.Contains(selectedEvent.Speaker))
+            if (selectedEvent.Speaker == null || !_speakers.Contains(selectedEvent.Speaker))
                 throw new EmptyException("Værten eksistere ikke i cataloget");
         }
 

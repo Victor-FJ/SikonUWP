@@ -25,6 +25,8 @@ namespace SikonUWP.ViewModel
 
         public ImageSingleton ImageSing { get; set; }
 
+        public MainViewModel MainViewModel { get; set; }
+
         public Event EditedEvent { get; set; }
 
         #region ControlProperties
@@ -290,6 +292,7 @@ namespace SikonUWP.ViewModel
             //Gets singletons
             EventSing = EventSingleton.Instance;
             ImageSing = ImageSingleton.Instance;
+            MainViewModel = MainViewModel.Instance;
 
             //Gets the event marked by previous pages as the event to edit
             EditedEvent = EventSing.MarkedEvent;
@@ -391,7 +394,6 @@ namespace SikonUWP.ViewModel
                     await method.Invoke();
                     EventSing.MarkedEvent = null;
                     EventSing.ViewedEvent = EditedEvent;
-                    MainViewModel.Instance.NavigateToPage(typeof(EventPage));
                 }
                 catch (HttpRequestException)
                 {
@@ -410,12 +412,17 @@ namespace SikonUWP.ViewModel
 
         public async Task Create()
         {
+            MainViewModel.LoadText = "Skaber begivenhed";
             bool eventOk = false;
             bool imageOk = await ImageSing.ImageCatalog.AddImage(EventSing.MarkedImage, ImageName);
             if (imageOk)
                 eventOk = await EventSing.EventCatalog.Add(EditedEvent, true);
             if (eventOk)
+            {
+                MainViewModel.LoadText = null;
                 return;
+            }
+            MainViewModel.LoadText = "Fejl";
             if (imageOk)
                 await ImageSing.ImageCatalog.RemoveImage(ImageName);
             throw new BaseException("You though this would not be possible. Looks like you missed something");
@@ -423,19 +430,23 @@ namespace SikonUWP.ViewModel
 
         public async Task Update()
         {
+            MainViewModel.LoadText = "Opdatere begivenhed";
             bool eventOk = false;
             bool imageOk;
             if (EventSing.MarkedImage != null)
-            {
-                imageOk = await ImageSing.ImageCatalog.RemoveImage(_oldImageName);
-                imageOk = imageOk && await ImageSing.ImageCatalog.AddImage(EventSing.MarkedImage, ImageName);
-            }
+                imageOk = await ImageSing.ImageCatalog.AddImage(EventSing.MarkedImage, ImageName);
             else
                 imageOk = true;
             if (imageOk)
                 eventOk = await EventSing.EventCatalog.Update(EditedEvent.Id, EditedEvent);
-            if (eventOk)
+            if (EventSing.MarkedImage != null && eventOk)
+                imageOk = await ImageSing.ImageCatalog.RemoveImage(_oldImageName);
+            if (eventOk && imageOk)
+            {
+                MainViewModel.LoadText = null;
                 return;
+            }
+            MainViewModel.LoadText = "Fejl";
             if (imageOk)
                 await ImageSing.ImageCatalog.RemoveImage(ImageName);
             throw new BaseException("You though this would not be possible. Looks like you missed something");

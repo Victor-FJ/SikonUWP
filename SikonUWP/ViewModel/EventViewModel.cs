@@ -76,12 +76,16 @@ namespace SikonUWP.ViewModel
             bool ok = await MessageDialogUtil.InputDialogAsync("Er du sikker?", "Er du sikker på at du vil slette denne begivenhed fuldstændig");
             if (ok)
             {
+                MainViewModel mainViewModel = MainViewModel.Instance;
+                mainViewModel.LoadText = "Sletter begivenheden";
                 ok = await EventSing.EventCatalog.Remove(ShownEvent.Id);
                 ok = ok && await ImageSingleton.Instance.ImageCatalog.RemoveImage(ShownEvent.ImageName);
-                if (ok)
-                    MainViewModel.Instance.NavigateToPage(typeof(EventHomePage));
-                else
+                if (!ok)
+                {
+                    mainViewModel.LoadText = "Fejl";
                     throw new BaseException("Failed to delete event");
+                }
+                mainViewModel.LoadText = null;
             }
         }
 
