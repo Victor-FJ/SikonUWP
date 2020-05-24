@@ -22,8 +22,8 @@ namespace SikonUWP.ViewModel
     public class EventEditorViewModel : INotifyPropertyChanged
     {
         public EventSingleton EventSing { get; set; }
-
         public ImageSingleton ImageSing { get; set; }
+        public RegistrationSingleton RegiSing { get; set; }
 
         public MainViewModel MainViewModel { get; set; }
 
@@ -281,6 +281,8 @@ namespace SikonUWP.ViewModel
         public string EditButtonText { get; set; }
 
 
+        private bool _editing;
+
         #endregion
 
         public ICommand GetImageCommand { get; set; }
@@ -292,6 +294,7 @@ namespace SikonUWP.ViewModel
             //Gets singletons
             EventSing = EventSingleton.Instance;
             ImageSing = ImageSingleton.Instance;
+            RegiSing = RegistrationSingleton.Instance;
             MainViewModel = MainViewModel.Instance;
 
             //Gets the event marked by previous pages as the event to edit
@@ -313,12 +316,12 @@ namespace SikonUWP.ViewModel
             //Checks if the marked event is new or not to determine wether to create or update
             if (EventSing.IsNew)
             {
-                EditEventCommand = new RelayCommand(() => Edit(Create));
+                EditEventCommand = new RelayCommand(() => Edit(Create), () => !_editing);
                 EditButtonText = "Skab Begivenheden";
             }
             else
             {
-                EditEventCommand = new RelayCommand(() => Edit(Update));
+                EditEventCommand = new RelayCommand(() => Edit(Update), () => !_editing);
                 _oldImageName = EditedEvent.ImageName;
                 EditButtonText = "Opdater Begivenheden";
             }
@@ -389,15 +392,20 @@ namespace SikonUWP.ViewModel
             bool[] comBools = EventSing.MarkedBools;
             if (comBools.All(x => x))
             {
+                _editing = true;
+                ((RelayCommand)EditEventCommand).RaiseCanExecuteChanged();
                 try
                 {
                     await method.Invoke();
                     EventSing.MarkedEvent = null;
                     EventSing.ViewedEvent = EditedEvent;
+                    MainViewModel.NavigateToPage(typeof(EventPage));
                 }
                 catch (HttpRequestException)
                 {
                     await MessageDialogUtil.MessageDialogAsync(PersistencyManager.FileName, PersistencyManager.Message);
+                    _editing = false;
+                    ((RelayCommand)EditEventCommand).RaiseCanExecuteChanged();
                 }
             }
             else
@@ -419,6 +427,7 @@ namespace SikonUWP.ViewModel
                 eventOk = await EventSing.EventCatalog.Add(EditedEvent, true);
             if (eventOk)
             {
+                RegiSing.AddEvent(EditedEvent);
                 MainViewModel.LoadText = null;
                 return;
             }
@@ -443,6 +452,8 @@ namespace SikonUWP.ViewModel
                 imageOk = await ImageSing.ImageCatalog.RemoveImage(_oldImageName);
             if (eventOk && imageOk)
             {
+                Event oldEvent = RegiSing.RegistrationDictionary.Single(x => x.Key.Id == EditedEvent.Id).Key;
+                RegiSing.UpdateEvent(oldEvent, EditedEvent);
                 MainViewModel.LoadText = null;
                 return;
             }

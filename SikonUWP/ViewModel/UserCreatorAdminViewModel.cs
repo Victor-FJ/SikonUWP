@@ -299,7 +299,7 @@ namespace SikonUWP.ViewModel
                     "Der er ikke valgt en PersonType\nVælg venligst persontype");
             }else
             {
-                FillUserList();
+                await FillUserList();
                 NewParticipant = new Participant(Username, Password, PersonType);
                 if (!UserNameList.Contains(NewParticipant.UserName)) 
                 {
@@ -313,7 +313,7 @@ namespace SikonUWP.ViewModel
 
         private async void CreateSpeaker()
         {
-            FillUserList();
+            await FillUserList();
             NewSpeaker = new Speaker(Username, Password, FullName, Description, Image.Name);
             if (!ImageCatalog.ImageCatalog.Dictionary.Keys.Contains(Image.Name))
             {
@@ -345,7 +345,7 @@ namespace SikonUWP.ViewModel
                     "Der er et eller flere bogstaver i dit telefon nummer\nprøv venligst igen kun med tal");
             }else 
             {
-                FillUserList();
+                await FillUserList();
                 NewAdmin = new Admin(Username, Password, PhoneNumber);
                 if (!UserNameList.Contains(NewAdmin.UserName))
                 {
@@ -371,7 +371,7 @@ namespace SikonUWP.ViewModel
         }
 
 
-        private async void FillUserList()
+        private async Task FillUserList()
         {
             await UserCatalogSingleton.Instance.LoadUsers();
             UserList = UserCatalogSingleton.Instance.Users.ToList();

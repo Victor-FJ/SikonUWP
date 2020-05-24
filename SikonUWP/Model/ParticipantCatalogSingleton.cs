@@ -9,7 +9,7 @@ using SikonUWP.Persistency;
 
 namespace SikonUWP.Model
 {
-    class ParticipantCatalogSingleton
+    public class ParticipantCatalogSingleton
     {
         private static ParticipantCatalogSingleton _instance = null;
 
@@ -31,10 +31,9 @@ namespace SikonUWP.Model
         private ParticipantCatalogSingleton()
         {
 			Participants = new ObservableCollection<Participant>();
-            LoadParticipants();
         }
 
-        public async void LoadParticipants()
+        public async Task LoadParticipants()
         {
             Participants.Clear();
             GenericPersistence<string, Participant> facade = new GenericPersistence<string, Participant>("http://localhost:52415/api/Participants");

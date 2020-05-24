@@ -65,7 +65,7 @@ namespace SikonUWP.Model
         /// <returns>Whether the event was succesfully added</returns>
         public async Task<bool> Add(Event @event, bool getId)
         {
-            if (_collection.Single((x) => x.Id == @event.Id) != null)
+            if (_collection.SingleOrDefault((x) => x.Id == @event.Id) != null)
                 if (getId)
                     @event.Id = GetUniqueId();
                 else
@@ -150,7 +150,8 @@ namespace SikonUWP.Model
         public void CheckDate(Event selectedEvent)
         {
             int speakerConflicts = (from @event in _collection
-                where selectedEvent.Speaker == @event.Speaker && selectedEvent.StartDate < @event.EndDate && selectedEvent.EndDate > @event.StartDate
+                where selectedEvent.Speaker == @event.Speaker && selectedEvent.StartDate < @event.EndDate && 
+                      selectedEvent.EndDate > @event.StartDate && selectedEvent.Id != @event.Id
                 select @event).Count();
 
             if (speakerConflicts != 0)
@@ -158,7 +159,7 @@ namespace SikonUWP.Model
 
             int roomConflicts = (from @event in _collection
                 where selectedEvent.Room == @event.Room && selectedEvent.StartDate < @event.EndDate &&
-                      selectedEvent.EndDate > @event.StartDate
+                      selectedEvent.EndDate > @event.StartDate && selectedEvent.Id != @event.Id
                 select @event).Count();
             
             if (roomConflicts != 0) 

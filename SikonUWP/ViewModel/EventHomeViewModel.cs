@@ -19,6 +19,7 @@ namespace SikonUWP.ViewModel
     public class EventHomeViewModel : INotifyPropertyChanged
     {
         public EventSingleton EventSing { get; set; }
+        public RegistrationSingleton RegiSing { get; set; }
 
         private IEnumerable<Event> _events;
         public ObservableCollection<Event> Events { get; set; }
@@ -35,13 +36,12 @@ namespace SikonUWP.ViewModel
 
         public ReadOnlyCollection<string> OrderList => _orderList;
 
-        private string _selectedOrder;
         public string SelectedOrder
         {
-            get { return _selectedOrder; }
+            get { return EventSing.SelOrder; }
             set
             {
-                _selectedOrder = value;
+                EventSing.SelOrder = value;
                 SortEvents();
             }
         }
@@ -50,13 +50,12 @@ namespace SikonUWP.ViewModel
         private const string TypeText = "Alle typer";
         public ReadOnlyCollection<string> Types => EnumList<Event.EventType>(TypeText);
 
-        private string _selectedType;
         public string SelectedType
         {
-            get { return _selectedType; }
+            get { return EventSing.SelType; }
             set
             {
-                _selectedType = value;
+                EventSing.SelType = value;
                 FilterEvents();
             }
         }
@@ -65,46 +64,62 @@ namespace SikonUWP.ViewModel
         private const string SubjectText = "Alle emner";
         public ReadOnlyCollection<string> Subjects => EnumList<Event.EventSubject>(SubjectText);
 
-        private string _selectedSubject;
         public string SelectedSubject
         {
-            get { return _selectedSubject; }
+            get { return EventSing.SelSubject; }
             set
             {
-                _selectedSubject = value;
+                EventSing.SelSubject = value;
                 FilterEvents();
             }
         }
 
 
-        private readonly Speaker _speakerText = new Speaker("dummySpeaker", "1", "Alle oplægsholdere", "f", "f");
+        private const string SpeakerText = "Alle oplægsholdere";
 
-        private ReadOnlyCollection<Speaker> _speakers;
-        public ReadOnlyCollection<Speaker> Speakers => _speakers;
+        private readonly ReadOnlyCollection<object> _speakers = SpeakerList();
+        public ReadOnlyCollection<object> Speakers => _speakers;
 
-        private Speaker _selectedSpeaker;
-        public Speaker SelectedSpeaker
+        public object SelectedSpeaker
         {
-            get { return _selectedSpeaker; }
+            get
+            {
+                if (EventSing.SelSpeaker is string)
+                    return Speakers[0];
+                if (EventSing.SelSpeaker is Speaker speaker)
+                    return Speakers.SingleOrDefault(x => x is Speaker s && s.UserName == speaker.UserName);
+                return null;
+            }
             set
             {
-                _selectedSpeaker = value;
+                EventSing.SelSpeaker = value;
                 FilterEvents();
             }
         }
 
-
-        private DateTimeOffset? _selectedDate;
 
         public DateTimeOffset? SelectedDate
         {
-            get { return _selectedDate; }
+            get { return EventSing.SelDate; }
             set
             {
-                _selectedDate = value;
+                EventSing.SelDate = value;
                 FilterEvents();
             }
         }
+
+        public int SelectedSpotNo
+        {
+            get { return EventSing.SelSpotNo; }
+            set
+            {
+                EventSing.SelSpotNo = value;
+                FilterEvents();
+            }
+        }
+
+
+        private bool _isAllShown;
 
         #endregion
 
@@ -114,29 +129,26 @@ namespace SikonUWP.ViewModel
         public EventHomeViewModel()
         {
             EventSing = EventSingleton.Instance;
-
-            if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
-                StartUp();
-            else
-            {
-                SpeakerList();
-                Events = new ObservableCollection<Event>();
-                Events.Add(new Event(0, "En lang title på 100 karaktere er en ret lang title. Den er til for at teste maksimalerne. Sådan sea", "Efterhånden er det ved at blive mere alment kendt, at autisme/Aspergers Syndrom ikke er en 'fabriksfejl', men en anden måde at fungere hjernemæssigt på. Denne måde betyder, at man fra dag 1 er bygget til i mindre grad at fornemme sig vej gennem livet, og i større grad at måtte forstå alt. Dette dræner én mere for kræfter, gør én mere socialt udsat, og ofte får andre menneskers handlinger og motiver til at fremstå ulogiske Det betyder også, at vejen til en identitet – en udvikling, alle mennesker gennemgår, og som er svær nok i sig selv – forløber anderledes end for flertallet af befolkningen.Dette handler både om i et fem - fase - forløb at komme ud over den truende fornemmelse af at være 'forkert' og om at bruge andre måder at finde sig selv på end de måder, som giver mening for mange andre – men netop ikke for mennesker på autismespektret.Vejen til identitet med autisme er således kernen i dette indlæg.Efterhånden er det ved at blive mere alment kendt, at autisme / Aspergers Syndrom ikke er en 'fabriksfejl', men en anden måde at fungere hjernemæssigt på.Denne måde betyder, at man fra dag 1 er bygget til i mindre grad at fornemme sig vej gennem livet, og i større grad at måtte forstå alt.Dette dræner én mere for kræfter, gør én mere socialt udsat, og ofte får andre menneskers handlinger og motiver til at fremstå ulogiske Det betyder også, at vejen til en identitet – en udvikling, alle mennesker gennemgår, og som er svær nok i sig selv – forløber anderledes end for flertallet af befolkningen.Dette handler både om i et fem - fase - forløb at komme ud over den truende fornemmelse af at være 'forkert' og om at bruge andre måder at finde sig selv på end de måder, som giver mening for mange andre – men netop ikke for mennesker på autismespektret.Vejen til identitet med autisme er således kernen i dette indlæg Efterhånden er det ved at blive mere alment kendt, at autisme / Aspergers Syndrom ikke er en 'fabriksfejl', men en anden måde at fungere hjernemæssigt på.Denne måde betyder, at man fra dag 1 er bygget til i mindre grad at fornemme sig vej gennem livet, og i større grad at måtte forstå alt.Dette dræner én mere for kræfter, gør én mere socialt udsat, og ofte får andre menneskers handlinger og motiver til at fremstå ulogiske Det betyder også, at vejen til en identitet – en udvikling, alle mennesker gennemgår, og som er svær nok i sig selv – forløber anderledes end for flertallet af befolkningen.Dette handler både om i et fem - fase - forløb at komme ud over den truende fornemmelse af at være 'forkert' og om at bruge andre måder at finde sig selv på end de måder, som giver mening for mange andre – men netop ikke for mennesker på autismespektret.Vejen til identitet med autisme er således kernen i dette indlæg Efterhånden er det ved at blive mere alment kendt, at autisme / Aspergers Syndrom ikke er en 'fabriksfejl', men en anden måde at fungere hjernemæssigt på.Denne måde betyder, at man fra dag 1 er bygget til i mindre grad at fornemme sig ve", Event.EventType.Konkurrence, Event.EventSubject.PædagogiskUdvikling, 110, DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddHours(26), null, null, "Stuff"));
-            }
-
+            RegiSing = RegistrationSingleton.Instance;
 
             NavigateToEventCommand = new RelayCommand(NavigateToEvent);
-            ShowAllCommand = new RelayCommand(() => { ShowAll(); FilterEvents(); });
+            ShowAllCommand = new RelayCommand(() => { ShowAll(); FilterEvents(); }, () => !_isAllShown);
 
-            _selectedOrder = _orderList[0];
-            ShowAll();
+            if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
+            {
+                if (EventSing.SelOrder == null)
+                {
+                    EventSing.SelOrder = _orderList[0];
+                    ShowAll();
+                }
+                StartUp();
+            }
         }
 
         private void StartUp()
         {
-            SpeakerList();
+            Events = new ObservableCollection<Event>();
             SortEvents();
-            Events = new ObservableCollection<Event>(EventSing.EventCatalog.Collection);
             OnPropertyChanged(nameof(Events));
         }
 
@@ -150,14 +162,16 @@ namespace SikonUWP.ViewModel
 
         public void ShowAll()
         {
-            _selectedType = TypeText;
-            _selectedSubject = SubjectText;
-            _selectedSpeaker = _speakerText;
-            _selectedDate = null;
+            EventSing.SelType = TypeText;
+            EventSing.SelSubject = SubjectText;
+            EventSing.SelSpeaker = SpeakerText;
+            EventSing.SelDate = null;
+            EventSing.SelSpotNo = 0;
             OnPropertyChanged(nameof(SelectedType));
             OnPropertyChanged(nameof(SelectedSubject));
             OnPropertyChanged(nameof(SelectedSpeaker));
             OnPropertyChanged(nameof(SelectedDate));
+            OnPropertyChanged(nameof(SelectedSpotNo));
         }
 
         #endregion
@@ -166,11 +180,11 @@ namespace SikonUWP.ViewModel
 
         private void SortEvents()
         {
-            if (_selectedOrder == _orderList[1])
+            if (EventSing.SelOrder == _orderList[1])
                 _events = from @event in EventSing.EventCatalog.Collection orderby @event.Title select @event;
-            else if (_selectedOrder == _orderList[2])
+            else if (EventSing.SelOrder == _orderList[2])
                 _events = from @event in EventSing.EventCatalog.Collection orderby @event.Speaker.FullName select @event;
-            else if (_selectedOrder == _orderList[3])
+            else if (EventSing.SelOrder == _orderList[3])
                 _events = from @event in EventSing.EventCatalog.Collection orderby @event.StartDate select @event;
             else
                 _events = new ObservableCollection<Event>(EventSing.EventCatalog.Collection);
@@ -180,33 +194,40 @@ namespace SikonUWP.ViewModel
 
         private void FilterEvents()
         {
-            if (Events == null)
-                return;
+            bool[] filters = new bool[5];
 
-            bool[] filters = new bool[4];
-
-            if (Enum.TryParse(_selectedType, out Event.EventType typeEnum))
+            if (Enum.TryParse(EventSing.SelType, out Event.EventType typeEnum))
                 filters[0] = true;
-            if (Enum.TryParse(_selectedSubject, out Event.EventSubject subjectEnum))
+            if (Enum.TryParse(EventSing.SelSubject, out Event.EventSubject subjectEnum))
                 filters[1] = true;
-            if (_selectedSpeaker != _speakerText)
+            Speaker speaker = null;
+            if (EventSing.SelSpeaker is Speaker s)
+            {
                 filters[2] = true;
+                speaker = s;
+            }
+                
             DateTimeOffset selectedDate;
-            if (_selectedDate != null)
+            if (EventSing.SelDate != null)
             {
                 filters[3] = true;
-                selectedDate = _selectedDate.Value;
+                selectedDate = EventSing.SelDate.Value;
             }
+            if (EventSing.SelSpotNo > 0)
+                filters[4] = true;
 
             int position = 0;
             foreach (Event @event in _events)
             {
                 bool typInc = !filters[0] || filters[0] && @event.Type == typeEnum;
                 bool subInc = !filters[1] || filters[1] && @event.Subject == subjectEnum;
-                bool speInc = !filters[2] || filters[2] && @event.Speaker == _selectedSpeaker;
+                bool speInc = !filters[2] || filters[2] && @event.Speaker == speaker && speaker != null;
                 bool datInc = !filters[3] || filters[3] && @event.StartDate.Date == selectedDate.Date;
-
-                bool eveInc = typInc && subInc && speInc && datInc;
+                bool numInc = !filters[4] || filters[4] &&
+                    @event.MaxNoParticipant - RegiSing.RegistrationDictionary[@event].Count >=
+                    EventSing.SelSpotNo;
+                
+                bool eveInc = typInc && subInc && speInc && datInc && numInc;
                 bool eveCon = Events.Contains(@event);
                 int eveIndex = Events.IndexOf(@event);
 
@@ -219,6 +240,9 @@ namespace SikonUWP.ViewModel
                 else if (eveCon)
                     Events.Remove(@event);
             }
+
+            _isAllShown = filters.All(x => !x);
+            ((RelayCommand)ShowAllCommand).RaiseCanExecuteChanged();
         }
 
         #endregion
@@ -233,12 +257,11 @@ namespace SikonUWP.ViewModel
             return comboList.AsReadOnly();
         }
 
-        private void SpeakerList()
+        private static ReadOnlyCollection<object> SpeakerList()
         {
-            List<Speaker> speakerList = new List<Speaker>(SpeakerCatalogSingleton.Instance.Speakers);
-            speakerList.Insert(0, _speakerText);
-            _speakers = speakerList.AsReadOnly();
-            OnPropertyChanged(nameof(Speakers));
+            List<object> speakerList = new List<object>(SpeakerCatalogSingleton.Instance.Speakers);
+            speakerList.Insert(0, SpeakerText);
+            return speakerList.AsReadOnly();
         }
 
         #endregion

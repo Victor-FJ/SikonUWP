@@ -9,7 +9,7 @@ using SikonUWP.Persistency;
 
 namespace SikonUWP.Model
 {
-    class AdminCatalogSingleton
+    public class AdminCatalogSingleton
     {
 		private static AdminCatalogSingleton _instance = null;
 
@@ -31,11 +31,9 @@ namespace SikonUWP.Model
         private AdminCatalogSingleton()
         {
             Admins=new ObservableCollection<Admin>();
-            LoadAdmins();
         }
 
-
-        public async void LoadAdmins()
+        public async Task LoadAdmins()
         {
             Admins.Clear();
             GenericPersistence<string, Admin> facade = new GenericPersistence<string, Admin>("http://localhost:52415/api/Admins");

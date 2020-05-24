@@ -24,6 +24,8 @@
                     <resources:ImageConverter x:Key="ImageConverter"/>
                     <resources:DateTimeOffsetConverter x:Key="DateTimeOffsetConverter" Format="dd. MMM. yyyy"/>
                     <resources:DictionaryConverter x:Key="DictionaryConverter"/>
+                    <resources:FontSizeConverter x:Key="FontSizeConverter"/>
+                    <resources:CustomObConverter x:Key="CustomObConverter"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -58,16 +60,17 @@
                       ItemsSource="{Binding Speakers}" SelectedItem="{Binding SelectedSpeaker, Mode=TwoWay}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding FullName}"/>
+                        <TextBlock Text="{Binding Converter={StaticResource CustomObConverter}}"/>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <CalendarDatePicker Grid.Column="6" Date="{x:Bind ViewModel.SelectedDate, Mode=TwoWay}" 
                                 Header="Dato" Margin="8" PlaceholderText="Alle dage"
                                 VerticalAlignment="Bottom" HorizontalAlignment="Stretch"/>
-            <controls:NumberBox Grid.Column="7" Header="Antal Pladser" Style="{StaticResource NumberBoxStyle}" Height="55"/>
+            <controls:NumberBox Grid.Column="7" Header="Antal Pladser" Value="{Binding SelectedSpotNo, Mode=TwoWay}"
+                                Height="55" Style="{StaticResource NumberBoxStyle}" Minimum="0"/>
         </Grid>
-        <GridView Grid.Row="1" ItemsSource="{Binding Events}" Margin="5" IsItemClickEnabled="True">
+        <GridView Grid.Row="1" ItemsSource="{Binding Events}" Margin="5,5,0,0" IsItemClickEnabled="True">
             <interactivity:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="ItemClick">
                     <core:InvokeCommandAction Command="{Binding NavigateToEventCommand}"/>
@@ -91,7 +94,7 @@
                             </Grid.RowDefinitions>
                             <TextBlock Text="{Binding Subject}" HorizontalAlignment="Right"/>
                             <TextBlock Grid.Row="0" Text="{Binding StartDate, Converter={StaticResource DateTimeOffsetConverter}}"/>
-                            <TextBlock Grid.Row="1" Text="{Binding Title}" FontSize="28" FontWeight="Bold" TextWrapping="Wrap"/>
+                            <TextBlock Grid.Row="1" Text="{Binding Title}" FontSize="{Binding Title, Converter={StaticResource FontSizeConverter}}" FontWeight="Bold" TextWrapping="Wrap"/>
                             <TextBlock Grid.Row="2">
                                 <Run Text="v/"/>
                                 <Run Text="{Binding Speaker.FullName}"/>

@@ -129,18 +129,22 @@
     <Compile Include="Handlers\ParticipantHandler.cs" />
     <Compile Include="Handlers\SpeakerHandler.cs" />
     <Compile Include="Model\ParticipantCatalogSingleton.cs" />
+    <Compile Include="Model\RegistrationSingleton.cs" />
     <Compile Include="Model\SpeakerCatalogSingleton.cs" />
     <Compile Include="Model\ImageSingleton.cs" />
     <Compile Include="Handlers\RoomHandler.cs" />
     <Compile Include="Handlers\UserHandler.cs" />
     <Compile Include="Model\RoomCatalogSingleton.cs" />
     <Compile Include="Model\UserCatalogSingleton.cs" />
+    <Compile Include="Persistency\CustomPersistence.cs" />
     <Compile Include="Persistency\GenericPersistence.cs" />
     <Compile Include="Persistency\PersistencyManager.cs" />
     <Compile Include="Persistency\ImagePersistence.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Resources\CustomObConverter.cs" />
     <Compile Include="Resources\DateTimeOffsetConverter.cs" />
     <Compile Include="Resources\DictionaryConverter.cs" />
+    <Compile Include="Resources\FontSizeConverter.cs" />
     <Compile Include="Resources\ImageConverter.cs" />
     <Compile Include="ViewModel\EventEditorViewModel.cs" />
     <Compile Include="ViewModel\EventHomeViewModel.cs" />
@@ -183,14 +187,20 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\AdminProfil.png" />
+    <Content Include="Assets\AutistProfil.png" />
     <Content Include="Assets\Beley.jpg" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
+    <Content Include="Assets\ParentProfil.png" />
+    <Content Include="Assets\ProfessionalProfil.png" />
+    <Content Include="Assets\PsychologistProfil.png" />
     <Content Include="Assets\SikonBillede.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Assets\StudentProfil.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>

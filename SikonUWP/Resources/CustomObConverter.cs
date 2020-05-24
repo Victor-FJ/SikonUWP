@@ -4,21 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Media.Imaging;
-using SikonUWP.Handlers;
-using SikonUWP.Model;
+using ModelLibrary.Model;
 
 namespace SikonUWP.Resources
 {
-    public class ImageConverter : IValueConverter
+    public class CustomObConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value is string imageName && ImageSingleton.Instance.ImageCatalog.Dictionary.ContainsKey(imageName))
-                return ImageSingleton.Instance.ImageCatalog.Dictionary[imageName];
-            if (value is BitmapImage || value is string)
-                return value;
-            return "/Assets/SplashScreen.png";
+            if (value is string stringValue)
+                return stringValue;
+            if (value is Speaker speaker)
+                return speaker.FullName;
+            return null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

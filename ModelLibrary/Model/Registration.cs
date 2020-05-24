@@ -6,28 +6,17 @@ namespace ModelLibrary.Model
 {
     public class Registration
     {
-		private int _id;
+        public int Id { get; }
 
-		public int Id
-		{
-			get { return _id; }
-			set { _id = value; }
-		}
+        public string UserName { get; }
 
-        public Participant UserpParticipant = new Participant();
+        public int EventId { get; }
 
-		public Event  RegisteredEvent = new Event();
-
-        public Registration()
+        public Registration(int id, string userName, int eventId)
         {
-            
-        }
-
-        public Registration(int id, Event _event, Participant participant)
-        {
-            _id = id;
-            RegisteredEvent = _event;
-            UserpParticipant = participant;
+            Id = id;
+            UserName = userName;
+            EventId = eventId;
         }
     }
 }
