@@ -23,6 +23,11 @@ namespace SikonUWP.ViewModel
         public RoomHandler RoomHandler { get; set; }
 
 
+        /// <summary>
+        /// En metode der catcher en fejl, hvis der allerede eksistert et lokale med dette nr.
+        /// I starten prøver den at køre metoden CreateRoom for at løbe den igennem exception.
+        /// Samt catcher en fejl hvis man ikke har udfyldt alle tekst bokse
+        /// </summary>
         public async void Create()
         {
             try
@@ -40,6 +45,10 @@ namespace SikonUWP.ViewModel
             }
 
         }
+        
+        /// <summary>
+        /// Viewmodellens constructor. Her initialiseres og specificeres kommandoernes handlinger.
+        /// </summary>
         public RoomViewModel()
         {
             RoomCatalog = RoomCatalogSingleton.Instance;
@@ -53,6 +62,9 @@ namespace SikonUWP.ViewModel
 
             if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
                 Load();
+            //SelcectedIndex = -1 gør man ikke direkte er selected til et lokale
+            //i det man går ind på lokalets side
+            SelectedIndex = -1;
         }
 
         private async void Load()
@@ -132,9 +144,9 @@ namespace SikonUWP.ViewModel
         }
 
         /// <summary>
-        /// Denne metode faiter commandoernes knapper i RoomPage, når de ikke er selected til et lokale 
+        /// Denne metode fader commandoernes knapper i RoomPage, når de ikke er selected til et lokale. 
         /// </summary>
-        /// <returns>faiting</returns>
+        /// <returns>Faded knap</returns>
         public bool SelectedIndexIsNotSet()
         {
             return SelectedIndex != -1;
@@ -142,6 +154,9 @@ namespace SikonUWP.ViewModel
         }
 
 
+        /// <summary>
+        /// Metode der gør man kan selecte et lokale
+        /// </summary>
         private Room _selectedRoom;
 
         public Room SelectedRoom

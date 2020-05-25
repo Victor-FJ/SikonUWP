@@ -11,6 +11,7 @@ using SikonUWP.Persistency;
 
 namespace SikonUWP.Model
 {
+
     public class RoomCatalogSingleton
     {
         /// <summary>
@@ -45,12 +46,13 @@ namespace SikonUWP.Model
         }
 
         /// <summary>
-        /// Denne metode loader lokaler fra databasen
+        /// Denne metode loader lokaler fra databasen men blev ikke nøvendig
+        /// på grund af load meyoden i mainViewModel
         /// </summary>
         public async Task LoadRooms()
         {
             Rooms.Clear();
-            GenericPersistence<string, Room> roomPersistence = 
+            GenericPersistence<string, Room> roomPersistence =
                 new GenericPersistence<string, Room>("http://localhost:52415/api/Room/");
             try
             {
@@ -60,6 +62,7 @@ namespace SikonUWP.Model
             }
             catch (HttpRequestException)
             {
+
             }
         }
     }
