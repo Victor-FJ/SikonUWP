@@ -72,7 +72,7 @@ namespace SikonUWP.ViewModel
 
             ChangeSubButton();
             
-            SubCommand = new RelayCommand(Subscribe, () => ViewModel.IsParticipant != null);
+            SubCommand = new RelayCommand(Subscribe, CanSubscribe);
             OpenStatusBox = new RelayCommand(() => { StatusBoxOpen = true; OnPropertyChanged(nameof(StatusBoxOpen)); });
             UpdateCommand = new RelayCommand(Update);
             DeleteCommand = new RelayCommand(Delete);
@@ -82,9 +82,14 @@ namespace SikonUWP.ViewModel
 
         #region CommandMethods
 
+        public bool CanSubscribe()
+        {
+            return ViewModel.IsParticipant != null && ShownEvent.MaxNoParticipant > Participants.Count;
+        }
+
         public async void Subscribe()
         {
-            if (!_isWorking)
+            if (!_isWorking && ShownEvent.MaxNoParticipant > Participants.Count)
             {
                 _isWorking = true;
                 if (IsSubed)
