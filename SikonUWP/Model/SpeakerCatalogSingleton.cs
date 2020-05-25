@@ -9,7 +9,7 @@ using SikonUWP.Persistency;
 
 namespace SikonUWP.Model
 {
-    class SpeakerCatalogSingleton
+    public class SpeakerCatalogSingleton
     {
 		private static SpeakerCatalogSingleton _instance = null;
 

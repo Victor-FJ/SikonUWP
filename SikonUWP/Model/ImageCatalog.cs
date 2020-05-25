@@ -7,6 +7,7 @@ using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media.Imaging;
+using ModelLibrary.Exceptions;
 using SikonUWP.Persistency;
 
 namespace SikonUWP.Model
@@ -96,6 +97,8 @@ namespace SikonUWP.Model
         {
             if (string.IsNullOrWhiteSpace(newName))
                 newName = file.Name;
+            if (_dictionary.ContainsKey(newName))
+                throw new ItIsNotUniqueException("Der findes allerede et billed med det navn");
             byte[] pixelBytes = await AsByteArray(file);
             bool ok = await ImagePersistence.Post(newName, pixelBytes);
             if (ok)
@@ -114,6 +117,8 @@ namespace SikonUWP.Model
         /// <returns></returns>
         public async Task<bool> RemoveImage(string fileName)
         {
+            if (!_dictionary.ContainsKey(fileName))
+                throw new ItIsUniqueException("Der findes intet billed med det navn");
             bool ok = await ImagePersistence.Delete(fileName);
             if (ok)
             {

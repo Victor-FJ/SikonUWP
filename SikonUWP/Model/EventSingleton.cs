@@ -20,14 +20,32 @@ namespace SikonUWP.Model
 
         
         /// <summary>
-        /// The list of all events from the database
+        /// The catalog object containing all events from the database
         /// </summary>
         public EventCatalog EventCatalog { get; set; }
+
+        #region View Pages Persist Properties
+
+        //Properties for viewpages that persist page reload
 
         /// <summary>
         /// A event that is currently viewed
         /// </summary>
         public Event ViewedEvent { get; set; }
+
+        //Properties for homepage
+        public string SelOrder { get; set; }
+        public string SelType { get; set; }
+        public string SelSubject { get; set; }
+        public object SelSpeaker { get; set; }
+        public DateTimeOffset? SelDate { get; set; }
+        public int SelSpotNo { get; set; }
+
+        #endregion
+
+        #region Editor Pages Persist Properties
+
+        //Properties for editorpages that persist page reload
 
         /// <summary>
         /// A event that is marked for editor pages to use (Is always a shallow copy from the <see cref="EventCatalog"/>)
@@ -62,16 +80,17 @@ namespace SikonUWP.Model
         /// </summary>
         public bool IsNew { get; set; }
         /// <summary>
-        /// A image that is marked for the creator page
+        /// A image that is marked for the editor pages
         /// </summary>
         public StorageFile MarkedImage { get; set; }
 
+        #endregion
 
 
         private EventSingleton()
         {
             EventCatalog = new EventCatalog(RoomCatalogSingleton.Instance.Rooms, SpeakerCatalogSingleton.Instance.Speakers,
-                ImageSingleton.Instance.ImageCatalog.Dictionary.Keys.ToList(), new GenericPersistence<int, Event>("http://localhost:52415/api/Event/"));
+                ImageSingleton.Instance.ImageCatalog.Dictionary, new GenericPersistence<int, Event>("http://localhost:52415/api/Event/"));
             MarkedEvent = null;
         }
 

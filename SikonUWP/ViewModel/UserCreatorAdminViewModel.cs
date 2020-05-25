@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Storage;
@@ -127,7 +128,7 @@ namespace SikonUWP.ViewModel
         public string PhoneNumber
         {
             get { return _phoneNumber; }
-            set { _phoneNumber = value; ((RelayCommand)CreateAdminCommand).RaiseCanExecuteChanged(); }
+            set { _phoneNumber = value; ((RelayCommand)CreateAdminCommand).RaiseCanExecuteChanged(); OnPropertyChanged(); }
         }
 
         private string _fullName;
@@ -291,21 +292,28 @@ namespace SikonUWP.ViewModel
 
         private async void CreateParticipant()
         {
-            FillUserList();
-            NewParticipant = new Participant(Username, Password, PersonType);
-            if (!UserNameList.Contains(NewParticipant.UserName))
+            
+            if (PersonType == Participant.PersonType.Vælg_type)
             {
-
-                participantHandler.CreateParticipant(NewParticipant);
-            }
-            else
-                await MessageDialogUtil.MessageDialogAsync("Username Already taken",
+                await MessageDialogUtil.MessageDialogAsync("Ingen PersonType",
+                    "Der er ikke valgt en PersonType\nVælg venligst persontype");
+            }else
+            {
+                await FillUserList();
+                NewParticipant = new Participant(Username, Password, PersonType);
+                if (!UserNameList.Contains(NewParticipant.UserName)) 
+                {
+                    participantHandler.CreateParticipant(NewParticipant);
+                }
+                else
+                 await MessageDialogUtil.MessageDialogAsync("Username Already taken",
                     "brugernavnet du har angivet er allerede i brug \nbenyt venligst et andet brugernavn");
+            }
         }
 
         private async void CreateSpeaker()
         {
-            FillUserList();
+            await FillUserList();
             NewSpeaker = new Speaker(Username, Password, FullName, Description, Image.Name);
             if (!ImageCatalog.ImageCatalog.Dictionary.Keys.Contains(Image.Name))
             {
@@ -330,16 +338,24 @@ namespace SikonUWP.ViewModel
 
         private async void CreateAdmin()
         {
-            FillUserList();
-            NewAdmin = new Admin(Username, Password, PhoneNumber);
-            if (!UserNameList.Contains(NewAdmin.UserName))
+            
+            if (Regex.Matches(_phoneNumber, @"[a-zA-Z]").Count > 0)
             {
-                
-                adminHandler.CreateAdmin(NewAdmin);
+                await MessageDialogUtil.MessageDialogAsync("Bogstav i dit telefon nummer",
+                    "Der er et eller flere bogstaver i dit telefon nummer\nprøv venligst igen kun med tal");
+            }else 
+            {
+                await FillUserList();
+                NewAdmin = new Admin(Username, Password, PhoneNumber);
+                if (!UserNameList.Contains(NewAdmin.UserName))
+                {
+                    adminHandler.CreateAdmin(NewAdmin);
+                }
+                else
+                    await MessageDialogUtil.MessageDialogAsync("Username Already taken",
+                        "brugernavnet du har angivet er allerede i brug \nbenyt venligst et andet brugernavn");
+
             }
-            else
-                await MessageDialogUtil.MessageDialogAsync("Username Already taken",
-                    "brugernavnet du har angivet er allerede i brug \nbenyt venligst et andet brugernavn");
 
         }
 
@@ -355,7 +371,7 @@ namespace SikonUWP.ViewModel
         }
 
 
-        private async void FillUserList()
+        private async Task FillUserList()
         {
             await UserCatalogSingleton.Instance.LoadUsers();
             UserList = UserCatalogSingleton.Instance.Users.ToList();

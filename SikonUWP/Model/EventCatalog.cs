@@ -6,9 +6,11 @@ using System.Net.Http;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Media.Imaging;
 using ModelLibrary.Exceptions;
 using ModelLibrary.Model;
 using SikonUWP.Persistency;
+using SikonUWP.ViewModel;
 
 namespace SikonUWP.Model
 {
@@ -18,14 +20,15 @@ namespace SikonUWP.Model
 
         private ObservableCollection<Event> _collection;
 
+        private MainViewModel _main = MainViewModel.Instance;
 
         private readonly ObservableCollection<Room> _rooms;
         private readonly ObservableCollection<Speaker> _speakers;
-        private readonly List<string> _imageNames;
+        private readonly ReadOnlyDictionary<string, BitmapImage> _imageNames;
 
         private readonly GenericPersistence<int, Event> _eventPersistence;
 
-        public EventCatalog(ObservableCollection<Room> rooms, ObservableCollection<Speaker> speakers, List<string> imageNames, GenericPersistence<int, Event> eventPersistence)
+        public EventCatalog(ObservableCollection<Room> rooms, ObservableCollection<Speaker> speakers, ReadOnlyDictionary<string, BitmapImage> imageNames, GenericPersistence<int, Event> eventPersistence)
         {
             _collection = new ObservableCollection<Event>();
             Collection = new ReadOnlyObservableCollection<Event>(_collection);
@@ -62,7 +65,7 @@ namespace SikonUWP.Model
         /// <returns>Whether the event was succesfully added</returns>
         public async Task<bool> Add(Event @event, bool getId)
         {
-            if (_collection.Single((x) => x.Id == @event.Id) != null)
+            if (_collection.SingleOrDefault((x) => x.Id == @event.Id) != null)
                 if (getId)
                     @event.Id = GetUniqueId();
                 else
@@ -70,39 +73,53 @@ namespace SikonUWP.Model
             CheckSpeaker(@event);
             CheckRoom(@event);
             CheckDate(@event);
-            CheckImage(@event, true);
+            CheckImage(@event, false);
 
+            _collection.Add(@event);
             bool ok = await _eventPersistence.Post(@event);
-            if (ok)
-                _collection.Add(@event);
-            return ok;
+            if (!ok)
+            {
+                _collection.Remove(@event);
+                throw new BaseException("Thing no. 1. you thought would never happen. But of course it did");
+            }
+            return true;
         }
 
         public async Task<bool> Update(int id, Event @event)
         {
             Event oldEvent = _collection.Single((x) => x.Id == id);
+            int index = _collection.IndexOf(oldEvent);
+            _collection.Remove(oldEvent);
             CheckSpeaker(@event);
             CheckRoom(@event);
             CheckDate(@event);
-            CheckImage(@event, true);
+            CheckImage(@event, false);
 
+            _collection.Insert(index, @event);
             bool ok = await _eventPersistence.Put(id, @event);
-            if (ok)
+            if (!ok)
             {
-                _collection.Remove(oldEvent);
-                _collection.Add(@event);
+                _collection.Remove(@event);
+                _collection.Insert(index, oldEvent);
+                throw new BaseException("Thing no. 2. you thought would never happen. But of course it did");
             }
-            return ok;
+
+            return true;
         }
 
         public async Task<bool> Remove(int id)
         {
             Event @event = _collection.Single((x) => x.Id == id);
 
+            _collection.Remove(@event);
             bool ok = await _eventPersistence.Delete(id);
-            if (ok)
-                _collection.Remove(@event);
-            return ok;
+            if (!ok)
+            {
+                _collection.Add(@event);
+                throw new BaseException("Thing no. 3. you thought would never happen. But of course it did");
+            }
+                
+            return true;
         }
 
         public int GetUniqueId()
@@ -119,7 +136,7 @@ namespace SikonUWP.Model
 
         public void CheckSpeaker(Event selectedEvent)
         {
-            if (selectedEvent.Room == null || !_speakers.Contains(selectedEvent.Speaker))
+            if (selectedEvent.Speaker == null || !_speakers.Contains(selectedEvent.Speaker))
                 throw new EmptyException("Værten eksistere ikke i cataloget");
         }
 
@@ -133,7 +150,8 @@ namespace SikonUWP.Model
         public void CheckDate(Event selectedEvent)
         {
             int speakerConflicts = (from @event in _collection
-                where selectedEvent.Speaker == @event.Speaker && selectedEvent.StartDate < @event.EndDate && selectedEvent.EndDate > @event.StartDate
+                where selectedEvent.Speaker == @event.Speaker && selectedEvent.StartDate < @event.EndDate && 
+                      selectedEvent.EndDate > @event.StartDate && selectedEvent.Id != @event.Id
                 select @event).Count();
 
             if (speakerConflicts != 0)
@@ -141,7 +159,7 @@ namespace SikonUWP.Model
 
             int roomConflicts = (from @event in _collection
                 where selectedEvent.Room == @event.Room && selectedEvent.StartDate < @event.EndDate &&
-                      selectedEvent.EndDate > @event.StartDate
+                      selectedEvent.EndDate > @event.StartDate && selectedEvent.Id != @event.Id
                 select @event).Count();
             
             if (roomConflicts != 0) 
@@ -150,7 +168,7 @@ namespace SikonUWP.Model
 
         public void CheckImage(Event selectedEvent, bool beUnique)
         {
-            bool doesContain = _imageNames.Contains(selectedEvent.ImageName);
+            bool doesContain = _imageNames.Keys.Contains(selectedEvent.ImageName);
             if (beUnique && doesContain)
                 throw new ItIsNotUniqueException("Der er allerede et billed med det navn");
             if (!beUnique && !doesContain)
