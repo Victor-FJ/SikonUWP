@@ -13,6 +13,11 @@ namespace SikonUnitTest
     [TestClass]
     public class UnitTest1
     {
+        /// <summary>
+        /// Denne metode tester om der er forbindelse om UWP-appen har dataforbindelse
+        /// TryOpenConn er en metode fra der prøver at åbne en forbindelse til dataen
+        /// </summary>
+        /// <returns>Forbindelse til data</returns>
         [TestMethod]
         public async Task TestConnection()
         {

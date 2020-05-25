@@ -88,7 +88,7 @@
 
             <StackPanel>
                 <TextBlock Text="Antal max personer" FontWeight="Bold"></TextBlock>
-                <controls:NumberBox Value="{Binding NewRoom.MaxNoPeople, Mode=TwoWay}" PlaceholderText="skriv antal"></controls:NumberBox>
+                <controls:NumberBox SpinButtonPlacementMode="Inline" Value="{Binding NewRoom.MaxNoPeople, Mode=TwoWay}" PlaceholderText="skriv antal"></controls:NumberBox>
             </StackPanel>
 
 

@@ -102,7 +102,7 @@ namespace SikonUWP.Handlers
         }
 
         /// <summary>
-        /// Denne metode bliver brugt til at rydde felterne i skriveboksne.
+        /// Denne metode bliver brugt til at rydde felterne i skriveboksne når man har selected et lokale.
         /// </summary>
         public void ClearRoom()
         {
@@ -126,6 +126,10 @@ namespace SikonUWP.Handlers
             }
         }
 
+        /// <summary>
+        /// Denne metode tjekker om man er ved at oprette et lokale der allerede eksistere i listen
+        /// </summary>
+        /// <returns>Lokale eksistere allerede</returns>
         private bool DoesExist()
         {
             List<Room> collection = RoomCatalogSingleton.Instance.Rooms.ToList();

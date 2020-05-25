@@ -25,6 +25,7 @@ namespace SikonUWP.ViewModel
 
         /// <summary>
         /// En metode der catcher en fejl, hvis der allerede eksistert et lokale med dette nr.
+        /// I starten prøver den at køre metoden CreateRoom for at løbe den igennem exception.
         /// Samt catcher en fejl hvis man ikke har udfyldt alle tekst bokse
         /// </summary>
         public async void Create()
@@ -46,7 +47,7 @@ namespace SikonUWP.ViewModel
         }
         
         /// <summary>
-        /// Viewmodellens constructor. Her bliver alle kommandoerne kommer i gang.
+        /// Viewmodellens constructor. Her initialiseres og specificeres kommandoernes handlinger.
         /// </summary>
         public RoomViewModel()
         {
@@ -61,6 +62,9 @@ namespace SikonUWP.ViewModel
 
             if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
                 Load();
+            //SelcectedIndex = -1 gør man ikke direkte er selected til et lokale
+            //i det man går ind på lokalets side
+            SelectedIndex = -1;
         }
 
         private async void Load()
