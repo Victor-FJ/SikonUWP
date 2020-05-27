@@ -22,19 +22,12 @@ namespace SikonUWP.Model
 
         private MainViewModel _main = MainViewModel.Instance;
 
-        private readonly ObservableCollection<Room> _rooms;
-        private readonly ObservableCollection<Speaker> _speakers;
-        private readonly ReadOnlyDictionary<string, BitmapImage> _imageNames;
-
         private readonly GenericPersistence<int, Event> _eventPersistence;
 
-        public EventCatalog(ObservableCollection<Room> rooms, ObservableCollection<Speaker> speakers, ReadOnlyDictionary<string, BitmapImage> imageNames, GenericPersistence<int, Event> eventPersistence)
+        public EventCatalog(GenericPersistence<int, Event> eventPersistence)
         {
             _collection = new ObservableCollection<Event>();
             Collection = new ReadOnlyObservableCollection<Event>(_collection);
-            _rooms = rooms;
-            _speakers = speakers;
-            _imageNames = imageNames;
             _eventPersistence = eventPersistence;
         }
 
@@ -45,9 +38,10 @@ namespace SikonUWP.Model
                 _collection = new ObservableCollection<Event>(await _eventPersistence.Get());
                 Collection = new ReadOnlyObservableCollection<Event>(_collection);
                 foreach (Event @event in _collection)
-                { 
-                    @event.Room = _rooms.Single((x) => x.RoomNo == @event.Room.RoomNo);
-                    @event.Speaker = _speakers.Single((x) => x.UserName == @event.Speaker.UserName);
+                {
+                    
+                    @event.Room = RoomCatalogSingleton.Instance.Rooms.Single((x) => x.RoomNo == @event.Room.RoomNo);
+                    @event.Speaker = SpeakerCatalogSingleton.Instance.Speakers.Single((x) => x.UserName == @event.Speaker.UserName);
                 }
                 return true;
             }
@@ -118,7 +112,7 @@ namespace SikonUWP.Model
                 _collection.Add(@event);
                 throw new BaseException("Thing no. 3. you thought would never happen. But of course it did");
             }
-                
+
             return true;
         }
 
@@ -136,13 +130,13 @@ namespace SikonUWP.Model
 
         public void CheckSpeaker(Event selectedEvent)
         {
-            if (selectedEvent.Speaker == null || !_speakers.Contains(selectedEvent.Speaker))
+            if (selectedEvent.Speaker == null || !SpeakerCatalogSingleton.Instance.Speakers.Contains(selectedEvent.Speaker))
                 throw new EmptyException("Værten eksistere ikke i cataloget");
         }
 
         public void CheckRoom(Event selectedEvent)
         {
-            if (selectedEvent.Room == null || !_rooms.Contains(selectedEvent.Room))
+            if (selectedEvent.Room == null || !RoomCatalogSingleton.Instance.Rooms.Contains(selectedEvent.Room))
                 throw new EmptyException("Lokalet eksistere ikke i cataloget");
         }
 
@@ -150,25 +144,25 @@ namespace SikonUWP.Model
         public void CheckDate(Event selectedEvent)
         {
             int speakerConflicts = (from @event in _collection
-                where selectedEvent.Speaker == @event.Speaker && selectedEvent.StartDate < @event.EndDate && 
-                      selectedEvent.EndDate > @event.StartDate && selectedEvent.Id != @event.Id
-                select @event).Count();
+                                    where selectedEvent.Speaker == @event.Speaker && selectedEvent.StartDate < @event.EndDate &&
+                                          selectedEvent.EndDate > @event.StartDate && selectedEvent.Id != @event.Id
+                                    select @event).Count();
 
             if (speakerConflicts != 0)
                 throw new OutsideRangeException("Værten er optaget på dette tidspunkt");
 
             int roomConflicts = (from @event in _collection
-                where selectedEvent.Room == @event.Room && selectedEvent.StartDate < @event.EndDate &&
-                      selectedEvent.EndDate > @event.StartDate && selectedEvent.Id != @event.Id
-                select @event).Count();
-            
-            if (roomConflicts != 0) 
+                                 where selectedEvent.Room == @event.Room && selectedEvent.StartDate < @event.EndDate &&
+                                       selectedEvent.EndDate > @event.StartDate && selectedEvent.Id != @event.Id
+                                 select @event).Count();
+
+            if (roomConflicts != 0)
                 throw new OutsideRangeException("Lokalet bliver brugt på dette tidspunktet");
         }
 
         public void CheckImage(Event selectedEvent, bool beUnique)
         {
-            bool doesContain = _imageNames.Keys.Contains(selectedEvent.ImageName);
+            bool doesContain = ImageSingleton.Instance.ImageCatalog.Dictionary.ContainsKey(selectedEvent.ImageName);
             if (beUnique && doesContain)
                 throw new ItIsNotUniqueException("Der er allerede et billed med det navn");
             if (!beUnique && !doesContain)

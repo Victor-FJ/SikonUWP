@@ -44,7 +44,7 @@ namespace SikonUWP.ViewModel
         #endregion
 
         public ICommand SubCommand { get; set; }
-        public ICommand OpenStatusBox { get; set; }
+        public ICommand OpenStatusBoxCommand { get; set; }
         public ICommand UpdateCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand ClearCommand { get; set; }
@@ -73,7 +73,7 @@ namespace SikonUWP.ViewModel
             ChangeSubButton();
             
             SubCommand = new RelayCommand(Subscribe, CanSubscribe);
-            OpenStatusBox = new RelayCommand(() => { StatusBoxOpen = true; OnPropertyChanged(nameof(StatusBoxOpen)); });
+            OpenStatusBoxCommand = new RelayCommand(() => { StatusBoxOpen = true; OnPropertyChanged(nameof(StatusBoxOpen)); });
             UpdateCommand = new RelayCommand(Update);
             DeleteCommand = new RelayCommand(Delete);
             ClearCommand = new RelayCommand(Clear);
@@ -145,6 +145,8 @@ namespace SikonUWP.ViewModel
                     throw new BaseException("Failed to delete event");
                 }
                 ViewModel.LoadText = null;
+                EventSing.ViewedEvent = null;
+                MainViewModel.Instance.NavigateToPage(typeof(EventHomePage));
             }
         }
 
