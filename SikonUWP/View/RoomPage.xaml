@@ -28,13 +28,13 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             
-            <Grid BorderBrush="Black" BorderThickness="2" Width="640">
+            <Grid BorderBrush="Black" BorderThickness="2" Width="690">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="102"/>
+                    <ColumnDefinition Width="150"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="400"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="130"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Lokalets nr." Margin="5,5,5,5" FontSize="16" FontWeight="ExtraBlack"/>
                 <Line Grid.Column="1" Stroke="Black" StrokeThickness="2" X1="0" X2="0" Y1="0" Y2="40"/>
@@ -44,7 +44,7 @@
             </Grid>
 
             <ListView ItemsSource="{Binding RoomCatalog.Rooms}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}" SelectedItem="{Binding SelectedRoom, Mode=TwoWay}"
-                          Grid.Row="1" Padding="0" Width="640" ScrollViewer.VerticalScrollMode="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                          Grid.Row="1" Padding="0" Width="690" ScrollViewer.VerticalScrollMode="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="Padding" Value="0"/>
@@ -54,17 +54,17 @@
                 </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid BorderBrush="Black" BorderThickness="2" Width="640">
+                        <Grid BorderBrush="Black" BorderThickness="2" Width="690">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="150"/>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="400"/>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="130"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding RoomNo}" Margin="5,5,5,5"/>
-                            <Line Grid.Column="1" Stroke="Black" StrokeThickness="2" X1="0" X2="0" Y1="0" Y2="35"/>
-                            <Line Grid.Column="3" Stroke="Black" StrokeThickness="2" X1="0" X2="0" Y1="0" Y2="35"/>
+                            <TextBlock Name="Block1"  Text="{Binding RoomNo}" TextWrapping="Wrap" Margin="5,5,5,5"/>
+                            <Line Grid.Column="1" Stroke="Black" StrokeThickness="2" X1="0" X2="0" Y1="0" Y2="40"/>
+                            <Line Grid.Column="3" Stroke="Black" StrokeThickness="2" X1="0" X2="0" Y1="0" Y2="40"/>
                             <TextBlock Grid.Column="2" Text="{Binding LocationDescription}" Margin="5,5,5,5"/>
                             <TextBlock Grid.Column="4" Text="{Binding MaxNoPeople}" Margin="5,5,5,5"/>
                         </Grid>

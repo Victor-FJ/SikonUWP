@@ -131,6 +131,9 @@ namespace SikonUWP.ViewModel
         //Func
         private int _selectedIndex;
 
+        /// <summary>
+        /// Denne metode er med til at sørge for at slet, og opdater knapperne bliver faded. 
+        /// </summary>
         public int SelectedIndex
         {
             get { return _selectedIndex; }
