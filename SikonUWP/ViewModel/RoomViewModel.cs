@@ -60,16 +60,9 @@ namespace SikonUWP.ViewModel
             _clearRoomCommand = new RelayCommand(RoomHandler.ClearRoom, Fade);
 
 
-            if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
-                Load();
             //SelcectedIndex = -1 gør man ikke direkte er selected til et lokale
             //i det man går ind på lokalets side
             SelectedIndex = -1;
-        }
-
-        private async void Load()
-        {
-            await RoomCatalog.LoadRooms();
         }
 
         //Denne metode blev brugt til hjælp for at programmet ikke crashede til at starte med, men
@@ -131,6 +124,9 @@ namespace SikonUWP.ViewModel
         //Func
         private int _selectedIndex;
 
+        /// <summary>
+        /// Denne metode er med til at sørge for at slet, og opdater knapperne bliver faded. 
+        /// </summary>
         public int SelectedIndex
         {
             get { return _selectedIndex; }
