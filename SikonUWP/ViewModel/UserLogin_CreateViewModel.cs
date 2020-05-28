@@ -62,7 +62,7 @@ namespace SikonUWP.ViewModel
         public string Username
         {
             get { return _username; }
-            set { _username = value; OnPropertyChanged(); ((RelayCommand)LogInCommand).RaiseCanExecuteChanged(); }
+            set { _username = value; OnPropertyChanged(); ((RelayCommand)LogInCommand).RaiseCanExecuteChanged(); ((RelayCommand)CreateParticipantCommand).RaiseCanExecuteChanged(); }
         }
 
         private string _password;
@@ -70,11 +70,16 @@ namespace SikonUWP.ViewModel
         public string Password
         {
             get { return _password; }
-            set { _password = value; OnPropertyChanged(); ((RelayCommand)LogInCommand).RaiseCanExecuteChanged();}
+            set { _password = value; OnPropertyChanged(); ((RelayCommand)LogInCommand).RaiseCanExecuteChanged(); ((RelayCommand)CreateParticipantCommand).RaiseCanExecuteChanged(); }
         }
 
-       
-        public Participant.PersonType PersonType { get; set; }
+        private Participant.PersonType _personType;
+
+        public Participant.PersonType PersonType
+        {
+            get { return _personType; }
+            set { _personType = value; OnPropertyChanged(); ((RelayCommand)CreateParticipantCommand).RaiseCanExecuteChanged(); }
+        }
         private string _mode1 = "Visible";
 
         public string Mode1
