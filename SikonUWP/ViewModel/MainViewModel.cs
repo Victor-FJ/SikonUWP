@@ -79,12 +79,15 @@ namespace SikonUWP.ViewModel
 
 
         public string SearchString { get; set; }
+        private bool _isChosingSuggestion;
 
         #endregion
 
         public List<Event> SuggestedEvents { get; set; }
 
         public ICommand SearchCommand { get; set; }
+        public ICommand SuggestionChosenCommand { get; set; }
+        public ICommand QuerySubmittedCommand { get; set; }
 
         public ICommand ReloadCommand { get; set; }
 
@@ -98,6 +101,8 @@ namespace SikonUWP.ViewModel
             Load();
 
             SearchCommand = new RelayCommand(Search);
+            SuggestionChosenCommand = new RelayCommand(SuggestionChosen);
+            QuerySubmittedCommand = new RelayCommand(QuerySubmitted);
             ReloadCommand = new RelayCommand(async () =>
             {
                 bool ok = await Reload();
@@ -278,23 +283,42 @@ namespace SikonUWP.ViewModel
         public void Search(object parameter)
         {
             AutoSuggestBoxTextChangedEventArgs args = (AutoSuggestBoxTextChangedEventArgs) parameter;
-            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            if (!_isChosingSuggestion)
             {
                 SuggestedEvents = (from @event in EventSingleton.Instance.EventCatalog.Collection
                     where @event.Title.ToLower().Contains(SearchString.ToLower())
                     select @event).ToList();
                 OnPropertyChanged(nameof(SuggestedEvents));
             }
+            else
+                _isChosingSuggestion = false;
         }
 
-        public void SuggestionChosen()
+        public void SuggestionChosen(object parameter)
         {
-
+            AutoSuggestBoxSuggestionChosenEventArgs args = (AutoSuggestBoxSuggestionChosenEventArgs) parameter;
+            SearchString = ((Event) args.SelectedItem).Title;
+            OnPropertyChanged(nameof(SearchString));
+            _isChosingSuggestion = true;
         }
 
-        public void QuerySubmitted()
+        public void QuerySubmitted(object parameter)
         {
-
+            AutoSuggestBoxQuerySubmittedEventArgs args = (AutoSuggestBoxQuerySubmittedEventArgs) parameter;
+            if (args.ChosenSuggestion != null)
+            {
+                EventSingleton.Instance.ViewedEvent = (Event) args.ChosenSuggestion;
+                NavigateToPage(typeof(EventPage));
+            }
+            else
+            {
+                Event @event = EventSingleton.Instance.EventCatalog.Collection.SingleOrDefault(x => x.Title == SearchString);
+                if (@event != null)
+                {
+                    EventSingleton.Instance.ViewedEvent = @event;
+                    NavigateToPage(typeof(EventPage));
+                }
+            }
         }
 
         #endregion

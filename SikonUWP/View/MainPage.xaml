@@ -39,7 +39,18 @@
                         <core:EventTriggerBehavior EventName="TextChanged">
                             <core:InvokeCommandAction Command="{Binding SearchCommand}"/>
                         </core:EventTriggerBehavior>
+                        <core:EventTriggerBehavior EventName="SuggestionChosen">
+                            <core:InvokeCommandAction Command="{Binding SuggestionChosenCommand}"/>
+                        </core:EventTriggerBehavior>
+                        <core:EventTriggerBehavior EventName="QuerySubmitted">
+                            <core:InvokeCommandAction Command="{Binding QuerySubmittedCommand}"/>
+                        </core:EventTriggerBehavior>
                     </interactivity:Interaction.Behaviors>
+                    <AutoSuggestBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Title}"/>
+                        </DataTemplate>
+                    </AutoSuggestBox.ItemTemplate>
                 </AutoSuggestBox>
             </NavigationView.AutoSuggestBox>
             <NavigationView.MenuItems>
