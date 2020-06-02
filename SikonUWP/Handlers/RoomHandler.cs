@@ -43,8 +43,8 @@ namespace SikonUWP.Handlers
             }
             else
             {
-                await MessageDialogUtil.MessageDialogAsync("Alt gik godt", $"Lokalet blev oprettet");
                 RoomViewModel.RoomCatalog.Rooms.Add(RoomViewModel.NewRoom);
+                await MessageDialogUtil.MessageDialogAsync("Alt gik godt", $"Lokalet blev oprettet");
                 RoomViewModel.NewRoom = new Room();
                 
                 
@@ -65,17 +65,16 @@ namespace SikonUWP.Handlers
             string roomNo = RoomViewModel.SelectedRoom.RoomNo;
             bool ok = await _genericPersistence.Delete(roomNo);
 
+
             if (!ok)
             {
                 await MessageDialogUtil.MessageDialogAsync("Der skete en fejl i Room", "Room blev ikke slettet");
             }
             else
             {
-                await MessageDialogUtil.MessageDialogAsync("Alt gik godt", $"Lokalet {roomNo} blev slettet");
                 RoomViewModel.RoomCatalog.Rooms.Remove(RoomViewModel.SelectedRoom);
+                await MessageDialogUtil.MessageDialogAsync("Alt gik godt", $"Lokalet {roomNo} blev slettet");
                 RoomViewModel.NewRoom = new Room();
-                
-
             }
         }
 
@@ -93,9 +92,9 @@ namespace SikonUWP.Handlers
             }
             else
             {
+                int index = RoomViewModel.RoomCatalog.Rooms.IndexOf(RoomViewModel.SelectedRoom);
+                RoomViewModel.RoomCatalog.Rooms[index] = RoomViewModel.NewRoom;
                 await MessageDialogUtil.MessageDialogAsync("Alt gik godt", $"Lokalet {roomNo} blev opdateret");
-               int index = RoomViewModel.RoomCatalog.Rooms.IndexOf(RoomViewModel.SelectedRoom);
-               RoomViewModel.RoomCatalog.Rooms[index] = RoomViewModel.NewRoom;
                 RoomViewModel.NewRoom = new Room();
 
             }

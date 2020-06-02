@@ -159,8 +159,6 @@ namespace SikonUWP.ViewModel
                     await MessageDialogUtil.MessageDialogAsync("Username Already taken",
                         "brugernavnet du har angivet er allerede i brug \nbenyt venligst et andet brugernavn");
             }
-
-
         }
 
 
