@@ -341,6 +341,7 @@ namespace SikonUWP.ViewModel
             _date = EventSing.MarkedBools[5] ? new DateTimeOffset(EditedEvent.StartDate.Date, EditedEvent.StartDate.Offset) : (DateTimeOffset?)null;
             _startTime = EventSing.MarkedBools[6] ? EditedEvent.StartDate.TimeOfDay : (TimeSpan?)null;
             _endTime = EventSing.MarkedBools[7] ? EditedEvent.EndDate.TimeOfDay : (TimeSpan?)null;
+            SetDateTime();
         }
 
         private async void StartUpImage()
@@ -513,11 +514,13 @@ namespace SikonUWP.ViewModel
                     try
                     {
                         EventSing.EventCatalog.CheckDate(EditedEvent);
+                        EventSing.MarkedBools[12] = true;
                     }
                     catch (OutsideRangeException ex)
                     {
                         ToolTip(6, ex.Message);
                         ToolTip(7, ex.Message);
+                        EventSing.MarkedBools[12] = false;
                     }
             }
         }

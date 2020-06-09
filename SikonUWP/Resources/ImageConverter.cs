@@ -18,7 +18,7 @@ namespace SikonUWP.Resources
                 return ImageSingleton.Instance.ImageCatalog.Dictionary[imageName];
             if (value is BitmapImage || value is string)
                 return value;
-            return "/Assets/SplashScreen.png";
+            return "../Assets/BlankImage.png";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

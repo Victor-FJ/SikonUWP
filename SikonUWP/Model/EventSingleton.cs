@@ -58,13 +58,13 @@ namespace SikonUWP.Model
                 if (value == null)
                 {
                     _markedEvent = new Event();
-                    MarkedBools = new bool[12];
+                    MarkedBools = new bool[13];
                     IsNew = true;
                 }
                 else
                 {
                     _markedEvent = (Event)value.Clone();
-                    MarkedBools = Enumerable.Repeat(true, 12).ToArray();
+                    MarkedBools = Enumerable.Repeat(true, 13).ToArray();
                     IsNew = false;
                 }
                 MarkedImage = null;

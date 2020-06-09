@@ -195,7 +195,7 @@ namespace SikonUWP.ViewModel
                 _navigationView.MenuItems.Insert(2, new NavigationViewItem() { Icon = new SymbolIcon() {Symbol = Symbol.Edit}, Content = "Lav ny begivenhed", Tag = typeof(EventEditorPage)});
                 _navigationView.MenuItems.Insert(3, new NavigationViewItemSeparator());
                 _navigationView.MenuItems.Insert(4, new NavigationViewItemHeader() { Content = "Brugere" });
-                _navigationView.MenuItems.Insert(6, new NavigationViewItem() { Icon = new SymbolIcon() { Symbol = Symbol.Contact }, Content = "Lav ny bruger", Tag = typeof(UserCreatorAdminPage)});
+                _navigationView.MenuItems.Insert(6, new NavigationViewItem() { Icon = new SymbolIcon() { Symbol = Symbol.AddFriend }, Content = "Lav ny bruger", Tag = typeof(UserCreatorAdminPage)});
                 _navigationView.MenuItems.Insert(7, new NavigationViewItemSeparator());
                 _navigationView.MenuItems.Insert(8, new NavigationViewItemHeader() { Content = "Lokaler" });
                 _navigationView.MenuItems.Insert(9, new NavigationViewItem() { Icon = new FontIcon() { Glyph = "\uE707" }, Content = "Lokale oversigt", Tag = typeof(RoomPage)});
