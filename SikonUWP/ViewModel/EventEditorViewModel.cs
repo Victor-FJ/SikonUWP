@@ -40,12 +40,12 @@ namespace SikonUWP.ViewModel
             "Det antal personer begivenheden højst kan have", "Den dato hvor begivenheden afholdes", 
             "Det tidspunkt hvor begivenheden begynder", "Det tidspunkt hvor begivenheden slutter",
             "Det lokale hvor begivenheden forgår", "Den person som er vært for denne begivenheden",
-            "Et billed til begivenheden", "Navnet til billedet"
+            "Et billed til begivenheden", "Navnet til billedet", "Dato ting"
         };
 
         private const string ColorRed = "Red";
         private const string ColorGray = "DimGray";
-        private readonly string[] _toolTipColor = Enumerable.Repeat(ColorGray, 12).ToArray();
+        private readonly string[] _toolTipColor = Enumerable.Repeat(ColorGray, 13).ToArray();
 
         public string[] ToolTipText { get; private set; }
 
